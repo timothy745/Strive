@@ -2,6 +2,12 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Khand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karantina:wght@300;400;700&family=Khand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <title>Strive Login</title>
 
 <style>
@@ -27,13 +33,13 @@ body::before {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: rgba(255,255,255,0.78);
+    background: rgba(255, 255, 255, 0.78);
 }
 
 /* CARD */
 .card {
     position: relative;
-    width: 360px;
+    width: 400px;
     border-radius: 22px;
     background: linear-gradient(to bottom, #f7f7f7, #e9e9e9);
     box-shadow: 0 20px 40px rgba(0,0,0,0.25);
@@ -44,31 +50,22 @@ body::before {
 /* HEADER */
 .header {
     height: 120px;
-    background: linear-gradient(180deg, #1a1aa0 0%, #4f4fff 100%);
+    background: linear-gradient(180deg, #000286 0%, #4A4EFF 83%, #8689FF 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-}
-
-/* efek glow tengah header */
-.header::after {
-    content: "";
-    position: absolute;
     width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at center, rgba(255,255,255,0.25), transparent 60%);
 }
 
 /* LOGO TEXT */
 .logo {
     position: relative;
-    color: #eaeaea;
-    font-size: 50px;
-    font-weight: 800;
-    letter-spacing: -1px;
     display: flex;
     align-items: center;
+    justify-content: center;
+    margin-top: -115px;
+    padding-left: 15px;
     gap: 10px;
 }
 
@@ -79,16 +76,16 @@ body::before {
 }
 
 .arrow {
-    width: 0;
-    height: 0;
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent;
+    width: 5px;
+    height: 5px;
+    border-top: 17px solid transparent;
+    border-bottom: 17px solid transparent;
     border-left: 18px solid #eaeaea;
 }
 
 /* FORM */
 .form {
-    padding: 35px 30px;
+    padding: 20px 30px;
     text-align: center;
 }
 
@@ -103,7 +100,7 @@ body::before {
     border-radius: 40px;
     border: none;
     outline: none;
-
+    font: 100 14px 'Khand', sans-serif;
     background: linear-gradient(to bottom, #e5e5e5, #d6d6d6);
 
     /* efek halus */
@@ -111,22 +108,22 @@ body::before {
         inset 0 2px 6px rgba(0,0,0,0.2),
         inset 0 -2px 3px rgba(255,255,255,0.7);
 
-    text-align: center;
-    font-size: 14px;
+    text-align: left;
+    font-size: 18px;
     color: #666;
 }
 
 /* BUTTON */
 .login-btn button {
     margin-top: 25px;
-    width: 70%;
-    padding: 14px;
-    border-radius: 28px;
+    width: 328px;
+    border-radius: 30px;
     border: none;
+    font: 600 16px 'Khand', sans-serif;
 
-    background: linear-gradient(180deg, #2f2fff, #5d5dff);
+    background:  #2C30E2;
     color: white;
-    font-size: 22px;
+    font-size: 60px;
     letter-spacing: 1px;
     cursor: pointer;
 
@@ -161,11 +158,7 @@ body::before {
 <div class="card">
     <div class="header">
         <div class="logo">
-            STRIVE
-            <div class="arrows">
-                <div class="arrow"></div>
-                <div class="arrow"></div>
-            </div>
+            <img src="Strive.png" alt="Logo">
         </div>
     </div>
 
