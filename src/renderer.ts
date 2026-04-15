@@ -26,7 +26,11 @@
  * ```
  */
 
-import './index.css';
+
+declare module '*.css' {
+  const content: any;
+  export default content;
+}
 
 console.log(
   '👋 This message is being logged by "renderer.ts", included via Vite',
