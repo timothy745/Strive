@@ -7,33 +7,44 @@ if (started) {
   app.quit();
 }
 
-const createWindow = () => {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-    },
+let mainWindow: BrowserWindow | null = null;
+let splashWindow: BrowserWindow | null = null;
+function createAppWindow() {
+  // 1. Buat jendela Splash Screen
+  splashWindow = new BrowserWindow({
+    width: 500,
+    height: 300,
+    transparent: true, // Membuat background transparan jika perlu
+    frame: false,       // Menghilangkan border dan tombol close/minimize
+    alwaysOnTop: true  // Agar tetap di depan saat loading
   });
 
-  // and load the index.html of the app.
-  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
-  } else {
-    mainWindow.loadFile(
-      path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
-    );
-  }
+  splashWindow.loadFile('splash.html');
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
-};
+  // 2. Buat jendela Utama (tapi jangan tampilkan dulu)
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    show: false, // Sembunyikan sampai konten siap
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js')
+    }
+  });
+
+  mainWindow.loadFile('index.html');
+
+  // 3. Pindahkan fokus ke jendela utama setelah konten siap
+  mainWindow.once('ready-to-show', () => {
+    splashWindow?.destroy(); // Tutup splash screen
+    mainWindow?.show();      // Tampilkan jendela utama
+  });
+    mainWindow.webContents.openDevTools();
+}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on('ready', createAppWindow);
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -48,7 +59,7 @@ app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
+    createAppWindow();
   }
 });
 
