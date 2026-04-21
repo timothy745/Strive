@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Khand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>Strive Personal Info</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Khand', sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* background */
+#background img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* overlay biar agak soft */
+body::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.4);
+}
+
+/* card */
+.card {
+    position: relative;
+    width: 400px;
+    border-radius: 22px;
+    background: linear-gradient(to bottom, #f7f7f7, #e9e9e9);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* header */
+.header {
+    height: 120px;
+    background: linear-gradient(180deg, #000286 0%, #4A4EFF 83%, #8689FF 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* logo */
+.logo img {
+    width: 160px;
+    margin-bottom: 50px;
+}
+
+/* form */
+.form {
+    padding: 25px;
+}
+
+/* input umum */
+.input-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.input-box input,
+.input-box select {
+    flex: 1;
+    padding: 12px;
+    border-radius: 30px;
+    border: none;
+    outline: none;
+    background: linear-gradient(to bottom, #e5e5e5, #d6d6d6) ;
+    box-shadow: 
+        inset 0 2px 6px rgba(0,0,0,0.2),
+        inset 0 -2px 3px rgba(255,255,255,0.7);
+    font-size: 16px;
+    color: #555;
+}
+
+/* input full */
+.full {
+    width: 100%;
+}
+
+/* button */
+.btn {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn button {
+    width: 130px;
+    height: 45px;
+    border-radius: 25px;
+    border: none;
+    background: #2C30E2;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+
+    box-shadow: 
+        0 8px 18px rgba(0,0,255,0.4),
+        inset 0 -4px 6px rgba(0,0,0,0.25);
+}
+
+.btn button:active {
+    transform: scale(0.95);
+}
+
+</style>
+</head>
+
+<body>
+
+ <div id="background">
+    <img src="BackgroundStrive.png" alt="Background Image" style="width: 100%; height: 100%;position: absolute;right: 0px;bottom: 0px;object-fit: cover;">
+  </div>
+
+<div class="card">
+    
+    <div class="header">
+        <div class="logo">
+            <img src="Strive.png"> <!-- pakai logo kamu -->
+        </div>
+    </div>
+
+    <div class="form">
+
+        <!-- Nama -->
+        <div class="input-box">
+            <input class="full" type="text" placeholder="Nama">
+        </div>
+
+    <!-- Tanggal Lahir -->
+    <div class="input-box">
+    <select style="width: 70px;">
+    <option>Tgl</option>
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+    <option>6</option>
+    <option>7</option>
+    <option>8</option>
+    <option>9</option>
+    <option>10</option>
+    <option>11</option>
+    <option>12</option>
+    <option>13</option>
+    <option>14</option>
+    <option>15</option>
+    <option>16</option>
+    <option>17</option>
+    <option>18</option>
+    <option>19</option>
+    <option>20</option>
+    <option>21</option>
+    <option>22</option>
+    <option>23</option>
+    <option>24</option>
+    <option>25</option>
+    <option>26</option>
+    <option>27</option>
+    <option>28</option>
+    <option>29</option>
+    <option>30</option>
+    <option>31</option>
+</select>
+    
+    <select>
+    <option>Bulan</option>
+    <option>Januari</option>
+    <option>Februari</option>
+    <option>Maret</option>
+    <option>April</option>
+    <option>Mei</option>
+    <option>Juni</option>
+    <option>Juli</option>
+    <option>Agustus</option>
+    <option>September</option>
+    <option>Oktober</option>
+    <option>November</option>
+    <option>Desember</option>
+</select>
+     
+    <!-- TAHUN (pakai number, paling mendekati) -->
+    <input type="number" placeholder="Tahun" min="1900" max="2100">
+     </div>
+
+        <!-- Berat & Tinggi -->
+        <div class="input-box">
+            <input type="text" placeholder="Berat Badan">
+            <input type="text" placeholder="Tinggi Badan">
+        </div>
+
+        <!-- Button -->
+        <div class="btn">
+            <button>SAVE</button>
+        
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
