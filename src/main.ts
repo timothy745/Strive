@@ -23,8 +23,8 @@ function createAppWindow() {
 
   // 2. Buat jendela Utama (tapi jangan tampilkan dulu)
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1535,
+    height: 864,
     show: false, // Sembunyikan sampai konten siap
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
