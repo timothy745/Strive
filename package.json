@@ -28,7 +28,9 @@
     "@electron-forge/plugin-fuses": "^7.11.1",
     "@electron-forge/plugin-vite": "^7.11.1",
     "@electron/fuses": "^1.8.0",
+    "@types/bcryptjs": "^2.4.6",
     "@types/electron-squirrel-startup": "^1.0.2",
+    "@types/pg": "^8.20.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "electron": "41.2.0",
@@ -38,7 +40,10 @@
     "vite": "^8.0.8"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
     "electron-squirrel-startup": "^1.0.1",
-    "electron-store": "^11.0.2"
+    "electron-store": "^11.0.2",
+    "pg": "^8.20.0"
   }
 }
