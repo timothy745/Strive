@@ -1,67 +1,99 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
+import { default as pool, initDB } from './db/database';
+import { Pool } from 'pg';
+import bcrypt from 'bcryptjs';
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit();
 }
 
+// ── IPC: REGISTER ───────────────────────────────────────────────
+ipcMain.handle('register', async (_event, { email, password }: { email: string; password: string }) => {
+  try {
+    const existing = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
+    if (existing.rows.length > 0) {
+      return { success: false, message: 'Email sudah terdaftar.' };
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await pool.query(
+      'INSERT INTO users (email, password) VALUES ($1, $2)',
+      [email, hashedPassword]
+    );
+
+    return { success: true, message: 'Registrasi berhasil!' };
+  } catch (err) {
+    console.error('Register error:', err);
+    return { success: false, message: 'Terjadi kesalahan server.' };
+  }
+});
+
+// ── IPC: LOGIN ──────────────────────────────────────────────────
+ipcMain.handle('login', async (_event, { email, password }: { email: string; password: string }) => {
+  try {
+    const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    if (result.rows.length === 0) {
+      return { success: false, message: 'Email tidak ditemukan.' };
+    }
+
+    const user = result.rows[0];
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return { success: false, message: 'Password salah.' };
+    }
+
+    return { success: true, message: 'Login berhasil!' };
+  } catch (err) {
+    console.error('Login error:', err);
+    return { success: false, message: 'Terjadi kesalahan server.' };
+  }
+});
+
+// ── Windows ─────────────────────────────────────────────────────
 let mainWindow: BrowserWindow | null = null;
 let splashWindow: BrowserWindow | null = null;
+
 function createAppWindow() {
-  // 1. Buat jendela Splash Screen
   splashWindow = new BrowserWindow({
     width: 500,
     height: 300,
-    transparent: true, // Membuat background transparan jika perlu
-    frame: false,       // Menghilangkan border dan tombol close/minimize
-    alwaysOnTop: true  // Agar tetap di depan saat loading
+    transparent: true,
+    frame: false,
+    alwaysOnTop: true,
   });
-
   splashWindow.loadFile('splash.html');
 
-  // 2. Buat jendela Utama (tapi jangan tampilkan dulu)
   mainWindow = new BrowserWindow({
     width: 1535,
     height: 864,
-    show: false, // Sembunyikan sampai konten siap
+    show: false,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
-    }
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
+    },
   });
-
   mainWindow.loadFile('index.html');
 
-  // 3. Pindahkan fokus ke jendela utama setelah konten siap
   mainWindow.once('ready-to-show', () => {
-    splashWindow?.destroy(); // Tutup splash screen
-    mainWindow?.show();      // Tampilkan jendela utama
+    splashWindow?.destroy();
+    mainWindow?.show();
   });
-    mainWindow.webContents.openDevTools();
+
+  mainWindow.webContents.openDevTools();
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createAppWindow);
+app.on('ready', async () => {
+  await initDB();
+  createAppWindow();
+});
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  if (process.platform !== 'darwin') app.quit();
 });
 
 app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createAppWindow();
-  }
+  if (BrowserWindow.getAllWindows().length === 0) createAppWindow();
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.

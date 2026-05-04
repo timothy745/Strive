@@ -169,16 +169,57 @@ body:before {
 </head>
 
 <script>
-function pindah1() {
-  document.body.classList.add("slide-out");
-  setTimeout(() => {
-    window.location.href = "beranda.html";
-  }, 100);
-}
+async function pindah1() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const msg = document.getElementById('msg');
+      const btn = document.getElementById('loginBtn');
+ 
+      if (!email || !password) {
+        msg.textContent = 'Isi email dan password terlebih dahulu.';
+        msg.className = 'msg error';
+        return;
+      }
+ 
+      btn.disabled = true;
+      msg.textContent = '';
+ 
+      try {
+        const result = await window.striveAPI.login(email, password);
+        if (result.success) {
+          msg.textContent = result.message;
+          msg.className = 'msg success';
+          setTimeout(() => {
+            document.body.classList.add("slide-out");
+            setTimeout(() => { window.location.href = "beranda.html"; }, 100);
+          }, 800);
+        } else {
+          msg.textContent = result.message;
+          msg.className = 'msg error';
+          btn.disabled = false;
+        }
+      } catch (err) {
+        msg.textContent = 'Gagal terhubung ke server.';
+        msg.className = 'msg error';
+        btn.disabled = false;
+      }
+    }
+ 
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') pindah3();
+
+    });
+
 function pindah2() {
   document.body.classList.add("slide-out");
   setTimeout(() => {
     window.location.href = "registasi.html";
+  }, 100);
+}
+function pindah3() {
+  document.body.classList.add("slide-out");
+  setTimeout(() => {
+    window.location.href = "beranda.html";
   }, 100);
 }
 </script>
@@ -196,17 +237,19 @@ function pindah2() {
     </div>
         <div class="form">
         <div class="input-box">
-            <input type="email" placeholder="E-Mail">
+            <input type="email" id="email" placeholder="E-Mail">
         </div>
 
         <div class="input-box">
-            <input type="password" placeholder="Password">
+            <input type="password" id="password" placeholder="Password">
         </div>
 
         <div class="login-btn">
-            <button onclick="pindah1()">LOGIN</button>
+            <button id="loginBtn"onclick="pindah1()">LOGIN</button>
         </div>
 
+        <div class="msg" id="msg"></div>
+        
         <div class="register">
            <a onclick="pindah2()">Registrasi</a>
         </div>
