@@ -50,15 +50,14 @@
       height: 100vh;
     }
 
-    /* background */
     #background img {
       position: absolute;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      z-index: 0;
     }
 
-    /* overlay biar agak soft */
     body::before {
       content: "";
       position: absolute;
@@ -67,7 +66,6 @@
       background: rgba(255, 255, 255, 0.4);
     }
 
-    /* header */
     .card {
       position: relative;
       width: 1536px;
@@ -96,8 +94,6 @@
 
     .profile-pic img:hover {
       transform: scale(1.1);
-      transition: transform 0.3s ease;
-      transform: opacity 0.8s ease;
       opacity: 0.8;
     }
 
@@ -116,7 +112,6 @@
       background: none;
     }
 
-    /* logo */
     .logo img {
       position: relative;
       display: flex;
@@ -129,12 +124,6 @@
       z-index: 1;
     }
 
-    /* input full */
-    .full {
-      width: 100%;
-    }
-
-    /* button */
     .btn {
       display: flex;
       justify-content: flex-end;
@@ -160,15 +149,330 @@
     }
 
     .btn button:hover {
-      transform: color ease-in-out 0.1s;
       background: #ffffff;
       color: #2C30E2;
     }
 
     .btn button:active {
-      transform: color ease-in-out 0.1s;
       background: #ffffff;
       color: #2C30E2;
+    }
+
+    .profile-box {
+      position: relative;
+      width: 1278px;
+      height: 610px;
+      left: 135px;
+      margin-top: -170px;
+      border-radius: 30px;
+      background: #FFFFFF;
+      box-shadow: inset 0px 0px 50px 3px rgba(0, 0, 0, 0.25);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 40px 50px;
+      z-index: 2;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .week-wrapper {
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      font-family: 'Khand', sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .week-title {
+      font-size: 78px;
+      font-weight: 450;
+      color: #111;
+      margin: 0 0 16px 0;
+      line-height: 1;
+    }
+
+    .days-scroll {
+      flex: 1;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      cursor: grab;
+    }
+
+    .days-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .days-row {
+      display: flex;
+      gap: 14px;
+      height: 100%;
+      width: max-content;
+    }
+
+    .day-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 275px;
+      height: 100%;
+    }
+
+    .day-label {
+      font-size: 25px;
+      color: #555;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .edit-box {
+      flex: 1;
+      width: 100%;
+      background: #d4d4d4;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .edit-box:hover {
+      background: #bdbdbd;
+    }
+
+    .edit-plus {
+      font-size: 60px;
+      color: #666;
+      line-height: 1;
+    }
+
+    .edit-text {
+      font-size: 32px;
+      color: #666;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+
+    /* === MODAL === */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #2a2a2a;
+      border-radius: 20px;
+      padding: 18px 16px;
+      width: 360px;
+      max-height: 560px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .modal-save {
+      background: #3333ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 7px 28px;
+      font-size: 18px;
+      font-family: 'Khand', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.08em;
+    }
+
+    .modal-save:hover {
+      background: #2222cc;
+    }
+
+    .modal-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow-y: auto;
+      max-height: 460px;
+      scrollbar-width: none;
+      padding-right: 2px;
+    }
+
+    .modal-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .modal-item {
+      background: #3a3a3a;
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .modal-item-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #aaa;
+      flex-shrink: 0;
+    }
+
+    .modal-item-name {
+      flex: 1;
+      color: #ffffff;
+      font-size: 18px;
+      font-family: 'Khand', sans-serif;
+      font-weight: 400;
+    }
+
+    /* reps counter */
+    .reps-control {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .reps-btn {
+      background: #555;
+      border: none;
+      color: #fff;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      font-family: 'Khand', sans-serif;
+    }
+
+    .reps-btn:hover {
+      background: #777;
+    }
+
+    .reps-val {
+      color: #fff;
+      font-size: 16px;
+      font-family: 'Khand', sans-serif;
+      min-width: 28px;
+      text-align: center;
+    }
+
+    .reps-label {
+      color: #aaa;
+      font-size: 14px;
+      font-family: 'Khand', sans-serif;
+    }
+
+    /* toggle */
+    .modal-toggle {
+      position: relative;
+      width: 38px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+
+    .modal-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .modal-toggle-slider {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #555;
+      border-radius: 22px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .modal-toggle-slider::before {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 3px;
+      top: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.2s;
+    }
+
+    .modal-toggle input:checked+.modal-toggle-slider {
+      background: #3333ff;
+    }
+
+    .modal-toggle input:checked+.modal-toggle-slider::before {
+      transform: translateX(16px);
+    }
+
+    /* kg slider */
+    .kg-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 2px;
+    }
+
+    .kg-label {
+      color: #aaa;
+      font-size: 14px;
+      font-family: 'Khand', sans-serif;
+      white-space: nowrap;
+    }
+
+    .kg-val {
+      color: #fff;
+      font-size: 15px;
+      font-family: 'Khand', sans-serif;
+      font-weight: 600;
+      min-width: 42px;
+      text-align: right;
+    }
+
+    input[type=range].kg-slider {
+      flex: 1;
+      height: 4px;
+      accent-color: #3333ff;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -176,28 +480,21 @@
 <script>
   function pindah1() {
     document.body.classList.add("fade-out");
-    setTimeout(() => {
-      window.location.href = "beranda.html";
-    }, 100);
+    setTimeout(() => { window.location.href = "beranda.html"; }, 100);
   }
   function pindah2() {
     document.body.classList.add("fade-out");
-    setTimeout(() => {
-      window.location.href = "latihan.html";
-    }, 100);
+    setTimeout(() => { window.location.href = "latihan.html"; }, 100);
   }
   function pindah3() {
     document.body.classList.add("fade-out");
-    setTimeout(() => {
-      window.location.href = "statistik.html";
-    }, 100);
+    setTimeout(() => { window.location.href = "statistik.html"; }, 100);
   }
   function pindah4() {
     document.body.classList.add("fade-out");
-    setTimeout(() => {
-      window.location.href = "jadwal.html";
-    }, 100);
+    setTimeout(() => { window.location.href = "jadwal.html"; }, 100);
   }
+
   document.addEventListener('DOMContentLoaded', async () => {
     try {
       const user = await window.striveAPI.getCurrentUser();
@@ -205,6 +502,202 @@
         document.getElementById('header-profile-pic').src = user.profile_pic;
       }
     } catch (e) { console.error(e); }
+
+    const days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+    const row = document.getElementById('days-row');
+
+    // hasKg: true = latihan yang pakai beban
+    const defaultItems = [
+      { name: 'Push Up', reps: 2, done: true, hasKg: false },
+      { name: 'Sit Up', reps: 2, done: true, hasKg: false },
+      { name: 'Pull Up', reps: 3, done: true, hasKg: false },
+      { name: 'Squat', reps: 3, done: true, hasKg: false },
+      { name: 'Jumping Jack', reps: 6, done: true, hasKg: false },
+      { name: 'Mountain Climber', reps: 7, done: true, hasKg: false },
+      { name: 'Mengangkat Barbel', reps: 4, done: true, hasKg: true, kg: 40 },
+      { name: 'Lompat Tali', reps: 15, done: true, hasKg: false },
+      { name: 'Back Up', reps: 16, done: true, hasKg: false },
+      { name: 'Sikap Kapal Terbang', reps: 10, done: true, hasKg: false },
+    ];
+
+    const scheduleData = {};
+
+    // Load data dari DB untuk setiap hari
+    for (const d of days) {
+      try {
+        const dbItems = await window.striveAPI.getSchedule(d);
+        if (dbItems && dbItems.length > 0) {
+          scheduleData[d] = dbItems;
+        } else {
+          // User baru / belum ada data → pakai default
+          scheduleData[d] = defaultItems.map(item => ({ ...item }));
+        }
+      } catch (e) {
+        console.error('Load schedule error for', d, e);
+        scheduleData[d] = defaultItems.map(item => ({ ...item }));
+      }
+    }
+
+    let activeDay = null;
+
+    function openModal(day) {
+      activeDay = day;
+      renderModalList();
+      document.getElementById('modal-overlay').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.remove('active');
+      activeDay = null;
+    }
+
+    function renderModalList() {
+      const list = document.getElementById('modal-list');
+      list.innerHTML = '';
+      const items = scheduleData[activeDay] || [];
+
+      items.forEach((item, i) => {
+        const div = document.createElement('div');
+        div.className = 'modal-item';
+
+        // baris atas: dot + nama + reps + toggle
+        const top = document.createElement('div');
+        top.className = 'modal-item-top';
+        top.innerHTML = `
+          <div class="modal-dot"></div>
+          <div class="modal-item-name">${item.name}</div>
+          <div class="reps-control">
+            <button class="reps-btn" data-i="${i}" data-action="minus">−</button>
+            <span class="reps-val" id="reps-val-${i}">${item.reps}x</span>
+            <button class="reps-btn" data-i="${i}" data-action="plus">+</button>
+          </div>
+          <label class="modal-toggle">
+            <input type="checkbox" ${item.done ? 'checked' : ''} data-i="${i}">
+            <div class="modal-toggle-slider"></div>
+          </label>
+        `;
+        div.appendChild(top);
+
+        // baris bawah: slider kg (hanya kalau hasKg)
+        if (item.hasKg) {
+          const kgRow = document.createElement('div');
+          kgRow.className = 'kg-row';
+          kgRow.innerHTML = `
+            <span class="kg-label">Beban:</span>
+            <input type="range" class="kg-slider" min="10" max="60" step="5"
+              value="${item.kg}" data-i="${i}">
+            <span class="kg-val" id="kg-val-${i}">${item.kg} kg</span>
+          `;
+          div.appendChild(kgRow);
+
+          kgRow.querySelector('.kg-slider').addEventListener('input', function () {
+            const idx = parseInt(this.dataset.i);
+            scheduleData[activeDay][idx].kg = parseInt(this.value);
+            document.getElementById('kg-val-' + idx).textContent = this.value + ' kg';
+          });
+        }
+
+        // event reps
+        top.querySelectorAll('.reps-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const idx = parseInt(btn.dataset.i);
+            const action = btn.dataset.action;
+            if (action === 'plus') {
+              scheduleData[activeDay][idx].reps++;
+            } else {
+              if (scheduleData[activeDay][idx].reps > 1)
+                scheduleData[activeDay][idx].reps--;
+            }
+            document.getElementById('reps-val-' + idx).textContent =
+              scheduleData[activeDay][idx].reps + 'x';
+          });
+        });
+
+        // event toggle
+        top.querySelector('input[type=checkbox]').addEventListener('change', function () {
+          scheduleData[activeDay][parseInt(this.dataset.i)].done = this.checked;
+        });
+
+        list.appendChild(div);
+      });
+    }
+
+    // Update tampilan edit-box untuk menunjukkan jumlah exercise
+    function updateDayCard(day) {
+      const col = document.getElementById('day-col-' + day);
+      if (!col) return;
+      const editBox = col.querySelector('.edit-box');
+      const items = scheduleData[day] || [];
+      const activeCount = items.filter(it => it.done).length;
+      if (activeCount > 0) {
+        editBox.innerHTML = `
+          <div class="edit-plus" style="font-size:36px;">${activeCount}</div>
+          <div class="edit-text" style="font-size:18px;">LATIHAN AKTIF</div>
+          <div class="edit-text" style="font-size:14px; color:#999;">Tap to edit</div>
+        `;
+      } else {
+        editBox.innerHTML = `
+          <div class="edit-plus">+</div>
+          <div class="edit-text">EDIT</div>
+        `;
+      }
+    }
+
+    window.openModal = openModal;
+    window.closeModal = closeModal;
+    window.saveModal = async function () {
+      if (activeDay) {
+        try {
+          const result = await window.striveAPI.saveSchedule(activeDay, scheduleData[activeDay]);
+          if (result.success) {
+            console.log('✅ Jadwal ' + activeDay + ' tersimpan!');
+            updateDayCard(activeDay);
+          } else {
+            console.error('Gagal simpan:', result.message);
+            alert('Gagal menyimpan jadwal: ' + (result.message || 'Unknown error'));
+          }
+        } catch (e) {
+          console.error('Save error:', e);
+          alert('Gagal menyimpan jadwal.');
+        }
+      }
+      closeModal();
+    };
+
+    days.forEach(day => {
+      const col = document.createElement('div');
+      col.className = 'day-col';
+      col.id = 'day-col-' + day;
+      col.innerHTML = `
+        <div class="day-label">${day}</div>
+        <div class="edit-box" onclick="openModal('${day}')">
+          <div class="edit-plus">+</div>
+          <div class="edit-text">EDIT</div>
+        </div>
+      `;
+      row.appendChild(col);
+      // Update card supaya tampilkan jumlah latihan
+      updateDayCard(day);
+    });
+
+    /* drag scroll */
+    const scroll = document.getElementById('days-scroll');
+    let isDown = false, startX, scrollLeft;
+
+    scroll.addEventListener('mousedown', e => {
+      isDown = true;
+      scroll.style.cursor = 'grabbing';
+      startX = e.pageX - scroll.offsetLeft;
+      scrollLeft = scroll.scrollLeft;
+    });
+    scroll.addEventListener('mouseleave', () => { isDown = false; scroll.style.cursor = 'grab'; });
+    scroll.addEventListener('mouseup', () => { isDown = false; scroll.style.cursor = 'grab'; });
+    scroll.addEventListener('mousemove', e => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - scroll.offsetLeft;
+      scroll.scrollLeft = scrollLeft - (x - startX);
+    });
   });
 </script>
 
@@ -219,16 +712,36 @@
     </div>
   </div>
   <div class="profile-pic">
-    <button onclick="window.location.href='profile.html'"><img id="header-profile-pic" src="Profile.png"
-        alt="Profile Picture"></button>
+    <button onclick="window.location.href='profile.html'">
+      <img id="header-profile-pic" src="Profile.png" alt="Profile Picture">
+    </button>
   </div>
   <div class="logo">
     <img src="Strive.png">
   </div>
 
+  <div class="profile-box">
+    <div class="week-wrapper">
+      <div class="week-title">This Week</div>
+      <div class="days-scroll" id="days-scroll">
+        <div class="days-row" id="days-row"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal-box">
+      <div class="modal-header">
+        <button class="modal-save" onclick="saveModal()">SAVE</button>
+      </div>
+      <div class="modal-list" id="modal-list"></div>
+    </div>
+  </div>
+
   <div id="background">
     <img src="BackgroundStrive.png" alt="Background Image"
-      style="width: 100%; height: 100%;position: absolute;right: 0px;bottom: 0px;object-fit: cover;">
+      style="width:100%;height:100%;position:absolute;right:0;bottom:0;object-fit:cover;">
   </div>
 </body>
 
