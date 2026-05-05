@@ -1,220 +1,235 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-<meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Khand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<title>Beranda</title>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Khand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>Latihan</title>
 
-<style>
-body {
-  opacity: 0;
-  animation: fadeIn 0.5s forwards;
-}
+  <style>
+    body {
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
+    }
 
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
 
- .fade-out {
-  animation: fadeOut 0.5s forwards;
-}
+    .fade-out {
+      animation: fadeOut 0.5s forwards;
+    }
 
-@keyframes fadeOut {
-  to {
-    opacity: 0;
-  }
-}
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+      }
+    }
 
-* {
-    margin: 0;
-    padding: 0;
-    font-family: 'Khand', sans-serif;
-}
-body, html {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    display: block;
-}
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Khand', sans-serif;
+    }
 
-body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    position: relative;
-    height: 100vh;
-}
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      display: block;
+    }
 
-/* background */
-#background img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      position: relative;
+      height: 100vh;
+    }
 
-/* overlay biar agak soft */
-body::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(255,255,255,0.4);
-}
+    /* background */
+    #background img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-/* header */
-.card {
-    position: relative; 
-    width: 1536px;
-    height: 100px;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(90deg, #000242 0%, #000499 51%, #0005D6 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-}
+    /* overlay biar agak soft */
+    body::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.4);
+    }
 
-.profile-pic img {
-    position: relative;
-    display: flex;
-    align-items: right;
-    justify-content: right;
-    width: 85px;
-    height: 80px;
-    cursor: pointer;
-    border-radius: 50%;
-    z-index: 1;
-}
+    /* header */
+    .card {
+      position: relative;
+      width: 1536px;
+      height: 100px;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(90deg, #000242 0%, #000499 51%, #0005D6 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
 
-.profile-pic img:hover {
-    transform: scale(1.1);
-    transition: transform 0.3s ease;
-    transform: opacity 0.8s ease;
-    opacity: 0.8;
-}
+    .profile-pic img {
+      position: relative;
+      display: flex;
+      align-items: right;
+      justify-content: right;
+      width: 85px;
+      height: 80px;
+      cursor: pointer;
+      border-radius: 50%;
+      z-index: 1;
+    }
 
-.profile-pic button {
-    position: relative;
-    display: flex;
-    align-items: right;
-    justify-content: right;
-    width: 80px;
-    height: 80px;
-    left: 1400px;
-    bottom: 90px;
-    border-radius: 50%;
-    z-index: 3;
-    border: none;
-    background: none;
-}
-/* logo */
-.logo img {
-    position: relative;
-    display: flex;
-    align-items: left;
-    justify-content: left;
-    width: 160px;
-    height: 160px;
-    bottom: 255px;
-    left: 20px;
-    z-index: 1;
-}
+    .profile-pic img:hover {
+      transform: scale(1.1);
+      transition: transform 0.3s ease;
+      transform: opacity 0.8s ease;
+      opacity: 0.8;
+    }
 
-/* input full */
-.full {
-    width: 100%;
-}
+    .profile-pic button {
+      position: relative;
+      display: flex;
+      align-items: right;
+      justify-content: right;
+      width: 80px;
+      height: 80px;
+      left: 1400px;
+      bottom: 90px;
+      border-radius: 50%;
+      z-index: 3;
+      border: none;
+      background: none;
+    }
 
-/* button */
-.btn {
-    display: flex;
-    justify-content: flex-end;
-    gap: 20px;
-}
+    /* logo */
+    .logo img {
+      position: relative;
+      display: flex;
+      align-items: left;
+      justify-content: left;
+      width: 160px;
+      height: 160px;
+      bottom: 255px;
+      left: 20px;
+      z-index: 1;
+    }
 
-.btn button {
-    width: 264px;
-    height: 100px;
-    border-radius: 0px;
-    border: none;
-    background: linear-gradient(90deg, #01036E 0%, #0106D4 100%);
-    color: white;
-    font-size: 30px;
-    cursor: pointer;
-    transform: skewX(-25deg);
-    z-index: 2;
-}
+    /* input full */
+    .full {
+      width: 100%;
+    }
 
-.btn button span {
-    display: inline-block;
-    transform: skewX(25deg);
-}
-.btn button:hover {
-    transform: color ease-in-out 0.1s;
-    background: #ffffff;
-    color: #2C30E2;
-}
+    /* button */
+    .btn {
+      display: flex;
+      justify-content: flex-end;
+      gap: 20px;
+    }
 
-.btn button:active {
-    transform: color ease-in-out 0.1s;
-    background: #ffffff;
-    color: #2C30E2;
-}
+    .btn button {
+      width: 264px;
+      height: 100px;
+      border-radius: 0px;
+      border: none;
+      background: linear-gradient(90deg, #01036E 0%, #0106D4 100%);
+      color: white;
+      font-size: 30px;
+      cursor: pointer;
+      transform: skewX(-25deg);
+      z-index: 2;
+    }
 
-</style>
+    .btn button span {
+      display: inline-block;
+      transform: skewX(25deg);
+    }
+
+    .btn button:hover {
+      transform: color ease-in-out 0.1s;
+      background: #ffffff;
+      color: #2C30E2;
+    }
+
+    .btn button:active {
+      transform: color ease-in-out 0.1s;
+      background: #ffffff;
+      color: #2C30E2;
+    }
+  </style>
 </head>
 
 <script>
-function pindah1() {
-  document.body.classList.add("fade-out");
-  setTimeout(() => {
-    window.location.href = "beranda.html";
-  }, 500);
-}
-function pindah2() {
-  document.body.classList.add("fade-out");
-  setTimeout(() => {
-    window.location.href = "latihan.html";
-  }, 500);
-}
-function pindah3() {
-  document.body.classList.add("fade-out");
-  setTimeout(() => {
-    window.location.href = "statistik.html";
-  }, 500);
-}
-function pindah4() {
-  document.body.classList.add("fade-out");
-  setTimeout(() => {
-    window.location.href = "jadwal.html";
-  }, 500);
-}
+  function pindah1() {
+    document.body.classList.add("fade-out");
+    setTimeout(() => {
+      window.location.href = "beranda.html";
+    }, 500);
+  }
+  function pindah2() {
+    document.body.classList.add("fade-out");
+    setTimeout(() => {
+      window.location.href = "latihan.html";
+    }, 500);
+  }
+  function pindah3() {
+    document.body.classList.add("fade-out");
+    setTimeout(() => {
+      window.location.href = "statistik.html";
+    }, 500);
+  }
+  function pindah4() {
+    document.body.classList.add("fade-out");
+    setTimeout(() => {
+      window.location.href = "jadwal.html";
+    }, 500);
+  }
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const user = await window.striveAPI.getCurrentUser();
+      if (user && user.profile_pic) {
+        document.getElementById('header-profile-pic').src = user.profile_pic;
+      }
+    } catch (e) { console.error(e); }
+  });
 </script>
 
 <body>
-<div class="card">
+  <div class="card">
     <div class="header"></div>
     <div class="btn">
-    <button onclick="pindah1()"><span>BERANDA</span></button>
-    <button onclick="pindah2()"><span>LATIHAN</span></button>
-    <button onclick="pindah3()"><span>STATISTIK</span></button>
-    <button onclick="pindah4()"><span>JADWAL</span></button>
+      <button onclick="pindah1()"><span>BERANDA</span></button>
+      <button onclick="pindah2()"><span>LATIHAN</span></button>
+      <button onclick="pindah3()"><span>STATISTIK</span></button>
+      <button onclick="pindah4()"><span>JADWAL</span></button>
     </div>
-</div>
-<div class="profile-pic">
-    <button onclick="window.location.href='profile.html'"><img src="Profile.png" alt="Profile Picture"></button>
-</div>
-<div class="logo">
+  </div>
+  <div class="profile-pic">
+    <button onclick="window.location.href='profile.html'"><img id="header-profile-pic" src="Profile.png"
+        alt="Profile Picture"></button>
+  </div>
+  <div class="logo">
     <img src="Strive.png">
-</div>
+  </div>
 
-<div id="background">
-    <img src="BackgroundStrive.png" alt="Background Image" style="width: 100%; height: 100%;position: absolute;right: 0px;bottom: 0px;object-fit: cover;">
-</div>
+  <div id="background">
+    <img src="BackgroundStrive.png" alt="Background Image"
+      style="width: 100%; height: 100%;position: absolute;right: 0px;bottom: 0px;object-fit: cover;">
+  </div>
 </body>
+
 </html>
