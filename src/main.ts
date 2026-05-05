@@ -121,6 +121,60 @@ ipcMain.handle('uploadProfilePic', async () => {
   }
 });
 
+// ── IPC: SCHEDULE ───────────────────────────────────────────────
+ipcMain.handle('saveSchedule', async (_event, { day, items }: { day: string; items: any[] }) => {
+  if (!loggedInUserId) return { success: false, message: 'Not logged in' };
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // Hapus data lama untuk hari ini
+    await client.query(
+      'DELETE FROM schedules WHERE user_id = $1 AND day = $2',
+      [loggedInUserId, day]
+    );
+
+    // Insert data baru
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      await client.query(
+        `INSERT INTO schedules (user_id, day, exercise_name, reps, done, has_kg, kg, sort_order)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        [loggedInUserId, day, item.name, item.reps, item.done, item.hasKg, item.kg || 0, i]
+      );
+    }
+
+    await client.query('COMMIT');
+    return { success: true };
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error('Save schedule error:', err);
+    return { success: false, message: 'Gagal menyimpan jadwal.' };
+  } finally {
+    client.release();
+  }
+});
+
+ipcMain.handle('getSchedule', async (_event, { day }: { day: string }) => {
+  if (!loggedInUserId) return [];
+  try {
+    const result = await pool.query(
+      'SELECT exercise_name, reps, done, has_kg, kg FROM schedules WHERE user_id = $1 AND day = $2 ORDER BY sort_order',
+      [loggedInUserId, day]
+    );
+    return result.rows.map(row => ({
+      name: row.exercise_name,
+      reps: row.reps,
+      done: row.done,
+      hasKg: row.has_kg,
+      kg: row.kg,
+    }));
+  } catch (err) {
+    console.error('Get schedule error:', err);
+    return [];
+  }
+});
+
 // ── Windows ─────────────────────────────────────────────────────
 let mainWindow: BrowserWindow | null = null;
 let splashWindow: BrowserWindow | null = null;

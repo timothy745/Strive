@@ -15,4 +15,10 @@ contextBridge.exposeInMainWorld('striveAPI', {
 
   uploadProfilePic: () =>
     ipcRenderer.invoke('uploadProfilePic'),
+
+  saveSchedule: (day: string, items: any[]) =>
+    ipcRenderer.invoke('saveSchedule', { day, items }),
+
+  getSchedule: (day: string) =>
+    ipcRenderer.invoke('getSchedule', { day }),
 });
