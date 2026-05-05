@@ -1,243 +1,270 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-<meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Khand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<title>Strive Personal Info</title>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Khand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Strive Personal Info</title>
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Khand', sans-serif;
-}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Khand', sans-serif;
+        }
 
-body {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
 
-/* background */
-#background img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+        /* background */
+        #background img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-/* overlay biar agak soft */
-body::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(255,255,255,0.4);
-}
+        /* overlay biar agak soft */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.4);
+        }
 
-/* card */
-.card {
-    position: relative;
-    width: 400px;
-    border-radius: 22px;
-    background: linear-gradient(to bottom, #f7f7f7, #e9e9e9);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-    overflow: hidden;
-    z-index: 1;
-}
+        /* card */
+        .card {
+            position: relative;
+            width: 400px;
+            border-radius: 22px;
+            background: linear-gradient(to bottom, #f7f7f7, #e9e9e9);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            z-index: 1;
+        }
 
-/* header */
-.header {
-    height: 120px;
-    background: linear-gradient(180deg, #000286 0%, #4A4EFF 83%, #8689FF 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        /* header */
+        .header {
+            height: 120px;
+            background: linear-gradient(180deg, #000286 0%, #4A4EFF 83%, #8689FF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-/* logo */
-.logo img {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: -115px;
-    padding-left: 15px;
-    gap: 10px;
-}
+        /* logo */
+        .logo img {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: -115px;
+            padding-left: 15px;
+            gap: 10px;
+        }
 
-/* form */
-.form {
-    padding: 25px;
-}
+        /* form */
+        .form {
+            padding: 25px;
+        }
 
-/* input umum */
-.input-box {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-}
+        /* input umum */
+        .input-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
 
-.input-box input,
-.input-box select {
-    flex: 1;
-    padding: 12px;
-    border-radius: 30px;
-    border: none;
-    outline: none;
-    background: linear-gradient(to bottom, #e5e5e5, #d6d6d6) ;
-    box-shadow: 
-        inset 0 2px 6px rgba(0,0,0,0.2),
-        inset 0 -2px 3px rgba(255,255,255,0.7);
-    font-size: 16px;
-    color: #555;
-}
-.input-box span.berat {
-    position: absolute;
-    right: 225px;
-    top: 287px;
-    font-size: 14px;
-    color: #555;
-}
+        .input-box input,
+        .input-box select {
+            flex: 1;
+            padding: 12px;
+            border-radius: 30px;
+            border: none;
+            outline: none;
+            background: linear-gradient(to bottom, #e5e5e5, #d6d6d6);
+            box-shadow:
+                inset 0 2px 6px rgba(0, 0, 0, 0.2),
+                inset 0 -2px 3px rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+            color: #555;
+        }
 
-.input-box span.tinggi {
-    position: absolute;
-    right: 40px;
-    top: 287px;
-    font-size: 14px;
-    color: #555;
-}
+        .input-box span.berat {
+            position: absolute;
+            right: 225px;
+            top: 287px;
+            font-size: 14px;
+            color: #555;
+        }
 
-/* input full */
-.full {
-    width: 100%;
-}
+        .input-box span.tinggi {
+            position: absolute;
+            right: 40px;
+            top: 287px;
+            font-size: 14px;
+            color: #555;
+        }
 
-/* button */
-.btn {
-    display: flex;
-    justify-content: flex-end;
-}
+        /* input full */
+        .full {
+            width: 100%;
+        }
 
-.btn button {
-    width: 130px;
-    height: 45px;
-    border-radius: 25px;
-    border: none;
-    background: #2C30E2;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
+        /* button */
+        .btn {
+            display: flex;
+            justify-content: flex-end;
+        }
 
-    box-shadow: 
-        0 8px 18px rgba(0,0,255,0.4),
-        inset 0 -4px 6px rgba(0,0,0,0.25);
-}
+        .btn button {
+            width: 130px;
+            height: 45px;
+            border-radius: 25px;
+            border: none;
+            background: #2C30E2;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
 
-.btn button:active {
-    transform: scale(0.95);
-}
+            box-shadow:
+                0 8px 18px rgba(0, 0, 255, 0.4),
+                inset 0 -4px 6px rgba(0, 0, 0, 0.25);
+        }
 
-</style>
+        .btn button:active {
+            transform: scale(0.95);
+        }
+    </style>
 </head>
 
 <body>
 
- <div id="background">
-    <img src="BackgroundStrive.png" alt="Background Image" style="width: 100%; height: 100%;position: absolute;right: 0px;bottom: 0px;object-fit: cover;">
-  </div>
+    <div id="background">
+        <img src="BackgroundStrive.png" alt="Background Image"
+            style="width: 100%; height: 100%;position: absolute;right: 0px;bottom: 0px;object-fit: cover;">
+    </div>
 
-<div class="card">
-    
-    <div class="header">
-        <div class="logo">
-            <img src="Strive.png"> <!-- pakai logo kamu -->
+    <div class="card">
+
+        <div class="header">
+            <div class="logo">
+                <img src="Strive.png">
+            </div>
+        </div>
+
+        <div class="form">
+            <div class="input-box">
+                <input class="full" type="text" id="input-nama" placeholder="Nama">
+            </div>
+            <div class="input-box">
+                <select id="input-tgl" style="width: 70px;">
+                    <option>Tgl</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                    <option>11</option>
+                    <option>12</option>
+                    <option>13</option>
+                    <option>14</option>
+                    <option>15</option>
+                    <option>16</option>
+                    <option>17</option>
+                    <option>18</option>
+                    <option>19</option>
+                    <option>20</option>
+                    <option>21</option>
+                    <option>22</option>
+                    <option>23</option>
+                    <option>24</option>
+                    <option>25</option>
+                    <option>26</option>
+                    <option>27</option>
+                    <option>28</option>
+                    <option>29</option>
+                    <option>30</option>
+                    <option>31</option>
+                </select>
+
+                <select id="input-bulan">
+                    <option>Bulan</option>
+                    <option>Januari</option>
+                    <option>Februari</option>
+                    <option>Maret</option>
+                    <option>April</option>
+                    <option>Mei</option>
+                    <option>Juni</option>
+                    <option>Juli</option>
+                    <option>Agustus</option>
+                    <option>September</option>
+                    <option>Oktober</option>
+                    <option>November</option>
+                    <option>Desember</option>
+                </select>
+                <input type="number" id="input-tahun" placeholder="Tahun" min="1900" max="2100">
+            </div>
+            <div class="input-box">
+                <input type="number" id="input-berat" placeholder="Berat Badan" min="0" step="0.1">
+                <span class="berat">Kg</span>
+                <input type="number" id="input-tinggi" placeholder="Tinggi Badan" min="0" step="0.1">
+                <span class="tinggi">Cm</span>
+            </div>
+            <div class="btn">
+                <button id="save-btn">SAVE</button>
+            </div>
+
         </div>
     </div>
 
-    <div class="form">
+    <script>
+        document.getElementById('save-btn').addEventListener('click', async () => {
+            const nama = document.getElementById('input-nama').value;
+            const tgl = document.getElementById('input-tgl').value;
+            const bulan = document.getElementById('input-bulan').value;
+            const tahun = document.getElementById('input-tahun').value;
+            const weightStr = document.getElementById('input-berat').value;
+            const heightStr = document.getElementById('input-tinggi').value;
 
-        <!-- Nama -->
-        <div class="input-box">
-            <input class="full" type="text" placeholder="Nama">
-        </div>
+            // Form validasi simple
+            if (!nama || tgl === "Tgl" || bulan === "Bulan" || !tahun || !weightStr || !heightStr) {
+                alert("Mohon isi semua data dengan lengkap!");
+                return;
+            }
 
-    <!-- Tanggal Lahir -->
-    <div class="input-box">
-    <select style="width: 70px;">
-    <option>Tgl</option>
-    <option>1</option>
-    <option>2</option>
-    <option>3</option>
-    <option>4</option>
-    <option>5</option>
-    <option>6</option>
-    <option>7</option>
-    <option>8</option>
-    <option>9</option>
-    <option>10</option>
-    <option>11</option>
-    <option>12</option>
-    <option>13</option>
-    <option>14</option>
-    <option>15</option>
-    <option>16</option>
-    <option>17</option>
-    <option>18</option>
-    <option>19</option>
-    <option>20</option>
-    <option>21</option>
-    <option>22</option>
-    <option>23</option>
-    <option>24</option>
-    <option>25</option>
-    <option>26</option>
-    <option>27</option>
-    <option>28</option>
-    <option>29</option>
-    <option>30</option>
-    <option>31</option>
-</select>
-    
-    <select>
-    <option>Bulan</option>
-    <option>Januari</option>
-    <option>Februari</option>
-    <option>Maret</option>
-    <option>April</option>
-    <option>Mei</option>
-    <option>Juni</option>
-    <option>Juli</option>
-    <option>Agustus</option>
-    <option>September</option>
-    <option>Oktober</option>
-    <option>November</option>
-    <option>Desember</option>
-</select>
-     
-    <!-- TAHUN (pakai number, paling mendekati) -->
-    <input type="number" placeholder="Tahun" min="1900" max="2100">
-     </div>
+            // Tambah suffix " KG" dan " Cm"
+            const weight = weightStr + " KG";
+            const height = heightStr + " Cm";
 
-        <!-- Berat & Tinggi -->
-        <div class="input-box">
-            <input type="number" placeholder="Berat Badan" min="0" step="0.1">
-            <span class="berat">Kg</span>
-            <input type="number" placeholder="Tinggi Badan" min="0" step="0.1">
-            <span class="tinggi">Cm</span>
-        </div>
+            try {
+                const result = await window.striveAPI.updateProfile({
+                    nama, tgl, bulan, tahun, weight, height
+                });
 
-        <!-- Button -->
-        <div class="btn">
-            <button onclick="window.location.href='beranda.html'">SAVE</button>
-        
-        </div>
-
-    </div>
-</div>
-
+                if (result.success) {
+                    window.location.href = 'beranda.html';
+                } else {
+                    alert("Gagal menyimpan data: " + result.message);
+                }
+            } catch (err) {
+                console.error("Save error:", err);
+                alert("Terjadi kesalahan sistem saat menyimpan.");
+            }
+        });
+    </script>
 </body>
+
 </html>

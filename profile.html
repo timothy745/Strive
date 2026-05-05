@@ -1,220 +1,436 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-<meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Khand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<title>Beranda</title>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Khand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <title>Profile</title>
 
-<style>
-body {
-  opacity: 0;
-  animation: fadeIn 0.5s forwards;
-}
+  <style>
+    body {
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
+    }
 
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
 
- .fade-out {
-  animation: fadeOut 0.5s forwards;
-}
+    .fade-out {
+      animation: fadeOut 0.5s forwards;
+    }
 
-@keyframes fadeOut {
-  to {
-    opacity: 0;
-  }
-}
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+      }
+    }
 
-* {
-    margin: 0;
-    padding: 0;
-    font-family: 'Khand', sans-serif;
-}
-body, html {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    display: block;
-}
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Khand', sans-serif;
+    }
 
-body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    position: relative;
-    height: 100vh;
-}
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      overflow-y: auto;
+      display: block;
+      -ms-overflow-style: none;
+      /* IE and Edge */
+      scrollbar-width: none;
+      /* Firefox */
+    }
 
-/* background */
-#background img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    body::-webkit-scrollbar,
+    html::-webkit-scrollbar {
+      display: none;
+    }
 
-/* overlay biar agak soft */
-body::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(255,255,255,0.4);
-}
+    body {
+      margin: 0;
+      padding: 0;
+      overflow-y: auto;
+      position: relative;
+      height: 100vh;
+    }
 
-/* header */
-.card {
-    position: relative; 
-    width: 1536px;
-    height: 100px;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(90deg, #000242 0%, #000499 51%, #0005D6 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-}
+    /* background */
+    #background img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-.profile-pic img {
-    position: relative;
-    display: flex;
-    align-items: right;
-    justify-content: right;
-    width: 85px;
-    height: 80px;
-    cursor: pointer;
-    border-radius: 50%;
-    z-index: 1;
-}
+    /* overlay biar agak soft */
+    body::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.4);
+    }
 
-.profile-pic img:hover {
-    transform: scale(1.1);
-    transition: transform 0.3s ease;
-    transform: opacity 0.8s ease;
-    opacity: 0.8;
-}
+    /* header */
+    .card {
+      position: relative;
+      width: 1536px;
+      height: 100px;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(90deg, #000242 0%, #000499 51%, #0005D6 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
 
-.profile-pic button {
-    position: relative;
-    display: flex;
-    align-items: right;
-    justify-content: right;
-    width: 80px;
-    height: 80px;
-    left: 1400px;
-    bottom: 90px;
-    border-radius: 50%;
-    z-index: 3;
-    border: none;
-    background: none;
-}
-/* logo */
-.logo img {
-    position: relative;
-    display: flex;
-    align-items: left;
-    justify-content: left;
-    width: 160px;
-    height: 160px;
-    bottom: 255px;
-    left: 20px;
-    z-index: 1;
-}
+    .profile-pic img {
+      position: relative;
+      display: flex;
+      align-items: right;
+      justify-content: right;
+      width: 85px;
+      height: 80px;
+      cursor: pointer;
+      border-radius: 50%;
+      z-index: 1;
+    }
 
-/* input full */
-.full {
-    width: 100%;
-}
+    .profile-pic img:hover {
+      transform: scale(1.1);
+      transition: transform 0.3s ease;
+      transform: opacity 0.8s ease;
+      opacity: 0.8;
+    }
 
-/* button */
-.btn {
-    display: flex;
-    justify-content: flex-end;
-    gap: 20px;
-}
+    .profile-pic button {
+      position: relative;
+      display: flex;
+      align-items: right;
+      justify-content: right;
+      width: 80px;
+      height: 80px;
+      left: 1400px;
+      bottom: 90px;
+      border-radius: 50%;
+      z-index: 3;
+      border: none;
+      background: none;
+    }
 
-.btn button {
-    width: 264px;
-    height: 100px;
-    border-radius: 0px;
-    border: none;
-    background: linear-gradient(90deg, #01036E 0%, #0106D4 100%);
-    color: white;
-    font-size: 30px;
-    cursor: pointer;
-    transform: skewX(-25deg);
-    z-index: 2;
-}
+    /* logo */
+    .logo img {
+      position: relative;
+      display: flex;
+      align-items: left;
+      justify-content: left;
+      width: 160px;
+      height: 160px;
+      bottom: 255px;
+      left: 20px;
+      z-index: 1;
+    }
 
-.btn button span {
-    display: inline-block;
-    transform: skewX(25deg);
-}
-.btn button:hover {
-    transform: color ease-in-out 0.1s;
-    background: #ffffff;
-    color: #2C30E2;
-}
+    /* input full */
+    .full {
+      width: 100%;
+    }
 
-.btn button:active {
-    transform: color ease-in-out 0.1s;
-    background: #ffffff;
-    color: #2C30E2;
-}
+    /* button */
+    .btn {
+      display: flex;
+      justify-content: flex-end;
+      gap: 20px;
+    }
 
-</style>
+    .btn button {
+      width: 264px;
+      height: 100px;
+      border-radius: 0px;
+      border: none;
+      background: linear-gradient(90deg, #01036E 0%, #0106D4 100%);
+      color: white;
+      font-size: 30px;
+      cursor: pointer;
+      transform: skewX(-25deg);
+      z-index: 2;
+    }
+
+    .btn button span {
+      display: inline-block;
+      transform: skewX(25deg);
+    }
+
+    .btn button:hover {
+      transform: color ease-in-out 0.1s;
+      background: #ffffff;
+      color: #2C30E2;
+    }
+
+    .btn button:active {
+      transform: color ease-in-out 0.1s;
+      background: #ffffff;
+      color: #2C30E2;
+    }
+
+    .profile-box {
+      position: relative;
+      width: 1278px;
+      height: 610px;
+      left: 135px;
+      margin-top: -170px;
+      border-radius: 30px;
+      background: #FFFFFF;
+      box-shadow: inset 0px 0px 50px 3px rgba(0, 0, 0, 0.25);
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 50px 80px;
+      z-index: 2;
+      box-sizing: border-box;
+    }
+
+    .profile-left {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      width: 60%;
+    }
+
+    .section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .section-title {
+      font-size: 42px;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 5px;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 26px;
+      color: #000;
+      padding-right: 40px;
+    }
+
+    .info-label {
+      font-weight: 400;
+      width: 220px;
+    }
+
+    .info-value {
+      font-weight: 300;
+      flex-grow: 1;
+      color: #666;
+    }
+
+    .edit-icon {
+      color: #ccc;
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    .edit-icon:hover {
+      color: #888;
+    }
+
+    .profile-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      width: 35%;
+    }
+
+    .upload-image-box {
+      width: 360px;
+      height: 320px;
+      background-color: #EAEAEA;
+      border: 3px solid #3B82F6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: 5px;
+    }
+
+    .upload-image-box p {
+      color: #A0A0A0;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      line-height: 1.2;
+    }
+
+    .logout-link {
+      color: #C0C0C0;
+      font-size: 22px;
+      text-decoration: underline;
+      cursor: pointer;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+
+    .logout-link:hover {
+      color: #888;
+    }
+  </style>
 </head>
 
 <script>
-function pindah1() {
-  document.body.classList.add("fade-out");
-  setTimeout(() => {
-    window.location.href = "beranda.html";
-  }, 100);
-}
-function pindah2() {
-  document.body.classList.add("fade-out");
-  setTimeout(() => {
-    window.location.href = "latihan.html";
-  }, 100);
-}
-function pindah3() {
-  document.body.classList.add("fade-out");
-  setTimeout(() => {
-    window.location.href = "statistik.html";
-  }, 100);
-}
-function pindah4() {
-  document.body.classList.add("fade-out");
-  setTimeout(() => {
-    window.location.href = "jadwal.html";
-  }, 100);
-}
+  function pindah1() {
+    document.body.classList.add("fade-out");
+    setTimeout(() => {
+      window.location.href = "beranda.html";
+    }, 100);
+  }
+  function pindah2() {
+    document.body.classList.add("fade-out");
+    setTimeout(() => {
+      window.location.href = "latihan.html";
+    }, 100);
+  }
+  function pindah3() {
+    document.body.classList.add("fade-out");
+    setTimeout(() => {
+      window.location.href = "statistik.html";
+    }, 100);
+  }
+  function pindah4() {
+    document.body.classList.add("fade-out");
+    setTimeout(() => {
+      window.location.href = "jadwal.html";
+    }, 100);
+  }
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const userProfile = await window.striveAPI.getCurrentUser();
+
+      if (userProfile) {
+        document.getElementById('profile-email').textContent = userProfile.email;
+        document.getElementById('profile-nama').textContent = userProfile.nama || '-';
+        document.getElementById('profile-dob').textContent = userProfile.dob || '-';
+        document.getElementById('profile-weight').textContent = userProfile.weight || '-';
+        document.getElementById('profile-height').textContent = userProfile.height || '-';
+
+        // Display profile picture if it exists
+        if (userProfile.profile_pic) {
+          document.getElementById('upload-preview').src = userProfile.profile_pic;
+          document.getElementById('upload-preview').style.display = 'block';
+          document.getElementById('upload-text').style.display = 'none';
+          document.getElementById('header-profile-pic').src = userProfile.profile_pic;
+        }
+      }
+    } catch (error) {
+      console.error("Failed to load profile data:", error);
+    }
+
+    // Upload profile picture on click
+    document.getElementById('upload-image-box').addEventListener('click', async () => {
+      try {
+        const result = await window.striveAPI.uploadProfilePic();
+        if (result.success) {
+          document.getElementById('upload-preview').src = result.dataUrl;
+          document.getElementById('upload-preview').style.display = 'block';
+          document.getElementById('upload-text').style.display = 'none';
+          document.getElementById('header-profile-pic').src = result.dataUrl;
+        }
+      } catch (err) {
+        console.error('Upload failed:', err);
+      }
+    });
+  });
 </script>
 
 <body>
-<div class="card">
+  <div class="card">
     <div class="header"></div>
     <div class="btn">
-    <button onclick="pindah1()"><span>BERANDA</span></button>
-    <button onclick="pindah2()"><span>LATIHAN</span></button>
-    <button onclick="pindah3()"><span>STATISTIK</span></button>
-    <button onclick="pindah4()"><span>JADWAL</span></button>
+      <button onclick="pindah1()"><span>BERANDA</span></button>
+      <button onclick="pindah2()"><span>LATIHAN</span></button>
+      <button onclick="pindah3()"><span>STATISTIK</span></button>
+      <button onclick="pindah4()"><span>JADWAL</span></button>
     </div>
-</div>
-<div class="profile-pic">
-    <button onclick="window.location.href='profile.html'"><img src="Profile.png" alt="Profile Picture"></button>
-</div>
-<div class="logo">
+  </div>
+  <div class="profile-pic">
+    <button onclick="window.location.href='profile.html'"><img id="header-profile-pic" src="Profile.png"
+        alt="Profile Picture"></button>
+  </div>
+  </div>
+  <div class="logo">
     <img src="Strive.png">
-</div>
+  </div>
+  <div id="background">
+    <img src="BackgroundStrive.png" alt="Background Image"
+      style="width: 100%; height: 100%;position: absolute;right: 0px;bottom: 0px;object-fit: cover;">
+  </div>
+  <div class="profile-box">
+    <div class="profile-left">
+      <div class="section">
+        <h1 class="section-title">Account Info :</h1>
+        <div class="info-row">
+          <span class="info-label">Email :</span>
+          <span class="info-value" id="profile-email">Loading...</span>
+          <span class="material-symbols-outlined edit-icon">south_west</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Password :</span>
+          <span class="info-value" id="profile-password">******</span>
+          <span class="material-symbols-outlined edit-icon">south_west</span>
+        </div>
+      </div>
 
-<div id="background">
-    <img src="BackgroundStrive.png" alt="Background Image" style="width: 100%; height: 100%;position: absolute;right: 0px;bottom: 0px;object-fit: cover;">
-</div>
+      <div class="section">
+        <h1 class="section-title">Personal Info :</h1>
+        <div class="info-row">
+          <span class="info-label">Nama :</span>
+          <span class="info-value" id="profile-nama">Loading...</span>
+          <span class="material-symbols-outlined edit-icon">south_west</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Tanggal Lahir :</span>
+          <span class="info-value" id="profile-dob">Loading...</span>
+          <span class="material-symbols-outlined edit-icon">south_west</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Berat Badan (KG):</span>
+          <span class="info-value" id="profile-weight">Loading...</span>
+          <span class="material-symbols-outlined edit-icon">south_west</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Tinggi Badan (Cm) :</span>
+          <span class="info-value" id="profile-height">Loading...</span>
+          <span class="material-symbols-outlined edit-icon">south_west</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-right">
+      <div class="upload-image-box" id="upload-image-box" style="cursor: pointer;">
+        <img id="upload-preview" src="" alt="Profile"
+          style="display:none; width:100%; height:100%; object-fit:cover; border-radius:12px;">
+        <p id="upload-text">UPLOAD<br>IMAGE</p>
+      </div>
+      <a class="logout-link" href="index.html">LOGOUT</a>
+    </div>
+  </div>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import path from 'node:path';
+import fs from 'node:fs';
 import started from 'electron-squirrel-startup';
 import { default as pool, initDB } from './db/database';
 import { Pool } from 'pg';
@@ -8,6 +9,8 @@ import bcrypt from 'bcryptjs';
 if (started) {
   app.quit();
 }
+
+let loggedInUserId: number | null = null;
 
 // ── IPC: REGISTER ───────────────────────────────────────────────
 ipcMain.handle('register', async (_event, { email, password }: { email: string; password: string }) => {
@@ -18,10 +21,11 @@ ipcMain.handle('register', async (_event, { email, password }: { email: string; 
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    await pool.query(
-      'INSERT INTO users (email, password) VALUES ($1, $2)',
+    const insertResult = await pool.query(
+      'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id',
       [email, hashedPassword]
     );
+    loggedInUserId = insertResult.rows[0].id;
 
     return { success: true, message: 'Registrasi berhasil!' };
   } catch (err) {
@@ -44,10 +48,76 @@ ipcMain.handle('login', async (_event, { email, password }: { email: string; pas
       return { success: false, message: 'Password salah.' };
     }
 
+    loggedInUserId = user.id;
     return { success: true, message: 'Login berhasil!' };
   } catch (err) {
     console.error('Login error:', err);
     return { success: false, message: 'Terjadi kesalahan server.' };
+  }
+});
+
+// ── IPC: PROFILE ────────────────────────────────────────────────
+ipcMain.handle('updateProfile', async (_event, data) => {
+  if (!loggedInUserId) return { success: false, message: 'Not logged in' };
+  try {
+    let dob = null;
+    if (data.tgl && data.bulan && data.tahun) {
+      // Very basic date parsing for display purposes, saving it as a string instead of a strict DATE might be better if the column is DATE? Wait, the column is DATE.
+      // e.g. "2001-02-09"
+      const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+      const m = months.indexOf(data.bulan) + 1;
+      const mm = m < 10 ? '0' + m : m;
+      const dd = data.tgl < 10 ? '0' + data.tgl : data.tgl;
+      dob = `${data.tahun}-${mm}-${dd}`;
+    }
+
+    await pool.query(
+      'UPDATE users SET nama = $1, dob = $2, weight = $3, height = $4 WHERE id = $5',
+      [data.nama, dob, data.weight, data.height, loggedInUserId]
+    );
+    return { success: true };
+  } catch (err) {
+    console.error('Update profile error:', err);
+    return { success: false, message: 'Terjadi kesalahan server.' };
+  }
+});
+
+ipcMain.handle('getCurrentUser', async () => {
+  if (!loggedInUserId) return null;
+  try {
+    const result = await pool.query('SELECT email, nama, to_char(dob, \'Mon DD, YYYY\') as dob, weight, height, profile_pic FROM users WHERE id = $1', [loggedInUserId]);
+    return result.rows[0];
+  } catch (err) {
+    console.error('Get profile error:', err);
+    return null;
+  }
+});
+
+// ── IPC: PROFILE PICTURE ────────────────────────────────────────
+ipcMain.handle('uploadProfilePic', async () => {
+  if (!loggedInUserId) return { success: false, message: 'Not logged in' };
+  try {
+    const result = await dialog.showOpenDialog({
+      title: 'Pilih Foto Profil',
+      filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'gif', 'webp'] }],
+      properties: ['openFile'],
+    });
+
+    if (result.canceled || result.filePaths.length === 0) {
+      return { success: false, message: 'Cancelled' };
+    }
+
+    const filePath = result.filePaths[0];
+    const ext = path.extname(filePath).slice(1).toLowerCase();
+    const imageBuffer = fs.readFileSync(filePath);
+    const base64 = imageBuffer.toString('base64');
+    const dataUrl = `data:image/${ext === 'jpg' ? 'jpeg' : ext};base64,${base64}`;
+
+    await pool.query('UPDATE users SET profile_pic = $1 WHERE id = $2', [dataUrl, loggedInUserId]);
+    return { success: true, dataUrl };
+  } catch (err) {
+    console.error('Upload profile pic error:', err);
+    return { success: false, message: 'Gagal upload foto.' };
   }
 });
 

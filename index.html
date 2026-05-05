@@ -1,260 +1,371 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-<meta charset="UTF-8">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Khand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Karantina:wght@300;400;700&family=Khand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<title>Strive Login</title>
 
-<style>
-body{
-        transition: 0.5s;
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Khand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Karantina:wght@300;400;700&family=Khand:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <style>
+    body {
+      transition: 0.5s;
     }
 
-body{
-    transform: translateY(100%);
-    opacity: 0;
-    animation: slideIn 0.5s forwards;
-}
+    body {
+      transform: translateY(100%);
+      opacity: 0;
+      animation: slideIn 0.5s forwards;
+    }
 
-@keyframes slideIn {
-    to {
+    @keyframes slideIn {
+      to {
         transform: translateY(0);
         opacity: 1;
+      }
     }
-}
 
-.slide-out {
-  animation: slideOut 0.5s forwards;
-}
+    .slide-out {
+      animation: slideOut 0.5s forwards;
+    }
 
-@keyframes slideOut {
-  to {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-}
+    @keyframes slideOut {
+      to {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+    }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
-}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
 
-body {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    position: relative;
-}
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-/* overlay putih seperti gambar */
-body:before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.78);
-}
+      position: relative;
+    }
 
-/* CARD */
-.card {
-    position: relative;
-    width: 400px;
-    border-radius: 22px;
-    background: linear-gradient(to bottom, #f7f7f7, #e9e9e9);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-    overflow: hidden;
-    z-index: 1;
-}
+    /* overlay putih seperti gambar */
+    body:before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.78);
+    }
 
-/* HEADER */
-.header {
-    height: 120px;
-    background: linear-gradient(180deg, #000286 0%, #4A4EFF 83%, #8689FF 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    width: 100%;
-}
+    /* CARD */
+    .card {
+      position: relative;
+      width: 400px;
+      border-radius: 22px;
+      background: linear-gradient(to bottom, #f7f7f7, #e9e9e9);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+      z-index: 1;
+    }
 
-/* LOGO TEXT */
-.logo {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: -115px;
-    padding-left: 15px;
-    gap: 10px;
-}
+    /* HEADER */
+    .header {
+      height: 120px;
+      background: linear-gradient(180deg, #000286 0%, #4A4EFF 83%, #8689FF 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 100%;
+    }
 
-/* FORM */
-.form {
-    padding: 20px 30px;
-    text-align: center;
-}
+    /* LOGO TEXT */
+    .logo {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: -115px;
+      padding-left: 15px;
+      gap: 10px;
+    }
 
-/* INPUT */
-.input-box {
-    margin: 18px 0;
-}
+    /* FORM */
+    .form {
+      padding: 20px 30px;
+      text-align: center;
+    }
 
-.input-box input {
-    width: 100%;
-    padding: 14px;
-    border-radius: 40px;
-    border: none;
-    outline: none;
-    font: 100 14px 'Khand', sans-serif;
-    background: linear-gradient(to bottom, #e5e5e5, #d6d6d6);
+    /* INPUT */
+    .input-box {
+      margin: 18px 0;
+    }
 
-    /* efek halus */
-    box-shadow: 
-        inset 0 2px 6px rgba(0,0,0,0.2),
-        inset 0 -2px 3px rgba(255,255,255,0.7);
+    .input-box input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 40px;
+      border: none;
+      outline: none;
+      font: 100 14px 'Khand', sans-serif;
+      background: linear-gradient(to bottom, #e5e5e5, #d6d6d6);
 
-    text-align: left;
-    font-size: 18px;
-    color: #666;
-}
+      /* efek halus */
+      box-shadow:
+        inset 0 2px 6px rgba(0, 0, 0, 0.2),
+        inset 0 -2px 3px rgba(255, 255, 255, 0.7);
 
-/* BUTTON */
-.login-btn button {
-    margin-top: 25px;
-    width: 328px;
-    border-radius: 30px;
-    border: none;
-    font: 600 16px 'Khand', sans-serif;
+      text-align: left;
+      font-size: 18px;
+      color: #666;
+    }
 
-    background:  #2C30E2;
-    color: white;
-    font-size: 60px;
-    letter-spacing: 1px;
-    cursor: pointer;
+    /* BUTTON */
+    .login-btn button {
+      margin-top: 25px;
+      width: 328px;
+      border-radius: 30px;
+      border: none;
+      font: 600 16px 'Khand', sans-serif;
 
-    box-shadow: 
-        0 8px 18px rgba(0,0,255,0.4),
-        inset 0 -4px 6px rgba(0,0,0,0.25);
-}
+      background: #2C30E2;
+      color: white;
+      font-size: 60px;
+      letter-spacing: 1px;
+      cursor: pointer;
 
-.login-btn button:active {
-    transform: scale(0.96);
-}
+      box-shadow:
+        0 8px 18px rgba(0, 0, 255, 0.4),
+        inset 0 -4px 6px rgba(0, 0, 0, 0.25);
+    }
 
-/* REGISTER */
-.register {
-    margin-top: 18px;
-}
+    .login-btn button:active {
+      transform: scale(0.96);
+    }
 
-.register a {
-    color: #2f2fff;
-    text-decoration: none;
-    font-size: 15px;
-}
+    /* REGISTER */
+    .register {
+      margin-top: 18px;
+    }
 
-.register a:hover {
-    text-decoration: underline;
-    cursor: pointer;
-}
-</style>
+    .register a {
+      color: #2f2fff;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .register a:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .msg {
+      margin-top: 15px;
+      font-size: 14px;
+      color: red;
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      20% {
+        transform: translateX(-10px);
+      }
+
+      40% {
+        transform: translateX(10px);
+      }
+
+      60% {
+        transform: translateX(-8px);
+      }
+
+      80% {
+        transform: translateX(8px);
+      }
+    }
+
+    .shake {
+      animation: shake 0.4s ease !important;
+    }
+
+    .toast {
+      position: fixed;
+      top: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #cc0000;
+      color: white;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-family: 'Khand', sans-serif;
+      font-size: 18px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      transition: top 0.4s ease;
+      z-index: 999;
+    }
+
+    .toast.show {
+      top: 30px;
+    }
+
+    .material-symbols-outlined {
+      position: absolute;
+      right: 40px;
+      bottom: 205px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 18px;
+      user-select: none;
+      font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+    }
+
+    .material-symbols-outlined:hover {
+      color: #848488;
+    }
+  </style>
 </head>
 
 <script>
-async function pindah1() {
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      const msg = document.getElementById('msg');
-      const btn = document.getElementById('loginBtn');
- 
-      if (!email || !password) {
-        msg.textContent = 'Isi email dan password terlebih dahulu.';
-        msg.className = 'msg error';
-        return;
-      }
- 
-      btn.disabled = true;
-      msg.textContent = '';
- 
-      try {
-        const result = await window.striveAPI.login(email, password);
-        if (result.success) {
-          msg.textContent = result.message;
-          msg.className = 'msg success';
-          setTimeout(() => {
-            document.body.classList.add("slide-out");
-            setTimeout(() => { window.location.href = "beranda.html"; }, 100);
-          }, 800);
-        } else {
-          msg.textContent = result.message;
-          msg.className = 'msg error';
-          btn.disabled = false;
-        }
-      } catch (err) {
-        msg.textContent = 'Gagal terhubung ke server.';
+  async function pindah1() {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const msg = document.getElementById('msg');
+    const btn = document.getElementById('loginBtn');
+
+    if (!email || !password) {
+      msg.textContent = showToast('Email dan password harus diisi.', 'error');
+      msg.className = 'msg error';
+      const card = document.querySelector('.card');
+      card.style.animation = 'none';
+      setTimeout(() => {
+        card.style.animation = 'shake 0.4s ease';
+      }, 10);
+      return;
+    }
+
+    btn.disabled = true;
+    msg.textContent = '';
+
+    try {
+      const result = await window.striveAPI.login(email, password);
+      if (result.success) {
+        msg.textContent = showToast('Login berhasil!', 'success');
+        msg.className = 'msg success';
+        setTimeout(() => {
+          document.body.classList.add("slide-out");
+          setTimeout(() => { window.location.href = "beranda.html"; }, 100);
+        }, 800);
+      } else {
+        msg.textContent = showToast(result.message, 'error');
         msg.className = 'msg error';
         btn.disabled = false;
+        const card = document.querySelector('.card');
+
+        card.style.animation = 'none';
+        setTimeout(() => {
+          card.style.animation = 'shake 0.4s ease';
+        }, 10);
       }
+    } catch (err) {
+      msg.textContent = 'Gagal terhubung ke server.';
+      msg.className = 'msg error';
+      btn.disabled = false;
+
     }
- 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') pindah3();
+  }
 
-    });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') pindah3();
 
-function pindah2() {
-  document.body.classList.add("slide-out");
-  setTimeout(() => {
-    window.location.href = "registasi.html";
-  }, 100);
-}
-function pindah3() {
-  document.body.classList.add("slide-out");
-  setTimeout(() => {
-    window.location.href = "beranda.html";
-  }, 100);
-}
+  });
+
+  function pindah2() {
+    document.body.classList.add("slide-out");
+    setTimeout(() => {
+      window.location.href = "registasi.html";
+    }, 100);
+  }
+  function pindah3() {
+    document.body.classList.add("slide-out");
+    setTimeout(() => {
+      window.location.href = "beranda.html";
+    }, 100);
+  }
+  function showToast(message, type = 'error') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.style.background = type === 'success' ? '#00f024' : '#cc0000';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 750);
+  }
+  function togglePassword() {
+    const input = document.getElementById('password');
+    const icon = document.querySelector('.material-symbols-outlined');
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.textContent = 'visibility';
+    } else {
+      input.type = 'password';
+      icon.textContent = 'visibility_off';
+    }
+  }
 </script>
 
 <body>
+  <div class="toast" id="toast"></div>
   <div id="background">
-    <img src="BackgroundStrive.png" alt="Background Image" style="width: 100%; height: 100%;position: absolute;right: 0px;bottom: 0px;object-fit: cover;">
+    <img src="BackgroundStrive.png" alt="Background Image"
+      style="width: 100%; height: 100%;position: absolute;right: 0px;bottom: 0px;object-fit: cover;">
   </div>
 
-<div class="card">
+  <div class="card">
     <div class="header">
-        <div class="logo">
-            <img src="Strive.png" alt="Logo">
-        </div>
+      <div class="logo">
+        <img src="Strive.png" alt="Logo">
+      </div>
     </div>
-        <div class="form">
-        <div class="input-box">
-            <input type="email" id="email" placeholder="E-Mail">
-        </div>
+    <div class="form">
+      <div class="input-box">
+        <input type="email" id="email" placeholder="E-Mail">
+      </div>
 
-        <div class="input-box">
-            <input type="password" id="password" placeholder="Password">
-        </div>
+      <div class="input-box">
+        <input type="password" id="password" placeholder="Password">
+        <span class="material-symbols-outlined" onclick="togglePassword()">visibility_off</span>
+      </div>
 
-        <div class="login-btn">
-            <button id="loginBtn"onclick="pindah1()">LOGIN</button>
-        </div>
+      <div class="login-btn">
+        <button id="loginBtn" onclick="pindah1()">LOGIN</button>
+      </div>
 
-        <div class="msg" id="msg"></div>
-        
-        <div class="register">
-           <a onclick="pindah2()">Registrasi</a>
-        </div>
+      <div class="msg" id="msg"></div>
+
+      <div class="register">
+        <a onclick="pindah2()">Registrasi</a>
+      </div>
     </div>
-</div>
-    <script type="module" src="/src/renderer.ts"></script>
+  </div>
+  <script type="module" src="/src/renderer.ts"></script>
 </body>
+
 </html>
