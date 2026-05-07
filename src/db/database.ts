@@ -31,7 +31,7 @@ export async function initDB(): Promise<void> {
     `);
 
     await pool.query(`
-      CREATE TABLE IF NOT EXISTS schedules (
+      CREATE TABLE IF NOT EXISTS jadwal (
         id SERIAL PRIMARY KEY,
         user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
         day VARCHAR(10) NOT NULL,

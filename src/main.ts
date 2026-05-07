@@ -143,7 +143,7 @@ ipcMain.handle('saveSchedule', async (_event, { day, items }: { day: string; ite
 
     // Hapus data lama untuk hari ini
     await client.query(
-      'DELETE FROM schedules WHERE user_id = $1 AND day = $2',
+      'DELETE FROM jadwal WHERE user_id = $1 AND day = $2',
       [loggedInUserId, day]
     );
 
@@ -151,7 +151,7 @@ ipcMain.handle('saveSchedule', async (_event, { day, items }: { day: string; ite
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       await client.query(
-        `INSERT INTO schedules (user_id, day, exercise_name, reps, done, has_kg, kg, sort_order)
+        `INSERT INTO jadwal (user_id, day, exercise_name, reps, done, has_kg, kg, sort_order)
          VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
         [loggedInUserId, day, item.name, item.reps, item.done, item.hasKg, item.kg || 0, i]
       );
@@ -172,10 +172,10 @@ ipcMain.handle('getSchedule', async (_event, { day }: { day: string }) => {
   if (!loggedInUserId) return [];
   try {
     const result = await pool.query(
-      'SELECT exercise_name, reps, done, has_kg, kg FROM schedules WHERE user_id = $1 AND day = $2 ORDER BY sort_order',
+      'SELECT exercise_name, reps, done, has_kg, kg FROM jadwal WHERE user_id = $1 AND day = $2 ORDER BY sort_order',
       [loggedInUserId, day]
     );
-    return result.rows.map(row => ({
+    return result.rows.map((row: any) => ({
       name: row.exercise_name,
       reps: row.reps,
       done: row.done,
