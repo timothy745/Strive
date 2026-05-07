@@ -60,20 +60,33 @@ ipcMain.handle('login', async (_event, { email, password }: { email: string; pas
 ipcMain.handle('updateProfile', async (_event, data) => {
   if (!loggedInUserId) return { success: false, message: 'Not logged in' };
   try {
-    let dob = null;
+    // Ambil data user saat ini untuk partial update
+    const currentRes = await pool.query('SELECT nama, dob, weight, height FROM users WHERE id = $1', [loggedInUserId]);
+    const current = currentRes.rows[0];
+
+    // Merge data baru dengan data lama
+    const nama = data.nama !== undefined ? data.nama : current.nama;
+    let dob = current.dob; // default to existing dob (Date object or string from DB)
+
+    // Jika ada data tgl/bulan/tahun (format lama), konstruksi dob baru
     if (data.tgl && data.bulan && data.tahun) {
-      // Very basic date parsing for display purposes, saving it as a string instead of a strict DATE might be better if the column is DATE? Wait, the column is DATE.
-      // e.g. "2001-02-09"
       const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
       const m = months.indexOf(data.bulan) + 1;
       const mm = m < 10 ? '0' + m : m;
       const dd = data.tgl < 10 ? '0' + data.tgl : data.tgl;
       dob = `${data.tahun}-${mm}-${dd}`;
+    } 
+    // Jika data.dob dikirim langsung (format baru dari profile.html)
+    else if (data.dob !== undefined) {
+      dob = data.dob;
     }
+
+    const weight = data.weight !== undefined ? data.weight : current.weight;
+    const height = data.height !== undefined ? data.height : current.height;
 
     await pool.query(
       'UPDATE users SET nama = $1, dob = $2, weight = $3, height = $4 WHERE id = $5',
-      [data.nama, dob, data.weight, data.height, loggedInUserId]
+      [nama, dob, weight, height, loggedInUserId]
     );
     return { success: true };
   } catch (err) {
