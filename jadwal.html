@@ -241,6 +241,7 @@
       gap: 6px;
       cursor: pointer;
       transition: background 0.15s;
+      overflow: hidden;
     }
 
     .edit-box:hover {
@@ -259,6 +260,60 @@
       font-weight: 600;
       letter-spacing: 0.06em;
     }
+
+    .edit-box.has-data {
+      background: linear-gradient(160deg, #0005D6 0%, #000299 100%);
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 14px 12px;
+      box-sizing: border-box;
+    }
+
+    .edit-box.has-data:hover {
+      background: linear-gradient(160deg, #0008ff 0%, #0003bb 100%);
+    }
+
+    .box-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+
+    .box-list::-webkit-scrollbar { display: none; }
+
+    .box-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .box-item-name {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 400;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .box-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .box-check.on { background: #00cc44; }
+    .box-check.off { background: #555; }
+    .box-check svg { width: 13px; height: 13px; }
 
     /* === MODAL === */
     .modal-overlay {
@@ -312,6 +367,12 @@
       background: #2222cc;
     }
 
+    .modal-save:disabled {
+      background: #555;
+      color: #aaa;
+      cursor: default;
+    }
+
     .modal-list {
       display: flex;
       flex-direction: column;
@@ -357,7 +418,6 @@
       font-weight: 400;
     }
 
-    /* reps counter */
     .reps-control {
       display: flex;
       align-items: center;
@@ -398,7 +458,6 @@
       font-family: 'Khand', sans-serif;
     }
 
-    /* toggle */
     .modal-toggle {
       position: relative;
       width: 38px;
@@ -444,7 +503,6 @@
       transform: translateX(16px);
     }
 
-    /* kg slider */
     .kg-row {
       display: flex;
       align-items: center;
@@ -506,30 +564,27 @@
     const days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
     const row = document.getElementById('days-row');
 
-    // hasKg: true = latihan yang pakai beban
     const defaultItems = [
-      { name: 'Push Up', reps: 2, done: true, hasKg: false },
-      { name: 'Sit Up', reps: 2, done: true, hasKg: false },
-      { name: 'Pull Up', reps: 3, done: true, hasKg: false },
-      { name: 'Squat', reps: 3, done: true, hasKg: false },
-      { name: 'Jumping Jack', reps: 6, done: true, hasKg: false },
-      { name: 'Mountain Climber', reps: 7, done: true, hasKg: false },
-      { name: 'Mengangkat Barbel', reps: 4, done: true, hasKg: true, kg: 40 },
-      { name: 'Lompat Tali', reps: 15, done: true, hasKg: false },
-      { name: 'Back Up', reps: 16, done: true, hasKg: false },
-      { name: 'Sikap Kapal Terbang', reps: 10, done: true, hasKg: false },
+      { name: 'Push Up', reps: 2, done: false, hasKg: false },
+      { name: 'Sit Up', reps: 2, done: false, hasKg: false },
+      { name: 'Pull Up', reps: 3, done: false, hasKg: false },
+      { name: 'Squat', reps: 3, done: false, hasKg: false },
+      { name: 'Jumping Jack', reps: 6, done: false, hasKg: false },
+      { name: 'Mountain Climber', reps: 7, done: false, hasKg: false },
+      { name: 'Mengangkat Barbel', reps: 4, done: false, hasKg: true, kg: 40 },
+      { name: 'Lompat Tali', reps: 15, done: false, hasKg: false },
+      { name: 'Back Up', reps: 16, done: false, hasKg: false },
+      { name: 'Sikap Kapal Terbang', reps: 10, done: false, hasKg: false },
     ];
 
     const scheduleData = {};
 
-    // Load data dari DB untuk setiap hari
     for (const d of days) {
       try {
         const dbItems = await window.striveAPI.getSchedule(d);
         if (dbItems && dbItems.length > 0) {
           scheduleData[d] = dbItems;
         } else {
-          // User baru / belum ada data → pakai default
           scheduleData[d] = defaultItems.map(item => ({ ...item }));
         }
       } catch (e) {
@@ -560,7 +615,6 @@
         const div = document.createElement('div');
         div.className = 'modal-item';
 
-        // baris atas: dot + nama + reps + toggle
         const top = document.createElement('div');
         top.className = 'modal-item-top';
         top.innerHTML = `
@@ -578,7 +632,6 @@
         `;
         div.appendChild(top);
 
-        // baris bawah: slider kg (hanya kalau hasKg)
         if (item.hasKg) {
           const kgRow = document.createElement('div');
           kgRow.className = 'kg-row';
@@ -597,7 +650,6 @@
           });
         }
 
-        // event reps
         top.querySelectorAll('.reps-btn').forEach(btn => {
           btn.addEventListener('click', () => {
             const idx = parseInt(btn.dataset.i);
@@ -613,7 +665,6 @@
           });
         });
 
-        // event toggle
         top.querySelector('input[type=checkbox]').addEventListener('change', function () {
           scheduleData[activeDay][parseInt(this.dataset.i)].done = this.checked;
         });
@@ -622,46 +673,63 @@
       });
     }
 
-    // Update tampilan edit-box untuk menunjukkan jumlah exercise
     function updateDayCard(day) {
       const col = document.getElementById('day-col-' + day);
       if (!col) return;
-      const editBox = col.querySelector('.edit-box');
+      const box = col.querySelector('.edit-box');
       const items = scheduleData[day] || [];
-      const activeCount = items.filter(it => it.done).length;
-      if (activeCount > 0) {
-        editBox.innerHTML = `
-          <div class="edit-plus" style="font-size:36px;">${activeCount}</div>
-          <div class="edit-text" style="font-size:18px;">LATIHAN AKTIF</div>
-          <div class="edit-text" style="font-size:14px; color:#999;">Tap to edit</div>
+      const activeItems = items.filter(it => it.done);
+
+      if (activeItems.length > 0) {
+        box.className = 'edit-box has-data';
+        box.innerHTML = `
+          <div class="box-list">
+            ${items.map(item => `
+              <div class="box-item">
+                <span class="box-item-name">• ${item.reps}x ${item.name}${item.hasKg ? ' (' + item.kg + 'kg)' : ''}</span>
+                <div class="box-check ${item.done ? 'on' : 'off'}">
+                  <svg viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </div>
+              </div>
+            `).join('')}
+          </div>
         `;
       } else {
-        editBox.innerHTML = `
+        box.className = 'edit-box';
+        box.innerHTML = `
           <div class="edit-plus">+</div>
           <div class="edit-text">EDIT</div>
         `;
       }
+      box.onclick = () => openModal(day);
     }
 
     window.openModal = openModal;
     window.closeModal = closeModal;
     window.saveModal = async function () {
       if (activeDay) {
+        const saveBtn = document.querySelector('.modal-save');
+        saveBtn.textContent = 'SAVING...';
+        saveBtn.disabled = true;
         try {
           const result = await window.striveAPI.saveSchedule(activeDay, scheduleData[activeDay]);
           if (result.success) {
-            console.log('✅ Jadwal ' + activeDay + ' tersimpan!');
+            saveBtn.textContent = 'SAVED ✓';
             updateDayCard(activeDay);
+            setTimeout(() => closeModal(), 600);
           } else {
             console.error('Gagal simpan:', result.message);
-            alert('Gagal menyimpan jadwal: ' + (result.message || 'Unknown error'));
+            saveBtn.textContent = 'GAGAL';
+            setTimeout(() => { saveBtn.textContent = 'SAVE'; saveBtn.disabled = false; }, 1500);
           }
         } catch (e) {
           console.error('Save error:', e);
-          alert('Gagal menyimpan jadwal.');
+          saveBtn.textContent = 'ERROR';
+          setTimeout(() => { saveBtn.textContent = 'SAVE'; saveBtn.disabled = false; }, 1500);
         }
       }
-      closeModal();
     };
 
     days.forEach(day => {
@@ -676,7 +744,6 @@
         </div>
       `;
       row.appendChild(col);
-      // Update card supaya tampilkan jumlah latihan
       updateDayCard(day);
     });
 
