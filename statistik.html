@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <link href="https://fonts.googleapis.com/css2?family=Khand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <title>Statistik</title>
 
   <style>
@@ -13,9 +14,7 @@
     }
 
     @keyframes fadeIn {
-      to {
-        opacity: 1;
-      }
+      to { opacity: 1; }
     }
 
     .fade-out {
@@ -23,9 +22,7 @@
     }
 
     @keyframes fadeOut {
-      to {
-        opacity: 0;
-      }
+      to { opacity: 0; }
     }
 
     * {
@@ -34,8 +31,7 @@
       font-family: 'Khand', sans-serif;
     }
 
-    body,
-    html {
+    body, html {
       margin: 0;
       padding: 0;
       overflow: hidden;
@@ -170,33 +166,71 @@
       background: #ffffff;
       color: #2C30E2;
     }
+
+    /* ── TAMBAHAN: chart card ── */
+    .chart-container {
+      position: absolute;
+      top: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 82%;
+      max-width: 900px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: inset 0px 0px 50px 3px rgba(0, 0, 0, 0.25);
+      padding: 28px 32px 24px 32px;
+      z-index: 2;
+      box-sizing: border-box;
+    }
+
+    .chart-title {
+      font-family: 'Khand', sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: #000499;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+
+    .chart-legend {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 12px;
+    }
+
+    .chart-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 14px;
+      color: #555;
+      font-family: 'Khand', sans-serif;
+    }
+
+    .legend-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+    }
   </style>
 </head>
 
 <script>
   function pindah1() {
     document.body.classList.add("fade-out");
-    setTimeout(() => {
-      window.location.href = "beranda.html";
-    }, 100);
+    setTimeout(() => { window.location.href = "beranda.html"; }, 100);
   }
   function pindah2() {
     document.body.classList.add("fade-out");
-    setTimeout(() => {
-      window.location.href = "latihan.html";
-    }, 100);
+    setTimeout(() => { window.location.href = "latihan.html"; }, 100);
   }
   function pindah3() {
     document.body.classList.add("fade-out");
-    setTimeout(() => {
-      window.location.href = "statistik.html";
-    }, 100);
+    setTimeout(() => { window.location.href = "statistik.html"; }, 100);
   }
   function pindah4() {
     document.body.classList.add("fade-out");
-    setTimeout(() => {
-      window.location.href = "jadwal.html";
-    }, 100);
+    setTimeout(() => { window.location.href = "jadwal.html"; }, 100);
   }
   document.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -205,6 +239,51 @@
         document.getElementById('header-profile-pic').src = user.profile_pic;
       }
     } catch (e) { console.error(e); }
+
+    // ── Chart.js ──
+    const ctx = document.getElementById('weeklyChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+        datasets: [
+          {
+            label: 'Latihan Dilakukan',
+            data: [1, 1, 1, 0],
+            backgroundColor: ['#FF5757', '#FFE957', '#84FF57', '#cccccc'],
+            borderRadius: 4,
+            barThickness: 40,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: ctx => ` ${ctx.parsed.y} sesi`
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 7,
+            ticks: {
+              stepSize: 1,
+              font: { family: 'Khand', size: 14 }
+            },
+            grid: { color: 'rgba(0,0,0,0.07)' }
+          },
+          x: {
+            ticks: { font: { family: 'Khand', size: 15 } },
+            grid: { display: false }
+          }
+        }
+      }
+    });
   });
 </script>
 
@@ -219,11 +298,22 @@
     </div>
   </div>
   <div class="profile-pic">
-    <button onclick="window.location.href='profile.html'"><img id="header-profile-pic" src="Profile.png"
-        alt="Profile Picture"></button>
+    <button onclick="window.location.href='profile.html'"><img id="header-profile-pic" src="Profile.png" alt="Profile Picture"></button>
   </div>
   <div class="logo">
     <img src="Strive.png">
+  </div>
+
+  <!-- ── TAMBAHAN: card chart ── -->
+  <div class="chart-container">
+    <div class="chart-title">STATISTIK LATIHAN MINGGUAN</div>
+    <div class="chart-legend">
+      <div class="chart-legend-item"><div class="legend-dot" style="background:#FF5757"></div>Week 1</div>
+      <div class="chart-legend-item"><div class="legend-dot" style="background:#FFE957"></div>Week 2</div>
+      <div class="chart-legend-item"><div class="legend-dot" style="background:#84FF57"></div>Week 3</div>
+      <div class="chart-legend-item"><div class="legend-dot" style="background:#cccccc"></div>Week 4</div>
+    </div>
+    <canvas id="weeklyChart" height="110"></canvas>
   </div>
 
   <div id="background">
