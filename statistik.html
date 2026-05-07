@@ -14,7 +14,9 @@
     }
 
     @keyframes fadeIn {
-      to { opacity: 1; }
+      to {
+        opacity: 1;
+      }
     }
 
     .fade-out {
@@ -22,7 +24,9 @@
     }
 
     @keyframes fadeOut {
-      to { opacity: 0; }
+      to {
+        opacity: 0;
+      }
     }
 
     * {
@@ -31,7 +35,8 @@
       font-family: 'Khand', sans-serif;
     }
 
-    body, html {
+    body,
+    html {
       margin: 0;
       padding: 0;
       overflow: hidden;
@@ -167,14 +172,13 @@
       color: #2C30E2;
     }
 
-    /* ── TAMBAHAN: chart card ── */
     .chart-container {
       position: absolute;
-      top: 120px;
+      top: 180px;
       left: 50%;
       transform: translateX(-50%);
-      width: 82%;
-      max-width: 900px;
+      width: 100%;
+      max-width: 1300px;
       background: #ffffff;
       border-radius: 16px;
       box-shadow: inset 0px 0px 50px 3px rgba(0, 0, 0, 0.25);
@@ -298,7 +302,8 @@
     </div>
   </div>
   <div class="profile-pic">
-    <button onclick="window.location.href='profile.html'"><img id="header-profile-pic" src="Profile.png" alt="Profile Picture"></button>
+    <button onclick="window.location.href='profile.html'"><img id="header-profile-pic" src="Profile.png"
+        alt="Profile Picture"></button>
   </div>
   <div class="logo">
     <img src="Strive.png">
@@ -308,10 +313,18 @@
   <div class="chart-container">
     <div class="chart-title">STATISTIK LATIHAN MINGGUAN</div>
     <div class="chart-legend">
-      <div class="chart-legend-item"><div class="legend-dot" style="background:#FF5757"></div>Week 1</div>
-      <div class="chart-legend-item"><div class="legend-dot" style="background:#FFE957"></div>Week 2</div>
-      <div class="chart-legend-item"><div class="legend-dot" style="background:#84FF57"></div>Week 3</div>
-      <div class="chart-legend-item"><div class="legend-dot" style="background:#cccccc"></div>Week 4</div>
+      <div class="chart-legend-item">
+        <div class="legend-dot" style="background:#FF5757"></div>Week 1
+      </div>
+      <div class="chart-legend-item">
+        <div class="legend-dot" style="background:#FFE957"></div>Week 2
+      </div>
+      <div class="chart-legend-item">
+        <div class="legend-dot" style="background:#84FF57"></div>Week 3
+      </div>
+      <div class="chart-legend-item">
+        <div class="legend-dot" style="background:#cccccc"></div>Week 4
+      </div>
     </div>
     <canvas id="weeklyChart" height="110"></canvas>
   </div>
