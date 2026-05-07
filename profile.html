@@ -251,6 +251,21 @@
       color: #888;
     }
 
+    .info-input {
+      font-size: 26px;
+      font-family: 'Khand', sans-serif;
+      font-weight: 300;
+      color: #333;
+      border: 1px solid #3B82F6;
+      border-radius: 4px;
+      padding: 0 8px;
+      flex-grow: 1;
+      background: #f0f4ff;
+      outline: none;
+      box-sizing: border-box;
+      margin-right: 10px;
+    }
+
     .profile-right {
       display: flex;
       flex-direction: column;
@@ -327,8 +342,8 @@
         document.getElementById('profile-email').textContent = userProfile.email;
         document.getElementById('profile-nama').textContent = userProfile.nama || '-';
         document.getElementById('profile-dob').textContent = userProfile.dob || '-';
-        document.getElementById('profile-weight').textContent = userProfile.weight || '-';
-        document.getElementById('profile-height').textContent = userProfile.height || '-';
+        document.getElementById('profile-weight').textContent = userProfile.weight ? userProfile.weight + ' KG' : '-';
+        document.getElementById('profile-height').textContent = userProfile.height ? userProfile.height + ' Cm' : '-';
 
         // Display profile picture if it exists
         if (userProfile.profile_pic) {
@@ -355,6 +370,79 @@
       } catch (err) {
         console.error('Upload failed:', err);
       }
+    });
+
+    // --- Inline Editing for Personal Info ---
+    const editFields = [
+      { id: 'profile-nama', key: 'nama' },
+      { id: 'profile-dob', key: 'dob' },
+      { id: 'profile-weight', key: 'weight' },
+      { id: 'profile-height', key: 'height' }
+    ];
+
+    editFields.forEach(field => {
+      const element = document.getElementById(field.id);
+      const row = element.parentElement;
+      const editIcon = row.querySelector('.edit-icon');
+
+      editIcon.addEventListener('click', () => {
+        if (element.tagName === 'INPUT') return;
+
+        // Strip units like ' KG' or ' Cm' when editing
+        const currentValue = element.textContent === '-' ? '' : element.textContent.replace(/ (KG|Cm)$/, '');
+        const input = document.createElement('input');
+        input.type = field.key === 'dob' ? 'date' : (field.key === 'nama' ? 'text' : 'number');
+        input.className = 'info-input';
+        input.value = currentValue;
+
+        const originalDisplay = element.style.display;
+        element.style.display = 'none';
+        row.insertBefore(input, editIcon);
+        input.focus();
+
+        const saveEdit = async () => {
+          const newValue = input.value;
+          input.remove();
+          element.style.display = originalDisplay;
+
+          if (newValue !== currentValue && newValue !== '') {
+            // Add units for display
+            let displayValue = newValue;
+            if (field.key === 'weight') displayValue += ' KG';
+            else if (field.key === 'height') displayValue += ' Cm';
+
+            element.textContent = displayValue;
+            try {
+              const updateData = {};
+              updateData[field.key] = newValue;
+              await window.striveAPI.updateProfile(updateData);
+              console.log(`${field.key} updated to ${newValue}`);
+            } catch (err) {
+              console.error(`Failed to update ${field.key}:`, err);
+              // Revert to old value with units
+              let oldDisplay = currentValue;
+              if (field.key === 'weight' && currentValue) oldDisplay += ' KG';
+              else if (field.key === 'height' && currentValue) oldDisplay += ' Cm';
+              element.textContent = oldDisplay || '-';
+            }
+          } else {
+            // Revert with units
+            let oldDisplay = currentValue;
+            if (field.key === 'weight' && currentValue) oldDisplay += ' KG';
+            else if (field.key === 'height' && currentValue) oldDisplay += ' Cm';
+            element.textContent = oldDisplay || '-';
+          }
+        };
+
+        input.addEventListener('blur', saveEdit);
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') input.blur();
+          if (e.key === 'Escape') {
+            input.value = currentValue;
+            input.blur();
+          }
+        });
+      });
     });
   });
 </script>
@@ -388,12 +476,10 @@
         <div class="info-row">
           <span class="info-label">Email :</span>
           <span class="info-value" id="profile-email">Loading...</span>
-          <span class="material-symbols-outlined edit-icon">south_west</span>
         </div>
         <div class="info-row">
           <span class="info-label">Password :</span>
           <span class="info-value" id="profile-password">******</span>
-          <span class="material-symbols-outlined edit-icon">south_west</span>
         </div>
       </div>
 

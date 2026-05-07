@@ -245,7 +245,15 @@
     }
 
     .edit-box:hover {
-      background: #bdbdbd;
+      background: linear-gradient(160deg, #0008ff 0%, #0003bb 100%);
+    }
+
+    .edit-box:hover .edit-plus {
+      color: #ffffff;
+    }
+
+    .edit-box:hover .edit-text {
+      color: #ffffff;
     }
 
     .edit-plus {
@@ -282,7 +290,9 @@
       scrollbar-width: none;
     }
 
-    .box-list::-webkit-scrollbar { display: none; }
+    .box-list::-webkit-scrollbar {
+      display: none;
+    }
 
     .box-item {
       display: flex;
@@ -311,9 +321,18 @@
       justify-content: center;
     }
 
-    .box-check.on { background: #00cc44; }
-    .box-check.off { background: #555; }
-    .box-check svg { width: 13px; height: 13px; }
+    .box-check.on {
+      background: #00cc44;
+    }
+
+    .box-check.off {
+      background: #555;
+    }
+
+    .box-check svg {
+      width: 13px;
+      height: 13px;
+    }
 
     /* === MODAL === */
     .modal-overlay {
@@ -718,7 +737,11 @@
           if (result.success) {
             saveBtn.textContent = 'SAVED ✓';
             updateDayCard(activeDay);
-            setTimeout(() => closeModal(), 600);
+            setTimeout(() => {
+              saveBtn.textContent = 'SAVE';
+              saveBtn.disabled = false;
+              closeModal();
+            }, 600);
           } else {
             console.error('Gagal simpan:', result.message);
             saveBtn.textContent = 'GAGAL';
@@ -736,7 +759,7 @@
       const col = document.createElement('div');
       col.className = 'day-col';
       col.id = 'day-col-' + day;
-     col.innerHTML = `
+      col.innerHTML = `
   <div class="day-label">${day}</div>
   <div class="edit-box">
     <div class="edit-plus">+</div>

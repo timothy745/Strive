@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <link href="https://fonts.googleapis.com/css2?family=Khand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <title>Beranda</title>
 
   <style>
@@ -50,7 +51,6 @@
       height: 100vh;
     }
 
-    /* background */
     #background img {
       position: absolute;
       width: 100%;
@@ -58,7 +58,6 @@
       object-fit: cover;
     }
 
-    /* overlay biar agak soft */
     body::before {
       content: "";
       position: absolute;
@@ -67,7 +66,6 @@
       background: rgba(255, 255, 255, 0.4);
     }
 
-    /* header */
     .card {
       position: relative;
       width: 1536px;
@@ -116,7 +114,6 @@
       background: none;
     }
 
-    /* logo */
     .logo img {
       position: relative;
       display: flex;
@@ -129,12 +126,10 @@
       z-index: 1;
     }
 
-    /* input full */
     .full {
       width: 100%;
     }
 
-    /* button */
     .btn {
       display: flex;
       justify-content: flex-end;
@@ -171,8 +166,8 @@
       color: #2C30E2;
     }
 
-    /* ===== JADWAL WIDGET ===== */
     @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Kdam+Thmor+Pro&display=swap');
 
     .jadwal-widget {
       position: relative;
@@ -181,9 +176,8 @@
       left: 135px;
       margin-top: -170px;
       border-radius: 24px;
-      background: #e8e8f0;
-      border: 3px solid rgba(120, 140, 255, 0.5);
-      box-shadow: 0 0 0 6px rgba(160, 180, 255, 0.18), 0 8px 40px rgba(80,100,200,0.13);
+      background: #ffffff;
+      box-shadow: inset 0px 0px 50px 3px rgba(0, 0, 0, 0.25);
       padding: 28px 36px 28px 36px;
       z-index: 2;
       box-sizing: border-box;
@@ -209,98 +203,49 @@
     }
 
     .jadwal-week {
-      font-family: 'Khand', sans-serif;
-      font-size: 80px;
-      font-weight: 700;
-      color: #333;
-      letter-spacing: 0.5px;
-      line-height: 1;
+      font-family: "Kdam Thmor Pro", sans-serif;
+      font-weight: 500;
+      font-size: 30px;
+      color: #000000;
+      letter-spacing: 1px;
+      line-height: 1.2;
     }
 
     .jadwal-today-label {
-      font-family: 'Khand', sans-serif;
-      font-size: 26px;
+      font-family: "Kdam Thmor Pro", sans-serif;
       font-weight: 500;
-      color: #555;
-      line-height: 1.1;
+      font-size: 50px;
+      color: #000000;
+      letter-spacing: 1px;
+      line-height: 1.2;
     }
 
     .jadwal-date {
-      font-family: 'Khand', sans-serif;
-      font-size: 40px;
-      font-weight: 700;
-      color: #111;
+      font-family: "Kdam Thmor Pro", sans-serif;
+      font-weight: 500;
+      color: #000000;
+      letter-spacing: 1px;
       line-height: 1.2;
       margin-bottom: 4px;
     }
 
-    /* Bar chart wrapper dengan grid */
+    .date-day {
+      font-size: 70px;
+    }
+
+    .date-month {
+      font-size: 50px;
+    }
+
+    .date-year {
+      font-size: 50px;
+    }
+
+    /* Chart.js canvas wrapper */
     .jadwal-chart-wrap {
       flex: 1;
       position: relative;
       margin-top: 8px;
-    }
-
-    /* Grid lines */
-    .chart-grid {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 22px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .chart-grid-line {
-      width: 100%;
-      height: 1px;
-      background: rgba(0,0,0,0.12);
-      position: relative;
-    }
-
-    .chart-grid-line::before {
-      content: attr(data-val);
-      position: absolute;
-      left: -22px;
-      top: -8px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      color: #888;
-    }
-
-    /* Bar chart */
-    .jadwal-chart {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      align-items: flex-end;
-      gap: 18px;
-      height: 100%;
-      padding-bottom: 22px;
-      padding-left: 24px;
-    }
-
-    .chart-col {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      flex: 1;
-    }
-
-    .chart-bar {
-      width: 36px;
-      border-radius: 3px 3px 0 0;
-      transition: height 0.5s ease;
-    }
-
-    .chart-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 16px;
-      color: #666;
-      font-weight: 400;
-      white-space: nowrap;
     }
 
     /* Edit button */
@@ -331,7 +276,6 @@
       gap: 0;
       overflow-y: auto;
       order: 2;
-      background: rgba(200, 205, 225, 0.5);
       border-radius: 14px;
       padding: 6px 0;
     }
@@ -339,9 +283,13 @@
     .jadwal-right::-webkit-scrollbar {
       width: 4px;
     }
-    .jadwal-right::-webkit-scrollbar-track { background: transparent; }
+
+    .jadwal-right::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
     .jadwal-right::-webkit-scrollbar-thumb {
-      background: rgba(100,120,255,0.3);
+      background: rgba(100, 120, 255, 0.3);
       border-radius: 4px;
     }
 
@@ -352,15 +300,17 @@
       padding: 10px 18px;
       border-bottom: 1px solid rgba(160, 165, 210, 0.3);
       gap: 8px;
-      background: rgba(210, 215, 235, 0.45);
+      background: #EEEEEE
     }
 
-    .latihan-item:last-child { border-bottom: none; }
+    .latihan-item:last-child {
+      border-bottom: none;
+    }
 
     .latihan-text {
       font-family: 'Khand', sans-serif;
       font-size: 25px;
-      color: #333;
+      color: #000000;
       font-weight: 500;
       letter-spacing: 0.2px;
     }
@@ -432,7 +382,7 @@
 
     // Set tanggal hari ini
     const now = new Date();
-    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const day = now.getDate();
     const month = months[now.getMonth()];
     const year = now.getFullYear();
@@ -442,14 +392,120 @@
     const weekNum = Math.ceil((day + firstDay) / 7);
 
     document.getElementById('jadwal-week').textContent = 'Week ' + weekNum;
-    document.getElementById('jadwal-date').textContent = day + ', ' + month + ' ' + year;
+    document.getElementById('jadwal-date').innerHTML = '<span class="date-day">' + day + '</span> <span class="date-month">' + ',' + month + '</span> <span class="date-year">' + year + '</span>';
 
-    // Toggle checklist
-    document.querySelectorAll('.latihan-check').forEach(btn => {
-      btn.addEventListener('click', () => {
-        btn.classList.toggle('checked');
-      });
+    // ── Chart.js (same as statistik.html) ──
+    const ctx = document.getElementById('berandaChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+        datasets: [
+          {
+            label: 'Latihan Dilakukan',
+            data: [1, 1, 1, 0],
+            backgroundColor: ['#FF5757', '#FFE957', '#84FF57', '#cccccc'],
+            borderRadius: 4,
+            barThickness: 40,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: ctx => ` ${ctx.parsed.y} sesi`
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 7,
+            ticks: {
+              stepSize: 1,
+              font: { family: 'Khand', size: 14 }
+            },
+            grid: { color: 'rgba(0,0,0,0.07)' }
+          },
+          x: {
+            ticks: { font: { family: 'Khand', size: 15 } },
+            grid: { display: false }
+          }
+        }
+      }
     });
+
+    // Toggle checklist logic moved inside dynamic rendering
+
+    // --- Load Today's Schedule ---
+    const dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    const todayName = dayNames[now.getDay()];
+    const scheduleContainer = document.querySelector('.jadwal-right');
+
+    const defaultItems = [
+      { name: 'Push Up', reps: 2, done: false, hasKg: false },
+      { name: 'Sit Up', reps: 2, done: false, hasKg: false },
+      { name: 'Pull Up', reps: 3, done: false, hasKg: false },
+      { name: 'Squat', reps: 3, done: false, hasKg: false },
+      { name: 'Jumping Jack', reps: 6, done: false, hasKg: false },
+      { name: 'Mountain Climber', reps: 7, done: false, hasKg: false },
+      { name: 'Mengangkat Barbel', reps: 4, done: false, hasKg: true, kg: 40 },
+      { name: 'Lompat Tali', reps: 15, done: false, hasKg: false },
+      { name: 'Back Up', reps: 16, done: false, hasKg: false },
+      { name: 'Sikap Kapal Terbang', reps: 10, done: false, hasKg: false },
+    ];
+
+    async function loadTodaySchedule() {
+      try {
+        let items = await window.striveAPI.getSchedule(todayName);
+        if (!items || items.length === 0) {
+          items = defaultItems.map(it => ({ ...it }));
+        }
+        renderSchedule(items);
+      } catch (e) {
+        console.error('Error loading schedule:', e);
+        renderSchedule(defaultItems.map(it => ({ ...it })));
+      }
+    }
+
+    function renderSchedule(items) {
+      scheduleContainer.innerHTML = '';
+      items.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'latihan-item';
+
+        const kgText = item.hasKg ? ` (${item.kg} KG)` : '';
+        div.innerHTML = `
+          <span class="latihan-text">· ${item.reps} x ${item.name}${kgText}</span>
+          <div class="latihan-check ${item.done ? 'checked' : ''}" data-index="${index}">
+            <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="2,6 5,9 10,3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+        `;
+
+        const checkBtn = div.querySelector('.latihan-check');
+        checkBtn.addEventListener('click', async () => {
+          item.done = !item.done;
+          checkBtn.classList.toggle('checked');
+
+          // Save update back to DB
+          try {
+            await window.striveAPI.saveSchedule(todayName, items);
+          } catch (err) {
+            console.error('Failed to save schedule update:', err);
+          }
+        });
+
+        scheduleContainer.appendChild(div);
+      });
+    }
+
+    loadTodaySchedule();
   });
 </script>
 
@@ -486,79 +542,19 @@
       <div class="jadwal-left">
         <div class="jadwal-week" id="jadwal-week">Week 3</div>
         <div class="jadwal-today-label">Today</div>
-        <div class="jadwal-date" id="jadwal-date">21, April 2026</div>
+        <div class="jadwal-date" id="jadwal-date">
+          <div class="jadwal-date" id="jadwal-date"><span class="date-day">21</span> <span
+              class="date-month">April</span> <span class="date-year">2026</span></div>
+        </div>
 
         <div class="jadwal-chart-wrap">
-          <!-- Grid lines -->
-          <div class="chart-grid">
-            <div class="chart-grid-line" data-val="7"></div>
-            <div class="chart-grid-line" data-val="6"></div>
-            <div class="chart-grid-line" data-val="5"></div>
-            <div class="chart-grid-line" data-val="4"></div>
-            <div class="chart-grid-line" data-val="3"></div>
-            <div class="chart-grid-line" data-val="2"></div>
-            <div class="chart-grid-line" data-val="1"></div>
-          </div>
-          <!-- Bars -->
-          <div class="jadwal-chart">
-            <div class="chart-col">
-              <div class="chart-bar" style="height:200px; background:#e05555;"></div>
-              <span class="chart-label">Week 1</span>
-            </div>
-            <div class="chart-col">
-              <div class="chart-bar" style="height:55px; background:#d4b800;"></div>
-              <span class="chart-label">Week 2</span>
-            </div>
-            <div class="chart-col">
-              <div class="chart-bar" style="height:175px; background:#3cb83c;"></div>
-              <span class="chart-label">Week 3</span>
-            </div>
-            <div class="chart-col">
-              <div class="chart-bar" style="height:4px; background:#aaa;"></div>
-              <span class="chart-label">Week 4</span>
-            </div>
-          </div>
+          <canvas id="berandaChart"></canvas>
         </div>
       </div>
 
       <!-- Kanan: daftar latihan -->
       <div class="jadwal-right">
-        <div class="latihan-item">
-          <span class="latihan-text">· 2 x Push up</span>
-          <div class="latihan-check"><svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="2,6 5,9 10,3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        </div>
-        <div class="latihan-item">
-          <span class="latihan-text">· 2 x Sit up</span>
-          <div class="latihan-check"><svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="2,6 5,9 10,3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        </div>
-        <div class="latihan-item">
-          <span class="latihan-text">· 3 x Pull up</span>
-          <div class="latihan-check"><svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="2,6 5,9 10,3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        </div>
-        <div class="latihan-item">
-          <span class="latihan-text">· 3 x Squat</span>
-          <div class="latihan-check"><svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="2,6 5,9 10,3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        </div>
-        <div class="latihan-item">
-          <span class="latihan-text">· 6 x Jumping Jack</span>
-          <div class="latihan-check"><svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="2,6 5,9 10,3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        </div>
-        <div class="latihan-item">
-          <span class="latihan-text">· 7 x Moutain Climber</span>
-          <div class="latihan-check"><svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="2,6 5,9 10,3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        </div>
-        <div class="latihan-item">
-          <span class="latihan-text">· 4 x Mengangkat Barbel (40 KG)</span>
-          <div class="latihan-check"><svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="2,6 5,9 10,3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        </div>
-        <div class="latihan-item">
-          <span class="latihan-text">· 15 x Lompat Tali</span>
-          <div class="latihan-check"><svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="2,6 5,9 10,3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        </div>
-        <div class="latihan-item">
-          <span class="latihan-text">· 16 x Back Up</span>
-          <div class="latihan-check"><svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="2,6 5,9 10,3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        </div>
+        <!-- Data will be loaded dynamically from jadwal.html logic -->
       </div>
 
     </div>
