@@ -736,13 +736,13 @@
       const col = document.createElement('div');
       col.className = 'day-col';
       col.id = 'day-col-' + day;
-      col.innerHTML = `
-        <div class="day-label">${day}</div>
-        <div class="edit-box" onclick="openModal('${day}')">
-          <div class="edit-plus">+</div>
-          <div class="edit-text">EDIT</div>
-        </div>
-      `;
+     col.innerHTML = `
+  <div class="day-label">${day}</div>
+  <div class="edit-box">
+    <div class="edit-plus">+</div>
+    <div class="edit-text">EDIT</div>
+  </div>
+`;
       row.appendChild(col);
       updateDayCard(day);
     });
