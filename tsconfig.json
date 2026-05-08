@@ -7,9 +7,11 @@
     "esModuleInterop": true,
     "noImplicitAny": true,
     "sourceMap": true,
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "outDir": "dist",
     "moduleResolution": "bundler",
+    "jsx": "react-jsx",
     "resolveJsonModule": true
   }
 }
