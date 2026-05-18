@@ -7,6 +7,9 @@ contextBridge.exposeInMainWorld('striveAPI', {
   register: (email: string, password: string) =>
     ipcRenderer.invoke('register', { email, password }),
 
+  resetPassword: (email: string, password: string) =>
+    ipcRenderer.invoke('resetPassword', { email, password }),
+
   updateProfile: (data: any) =>
     ipcRenderer.invoke('updateProfile', data),
 
@@ -21,4 +24,10 @@ contextBridge.exposeInMainWorld('striveAPI', {
 
   getSchedule: (day: string) =>
     ipcRenderer.invoke('getSchedule', { day }),
+
+  autoLogin: (userId: number) =>
+    ipcRenderer.invoke('autoLogin', userId),
+
+  logout: () =>
+    ipcRenderer.invoke('logout'),
 });

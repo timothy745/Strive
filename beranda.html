@@ -382,6 +382,7 @@
 
     // Set tanggal hari ini
     const now = new Date();
+    const dayofweek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const day = now.getDate();
     const month = months[now.getMonth()];
@@ -390,7 +391,6 @@
     // Hitung week of month
     const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).getDay();
     const weekNum = Math.ceil((day + firstDay) / 7);
-
     document.getElementById('jadwal-week').textContent = 'Week ' + weekNum;
     document.getElementById('jadwal-date').innerHTML = '<span class="date-day">' + day + '</span> <span class="date-month">' + ',' + month + '</span> <span class="date-year">' + year + '</span>';
 
@@ -552,14 +552,12 @@
         </div>
       </div>
 
-      <!-- Kanan: daftar latihan -->
       <div class="jadwal-right">
         <!-- Data will be loaded dynamically from jadwal.html logic -->
       </div>
 
     </div>
   </div>
-  <!-- ===== END JADWAL WIDGET ===== -->
 
 </body>
 
