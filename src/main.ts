@@ -27,7 +27,7 @@ ipcMain.handle('register', async (_event, { email, password }: { email: string; 
     );
     loggedInUserId = insertResult.rows[0].id;
 
-    return { success: true, message: 'Registrasi berhasil!' };
+    return { success: true, message: 'Registrasi berhasil!', id: loggedInUserId };
   } catch (err) {
     console.error('Register error:', err);
     return { success: false, message: 'Terjadi kesalahan server.' };
@@ -49,12 +49,42 @@ ipcMain.handle('login', async (_event, { email, password }: { email: string; pas
     }
 
     loggedInUserId = user.id;
-    return { success: true, message: 'Login berhasil!' };
+    return { success: true, message: 'Login berhasil!', id: loggedInUserId };
   } catch (err) {
     console.error('Login error:', err);
     return { success: false, message: 'Terjadi kesalahan server.' };
   }
 });
+
+// ── IPC: RESET PASSWORD ──────────────────────────────────────────
+ipcMain.handle('resetPassword', async (_event, { email, password }: { email: string; password: string }) => {
+  try {
+    const existing = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
+    if (existing.rows.length === 0) {
+      return { success: false, message: 'Email tidak ditemukan.' };
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await pool.query('UPDATE users SET password = $1 WHERE email = $2', [hashedPassword, email]);
+
+    return { success: true, message: 'Password berhasil direset!' };
+  } catch (err) {
+    console.error('Reset password error:', err);
+    return { success: false, message: 'Terjadi kesalahan server.' };
+  }
+});
+
+// ── IPC: SESSION ────────────────────────────────────────────────
+ipcMain.handle('autoLogin', (_event, userId: number) => {
+  loggedInUserId = userId;
+  return { success: true };
+});
+
+ipcMain.handle('logout', () => {
+  loggedInUserId = null;
+  return { success: true };
+});
+
 
 // ── IPC: PROFILE ────────────────────────────────────────────────
 ipcMain.handle('updateProfile', async (_event, data) => {
@@ -75,7 +105,7 @@ ipcMain.handle('updateProfile', async (_event, data) => {
       const mm = m < 10 ? '0' + m : m;
       const dd = data.tgl < 10 ? '0' + data.tgl : data.tgl;
       dob = `${data.tahun}-${mm}-${dd}`;
-    } 
+    }
     // Jika data.dob dikirim langsung (format baru dari profile.html)
     else if (data.dob !== undefined) {
       dob = data.dob;
