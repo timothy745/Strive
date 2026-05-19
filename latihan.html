@@ -50,11 +50,38 @@
       height: 100vh;
     }
 
-    #background img {
-      position: absolute;
+    #background {
+      overflow: hidden;
       width: 100%;
       height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    #background .bg-track {
+      display: flex;
+      width: 200%;
+      height: 100%;
+      gap: 30px;
+      animation: bgScroll 180s linear infinite;
+    }
+
+    #background .bg-track img {
+      width: calc(50% - 15px);
+      height: 100%;
       object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    @keyframes bgScroll {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
     }
 
     body::before {
@@ -254,6 +281,46 @@
       padding: 1px 5px;
       border-radius: 4px;
     }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .loading-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #e0e0e0;
+      border-top: 6px solid #2C30E2;
+      border-radius: 50%;
+      animation: loadingSpin 0.8s linear infinite;
+    }
+
+    @keyframes loadingSpin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
   </style>
 </head>
 
@@ -275,13 +342,31 @@
     setTimeout(() => { window.location.href = "jadwal.html"; }, 500);
   }
   document.addEventListener('DOMContentLoaded', async () => {
+    showLoading();
     try {
       const user = await window.striveAPI.getCurrentUser();
+      hideLoading();
       if (user && user.profile_pic) {
         document.getElementById('header-profile-pic').src = user.profile_pic;
       }
-    } catch (e) { console.error(e); }
+    } catch (e) { console.error(e); hideLoading(); }
   });
+
+  function showLoading() {
+    let overlay = document.getElementById('loading-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'loading-overlay';
+      overlay.className = 'loading-overlay';
+      overlay.innerHTML = '<div class="loading-spinner"></div>';
+      document.body.appendChild(overlay);
+    }
+    overlay.classList.add('active');
+  }
+  function hideLoading() {
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay) overlay.classList.remove('active');
+  }
 </script>
 
 <body>
@@ -309,17 +394,17 @@
           style="border-radius: 10px; object-fit: cover;">
           <source src="PushUp.mp4" type="video/mp4">
         </video></div>
-      <div class="video-thumb"><video width="100%" height="100%" controls
+      <div class="video-thumb"><video width="100%" height="100%" controls poster="PullUp.jpeg"
           style="border-radius: 10px; object-fit: cover;">
-          <source src="video2.mp4" type="video/mp4">
+          <source src="PullUp.mp4" type="video/mp4">
         </video></div>
-      <div class="video-thumb"><video width="100%" height="100%" controls
+      <div class="video-thumb"><video width="100%" height="100%" controls poster="AngkatBarbel.jpeg"
           style="border-radius: 10px; object-fit: cover;">
-          <source src="video3.mp4" type="video/mp4">
+          <source src="AngkatBarbel.mp4" type="video/mp4">
         </video></div>
-      <div class="video-thumb"><video width="100%" height="100%" controls
+      <div class="video-thumb"><video width="100%" height="100%" controls poster="LompatTali.jpeg"
           style="border-radius: 10px; object-fit: cover;">
-          <source src="video4.mp4" type="video/mp4">
+          <source src="LompatTali.mp4" type="video/mp4">
         </video></div>
       <div class="video-thumb"><video width="100%" height="100%" controls
           style="border-radius: 10px; object-fit: cover;">
@@ -357,8 +442,10 @@
   </div>
 
   <div id="background">
-    <img src="BackgroundStrive.png" alt="Background Image"
-      style="width: 100%; height: 100%;position: absolute;right: 0px;bottom: 0px;object-fit: cover;">
+    <div class="bg-track">
+      <img src="BackgroundStrive.png" alt="Background Image">
+      <img src="BackgroundStrive.png" alt="Background Image">
+    </div>
   </div>
 </body>
 

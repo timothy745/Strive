@@ -46,12 +46,33 @@
             }
         }
 
-        /* background */
-        #background img {
-            position: absolute;
+        #background {
+            overflow: hidden;
             width: 100%;
             height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #background .bg-track {
+            display: flex;
+            width: 200%;
+            height: 100%;
+      gap: 30px;
+            animation: bgScroll 180s linear infinite;
+        }
+
+        #background .bg-track img {
+            width: calc(50% - 15px);
+            height: 100%;
             object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        @keyframes bgScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
 
         /* overlay biar agak soft */
@@ -91,7 +112,7 @@
             justify-content: center;
             margin-top: -115px;
             padding-left: 15px;
-            gap: 10px;
+            gap: 30px;
         }
 
         /* form */
@@ -102,7 +123,7 @@
         /* input umum */
         .input-box {
             display: flex;
-            gap: 10px;
+            gap: 30px;
             margin-bottom: 15px;
         }
 
@@ -187,14 +208,94 @@
             transform: translateY(-50%);
             color: #ccc;
         }
+
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 9999;
+        }
+
+        .toast-item {
+            position: relative;
+            background: #FFFFFF;
+            box-shadow: inset 0px 0px 15px 3px rgba(0, 0, 0, 0.25);
+            border: 2px solid;
+            min-width: 280px;
+            padding: 16px 24px;
+            border-radius: 8px;
+            font-family: 'Khand', sans-serif;
+            font-size: 18px;
+            overflow: hidden;
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+        }
+
+        .toast-item.show {
+            transform: translateX(0);
+        }
+
+        .toast-item.hide {
+            transform: translateX(120%);
+            opacity: 0;
+        }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            width: 100%;
+            background: #cc0000;
+            transform-origin: left;
+            animation: toastProgress 3s linear forwards;
+        }
+
+        @keyframes toastProgress {
+            0% { width: 100%; }
+            100% { width: 0%; }
+        }
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .loading-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .loading-spinner {
+            width: 60px; height: 60px;
+            border: 6px solid #e0e0e0;
+            border-top: 6px solid #2C30E2;
+            border-radius: 50%;
+            animation: loadingSpin 0.8s linear infinite;
+        }
+        @keyframes loadingSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 
 <body>
 
     <div id="background">
-        <img src="BackgroundStrive.png" alt="Background Image"
-            style="width: 100%; height: 100%;position: absolute;right: 0px;bottom: 0px;object-fit: cover;">
+        <div class="bg-track">
+            <img src="BackgroundStrive.png" alt="Background Image">
+            <img src="BackgroundStrive.png" alt="Background Image">
+        </div>
     </div>
 
     <div class="card">
@@ -287,7 +388,7 @@
 
             // Form validasi simple
             if (!nama || tgl === "Tgl" || bulan === "Bulan" || !tahun || !weightStr || !heightStr) {
-                alert("Mohon isi semua data dengan lengkap!");
+                showToast("Mohon isi semua data dengan lengkap!", "error");
                 return;
             }
 
@@ -295,21 +396,80 @@
             const weight = weightStr + " KG";
             const height = heightStr + " Cm";
 
+            showLoading();
+
             try {
                 const result = await window.striveAPI.updateProfile({
                     nama, tgl, bulan, tahun, weight, height
                 });
+                hideLoading();
 
                 if (result.success) {
-                    window.location.href = 'beranda.html';
+                    showToast("Data berhasil disimpan!", "success");
+                    setTimeout(() => { window.location.href = 'beranda.html'; }, 1000);
                 } else {
-                    alert("Gagal menyimpan data: " + result.message);
+                    showToast("Gagal menyimpan data: " + result.message, "error");
                 }
             } catch (err) {
                 console.error("Save error:", err);
-                alert("Terjadi kesalahan sistem saat menyimpan.");
+                showToast("Terjadi kesalahan sistem saat menyimpan.", "error");
+                hideLoading();
             }
         });
+
+        function showLoading() {
+            let overlay = document.getElementById('loading-overlay');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.id = 'loading-overlay';
+                overlay.className = 'loading-overlay';
+                overlay.innerHTML = '<div class="loading-spinner"></div>';
+                document.body.appendChild(overlay);
+            }
+            overlay.classList.add('active');
+        }
+        function hideLoading() {
+            const overlay = document.getElementById('loading-overlay');
+            if (overlay) overlay.classList.remove('active');
+        }
+        function showToast(message, type = 'error') {
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                container.className = 'toast-container';
+                document.body.appendChild(container);
+            }
+
+            const toast = document.createElement('div');
+            toast.className = 'toast-item';
+
+            const origColor = type === 'success' ? '#00f024' : '#cc0000';
+
+            toast.innerHTML = `
+                <div style="position: relative; z-index: 1; color: ${origColor};">${message}</div>
+                <div class="toast-progress" style="background: ${origColor};"></div>
+            `;
+            toast.style.borderColor = origColor;
+
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    toast.classList.add('show');
+                });
+            });
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+                toast.classList.add('hide');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 400);
+            }, 3000);
+        }
 
         function goBack() {
             document.body.classList.add("slide-out");
@@ -321,3 +481,5 @@
 </body>
 
 </html>
+
+

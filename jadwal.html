@@ -50,12 +50,33 @@
       height: 100vh;
     }
 
-    #background img {
-      position: absolute;
+    #background {
+      overflow: hidden;
       width: 100%;
       height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    #background .bg-track {
+      display: flex;
+      width: 200%;
+      height: 100%;
+      gap: 30px;
+      animation: bgScroll 180s linear infinite;
+    }
+
+    #background .bg-track img {
+      width: calc(50% - 15px);
+      height: 100%;
       object-fit: cover;
-      z-index: 0;
+      flex-shrink: 0;
+    }
+
+    @keyframes bgScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
 
     body::before {
@@ -200,6 +221,8 @@
       overflow-y: hidden;
       scrollbar-width: none;
       cursor: grab;
+      margin: 0 -49px;
+      padding: 0 50px;
     }
 
     .days-scroll::-webkit-scrollbar {
@@ -227,6 +250,11 @@
       color: #555;
       font-weight: 500;
       text-align: center;
+    }
+
+    .day-date {
+      font-size: 20px;
+      color: #666;
     }
 
     .edit-box {
@@ -281,8 +309,37 @@
       background: linear-gradient(160deg, #0008ff 0%, #0003bb 100%);
     }
 
+    .edit-box.is-today {
+      background: linear-gradient(160deg, #eff1fa 0%, #9599bc 100%);
+      /* Edit border thickness and color here */
+    }
+
+    .edit-box.is-today:hover {
+      background: linear-gradient(160deg, #dfe4f8 0%, #8187c4 100%);
+    }
+
+    .edit-box.is-today .edit-plus,
+    .edit-box.is-today .edit-text {
+      color: #333;
+    }
+
+    .edit-box.is-today:hover .edit-plus,
+    .edit-box.is-today:hover .edit-text {
+      color: #000;
+    }
+
+    .edit-box.has-data.is-today {
+      background: linear-gradient(160deg, #eff1fa 0%, #9599bc 100%);
+    }
+
+    .edit-box.has-data.is-today:hover {
+      background: linear-gradient(160deg, #dfe4f8 0%, #8187c4 100%);
+    }
+
     .box-list {
       width: 100%;
+      height: 100%;
+      max-height: 100%;
       display: flex;
       flex-direction: column;
       gap: 5px;
@@ -302,13 +359,46 @@
     }
 
     .box-item-name {
-      color: #fff;
-      font-size: 15px;
-      font-weight: 400;
+      font-size: 20px;
       flex: 1;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .item-reps {
+      color: #50515c;
+      font-weight: 600;
+      margin-right: 6px;
+      background: linear-gradient(160deg, #ededed 0%, #6c6c6c 100%);
+      border: 2px solid #d2d2d2;
+      padding: 1px 15px;
+      border-radius: 30px;
+      font-size: 16px;
+      display: inline-block;
+    }
+
+    .item-sport {
+      color: #FFFFFF;
+      font-weight: 500;
+    }
+
+    .edit-box.is-today .item-sport {
+      color: #3b3d4a;
+    }
+
+    .item-kg {
+      color: #ffffff;
+      font-weight: 500;
+      font-size: 14px;
+      margin-left: -4px;
+      padding: 0px 3px;
+      border-radius: 30px;
+      display: inline-block;
+    }
+
+    .edit-box.is-today .item-kg {
+      color: #3b3d4a;
     }
 
     .box-check {
@@ -525,7 +615,7 @@
     .kg-row {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 30px;
       padding: 0 2px;
     }
 
@@ -551,6 +641,101 @@
       accent-color: #3333ff;
       cursor: pointer;
     }
+
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .toast-item {
+      position: relative;
+      background: #FFFFFF;
+      box-shadow: inset 0px 0px 15px 3px rgba(0, 0, 0, 0.25);
+      border: 2px solid;
+      min-width: 280px;
+      padding: 16px 24px;
+      border-radius: 8px;
+      font-family: 'Khand', sans-serif;
+      font-size: 18px;
+      overflow: hidden;
+      transform: translateX(120%);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+    }
+
+    .toast-item.show {
+      transform: translateX(0);
+    }
+
+    .toast-item.hide {
+      transform: translateX(120%);
+      opacity: 0;
+    }
+
+    .toast-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 4px;
+      width: 100%;
+      background: #cc0000;
+      transform-origin: left;
+      animation: toastProgress 3s linear forwards;
+    }
+
+    @keyframes toastProgress {
+      0% {
+        width: 100%;
+      }
+
+      100% {
+        width: 0%;
+      }
+    }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .loading-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #e0e0e0;
+      border-top: 6px solid #2C30E2;
+      border-radius: 50%;
+      animation: loadingSpin 0.8s linear infinite;
+    }
+
+    @keyframes loadingSpin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
   </style>
 </head>
 
@@ -573,6 +758,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', async () => {
+    showLoading();
     try {
       const user = await window.striveAPI.getCurrentUser();
       if (user && user.profile_pic) {
@@ -611,6 +797,7 @@
         scheduleData[d] = defaultItems.map(item => ({ ...item }));
       }
     }
+    hideLoading();
 
     let activeDay = null;
 
@@ -699,24 +886,26 @@
       const items = scheduleData[day] || [];
       const activeItems = items.filter(it => it.done);
 
+      const dayNamesMap = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      const isToday = (day === dayNamesMap[new Date().getDay()]);
+
       if (activeItems.length > 0) {
-        box.className = 'edit-box has-data';
+        box.className = 'edit-box has-data' + (isToday ? ' is-today' : '');
         box.innerHTML = `
           <div class="box-list">
-            ${items.map(item => `
+            ${activeItems.map(item => `
               <div class="box-item">
-                <span class="box-item-name">• ${item.reps}x ${item.name}${item.hasKg ? ' (' + item.kg + 'kg)' : ''}</span>
-                <div class="box-check ${item.done ? 'on' : 'off'}">
-                  <svg viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </div>
+                <span class="box-item-name">
+                  <span class="item-reps">${item.reps}x</span>
+                  <span class="item-sport">${item.name}</span>
+                  ${item.hasKg ? `<span class="item-kg">/${item.kg}kg</span>` : ''}
+                </span>
               </div>
             `).join('')}
           </div>
         `;
       } else {
-        box.className = 'edit-box';
+        box.className = 'edit-box' + (isToday ? ' is-today' : '');
         box.innerHTML = `
           <div class="edit-plus">+</div>
           <div class="edit-text">EDIT</div>
@@ -732,10 +921,13 @@
         const saveBtn = document.querySelector('.modal-save');
         saveBtn.textContent = 'SAVING...';
         saveBtn.disabled = true;
+        showLoading();
         try {
           const result = await window.striveAPI.saveSchedule(activeDay, scheduleData[activeDay]);
+          hideLoading();
           if (result.success) {
             saveBtn.textContent = 'SAVED ✓';
+            showToast('Jadwal berhasil disimpan!', 'success');
             updateDayCard(activeDay);
             setTimeout(() => {
               saveBtn.textContent = 'SAVE';
@@ -744,23 +936,55 @@
             }, 600);
           } else {
             console.error('Gagal simpan:', result.message);
+            showToast('Gagal menyimpan jadwal: ' + result.message, 'error');
             saveBtn.textContent = 'GAGAL';
             setTimeout(() => { saveBtn.textContent = 'SAVE'; saveBtn.disabled = false; }, 1500);
           }
         } catch (e) {
           console.error('Save error:', e);
+          showToast('Gagal menyimpan jadwal.', 'error');
+          hideLoading();
           saveBtn.textContent = 'ERROR';
           setTimeout(() => { saveBtn.textContent = 'SAVE'; saveBtn.disabled = false; }, 1500);
         }
       }
     };
 
-    days.forEach(day => {
+    const now = new Date();
+    const currentDayOfWeek = now.getDay();
+    const distanceToMonday = currentDayOfWeek === 0 ? 6 : currentDayOfWeek - 1;
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - distanceToMonday);
+
+    const weekFirstDay = new Date(now.getFullYear(), now.getMonth(), 1).getDay();
+    const weekNum = Math.ceil((now.getDate() + weekFirstDay) / 7);
+    document.getElementById('week-title').textContent = 'Minggu ini ' + "(ke-" + weekNum + ")";
+
+    const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+    const datesForWeek = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(monday);
+      d.setDate(monday.getDate() + i);
+      const dateNum = d.getDate();
+      const month = monthNames[d.getMonth()];
+      const year = d.getFullYear();
+      datesForWeek.push(`${dateNum} ${month} ${year}`);
+    }
+
+    const todayDateNum = now.getDate();
+    const todayMonth = monthNames[now.getMonth()];
+    const todayYear = now.getFullYear();
+    const todayFullDate = `${todayDateNum} ${todayMonth} ${todayYear}`;
+
+    days.forEach((day, index) => {
+      const fullDate = datesForWeek[index];
+      const isToday = fullDate === todayFullDate;
       const col = document.createElement('div');
       col.className = 'day-col';
       col.id = 'day-col-' + day;
       col.innerHTML = `
-  <div class="day-label">${day}</div>
+  <div class="day-label">${day}, <span class="day-date">${fullDate}${isToday ? ' <small>(Hari ini)</small>' : ''}</span></div>
   <div class="edit-box">
     <div class="edit-plus">+</div>
     <div class="edit-text">EDIT</div>
@@ -789,6 +1013,60 @@
       scroll.scrollLeft = scrollLeft - (x - startX);
     });
   });
+
+  function showLoading() {
+    let overlay = document.getElementById('loading-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'loading-overlay';
+      overlay.className = 'loading-overlay';
+      overlay.innerHTML = '<div class="loading-spinner"></div>';
+      document.body.appendChild(overlay);
+    }
+    overlay.classList.add('active');
+  }
+  function hideLoading() {
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay) overlay.classList.remove('active');
+  }
+  function showToast(message, type = 'error') {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'toast-container';
+      container.className = 'toast-container';
+      document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = 'toast-item';
+
+    const origColor = type === 'success' ? '#00f024' : '#cc0000';
+
+    toast.innerHTML = `
+      <div style="position: relative; z-index: 1; color: ${origColor};">${message}</div>
+      <div class="toast-progress" style="background: ${origColor};"></div>
+    `;
+    toast.style.borderColor = origColor;
+
+    container.appendChild(toast);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        toast.classList.add('show');
+      });
+    });
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+      toast.classList.add('hide');
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.parentNode.removeChild(toast);
+        }
+      }, 400);
+    }, 3000);
+  }
 </script>
 
 <body>
@@ -812,7 +1090,7 @@
 
   <div class="profile-box">
     <div class="week-wrapper">
-      <div class="week-title">This Week</div>
+      <div class="week-title" id="week-title">Minggu ini</div>
       <div class="days-scroll" id="days-scroll">
         <div class="days-row" id="days-row"></div>
       </div>
@@ -830,9 +1108,13 @@
   </div>
 
   <div id="background">
-    <img src="BackgroundStrive.png" alt="Background Image"
-      style="width:100%;height:100%;position:absolute;right:0;bottom:0;object-fit:cover;">
+    <div class="bg-track">
+      <img src="BackgroundStrive.png" alt="Background Image">
+      <img src="BackgroundStrive.png" alt="Background Image">
+    </div>
   </div>
 </body>
 
 </html>
+
+
