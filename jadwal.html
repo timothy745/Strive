@@ -598,15 +598,15 @@
 
     const scheduleData = {};
 
-    for (const d of days) {
-      try {
-        const dbItems = await window.striveAPI.getSchedule(d);
-        if (dbItems && dbItems.length > 0) {
-          scheduleData[d] = dbItems;
-        } else {
-          scheduleData[d] = defaultItems.map(item => ({ ...item }));
-        }
-      } catch (e) {
+   for (const d of days) {
+  try {
+    const dbItems = await window.striveAPI.getSchedule(d);
+    if (dbItems && dbItems.length > 0) {
+      scheduleData[d] = dbItems;
+    } else {
+      scheduleData[d] = defaultItems.map(item => ({ ...item }));
+    }
+  } catch (e) {
         console.error('Load schedule error for', d, e);
         scheduleData[d] = defaultItems.map(item => ({ ...item }));
       }
@@ -703,10 +703,10 @@
         box.className = 'edit-box has-data';
         box.innerHTML = `
           <div class="box-list">
-            ${items.map(item => `
+            ${activeItems.map(item => `
               <div class="box-item">
                 <span class="box-item-name">• ${item.reps}x ${item.name}${item.hasKg ? ' (' + item.kg + 'kg)' : ''}</span>
-                <div class="box-check ${item.done ? 'on' : 'off'}">
+                <div class="box-check on">
                   <svg viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round"/>
                   </svg>
