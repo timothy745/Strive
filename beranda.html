@@ -555,8 +555,12 @@
     // ── Chart.js (same as statistik.html) ──
     const ctx = document.getElementById('berandaChart').getContext('2d');
 
+    const userId = localStorage.getItem('strive_user_id') || 'guest';
+    const chartDataKey = 'strive_chart_data_' + userId;
+    const lastDoneDateKey = 'strive_last_done_date_' + userId;
+
     // Ambil data chart dari localStorage atau gunakan default
-    let chartData = JSON.parse(localStorage.getItem('strive_chart_data')) || [0, 0, 0, 0];
+    let chartData = JSON.parse(localStorage.getItem(chartDataKey)) || [0, 0, 0, 0];
     while (chartData.length < 4) chartData.push(0);
 
     const berandaChart = new Chart(ctx, {
@@ -649,11 +653,13 @@
         }
         currentScheduleItems = items;
         renderSchedule(items);
+        updateDoneButtonState();
       } catch (e) {
         console.error('Error loading schedule:', e);
         hideLoading();
         currentScheduleItems = defaultItems.map(it => ({ ...it }));
         renderSchedule(currentScheduleItems);
+        updateDoneButtonState();
       }
     }
 
@@ -686,6 +692,7 @@
           } catch (err) {
             console.error('Failed to save schedule update:', err);
           } finally {
+            updateDoneButtonState();
           }
         });
 
@@ -699,11 +706,47 @@
     const btnDone = document.getElementById('btn-done-harian');
     const todayStr = now.toDateString();
 
-    if (localStorage.getItem('strive_last_done_date') === todayStr) {
-      btnDone.textContent = 'Completed';
-      btnDone.style.background = '#FFFFFF';
-      btnDone.style.border = '2px solid #2C30E2';
-      btnDone.style.color = '#2C30E2';
+    function updateDoneButtonState() {
+      const activeItems = currentScheduleItems.filter(it => it.done);
+      const isDayDone = localStorage.getItem(lastDoneDateKey) === todayStr;
+
+      if (isDayDone) {
+        btnDone.disabled = true;
+        btnDone.textContent = 'COMPLETED';
+        btnDone.style.background = '#84FF57';
+        btnDone.style.color = '#000000';
+        btnDone.style.border = 'none';
+        btnDone.style.cursor = 'not-allowed';
+        return;
+      }
+
+      if (activeItems.length === 0) {
+        btnDone.disabled = true;
+        btnDone.textContent = 'Complete';
+        btnDone.style.background = '#CCCCCC';
+        btnDone.style.color = '#666666';
+        btnDone.style.border = 'none';
+        btnDone.style.cursor = 'not-allowed';
+        return;
+      }
+
+      const allChecked = activeItems.every(it => it.completed);
+
+      if (allChecked) {
+        btnDone.disabled = false;
+        btnDone.textContent = 'Complete';
+        btnDone.style.background = '#2C30E2';
+        btnDone.style.color = '#FFFFFF';
+        btnDone.style.border = 'none';
+        btnDone.style.cursor = 'pointer';
+      } else {
+        btnDone.disabled = true;
+        btnDone.textContent = 'Complete';
+        btnDone.style.background = '#CCCCCC';
+        btnDone.style.color = '#666666';
+        btnDone.style.border = 'none';
+        btnDone.style.cursor = 'not-allowed';
+      }
     }
 
     function showLoading() {
@@ -761,7 +804,7 @@
     }
 
     btnDone.addEventListener('click', async () => {
-      if (localStorage.getItem('strive_last_done_date') === todayStr) {
+      if (localStorage.getItem(lastDoneDateKey) === todayStr) {
         showToast('Aktivitas hari ini sudah selesai!', 'error');
         return;
       }
@@ -769,6 +812,12 @@
       const activeItems = currentScheduleItems.filter(it => it.done);
       if (activeItems.length === 0) {
         showToast('Tidak ada aktivitas yang dijadwalkan hari ini.', 'error');
+        return;
+      }
+
+      const allChecked = activeItems.every(it => it.completed);
+      if (!allChecked) {
+        showToast('Selesaikan semua aktivitas terlebih dahulu!', 'error');
         return;
       }
 
@@ -785,16 +834,14 @@
 
       const targetIndex = Math.min(Math.max(weekNum - 1, 0), 3);
       chartData[targetIndex] += 1;
-      localStorage.setItem('strive_chart_data', JSON.stringify(chartData));
+      localStorage.setItem(chartDataKey, JSON.stringify(chartData));
 
       showToast('Latihan hari ini selesai!', 'success');
       berandaChart.data.datasets[0].data = chartData;
       berandaChart.update();
 
-      localStorage.setItem('strive_last_done_date', todayStr);
-      btnDone.textContent = 'COMPLETED TODAY';
-      btnDone.style.background = '#84FF57';
-      btnDone.style.color = '#000000';
+      localStorage.setItem(lastDoneDateKey, todayStr);
+      updateDoneButtonState();
     });
   });
 </script>
@@ -857,5 +904,3 @@
 </body>
 
 </html>
-
-

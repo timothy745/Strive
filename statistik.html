@@ -298,8 +298,11 @@
     // ── Chart.js ──
     const ctx = document.getElementById('weeklyChart').getContext('2d');
 
+    const userId = localStorage.getItem('strive_user_id') || 'guest';
+    const chartDataKey = 'strive_chart_data_' + userId;
+
     // Ambil data chart dari localStorage atau gunakan default
-    let chartData = JSON.parse(localStorage.getItem('strive_chart_data')) || [0, 0, 0, 0];
+    let chartData = JSON.parse(localStorage.getItem(chartDataKey)) || [0, 0, 0, 0];
     while (chartData.length < 4) chartData.push(0);
 
     new Chart(ctx, {
