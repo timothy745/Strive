@@ -41,8 +41,16 @@ export async function initDB(): Promise<void> {
         has_kg BOOLEAN NOT NULL DEFAULT false,
         kg INTEGER DEFAULT 0,
         sort_order INTEGER NOT NULL DEFAULT 0,
+        completed BOOLEAN NOT NULL DEFAULT false,
         UNIQUE(user_id, day, exercise_name)
       )
+    `);
+
+    // Add completed column if it doesn't exist (for existing databases)
+    await pool.query(`
+      DO $$ BEGIN
+        ALTER TABLE jadwal ADD COLUMN IF NOT EXISTS completed BOOLEAN NOT NULL DEFAULT false;
+      END $$;
     `);
 
     console.log('✅ Database ready (users + schedules)');

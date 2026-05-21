@@ -358,17 +358,13 @@
 
     .box-item {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
     }
 
     .box-item-name {
       font-size: 20px;
-      flex: 1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .item-reps {
@@ -900,13 +896,11 @@
           <div class="box-list">
             ${activeItems.map(item => `
               <div class="box-item">
-                <span class="box-item-name">• ${item.reps}x ${item.name}${item.hasKg ? ' (' + item.kg + 'kg)' : ''}</span>
-                <div class="box-check ${item.done ? 'on' : 'off'}">
-                  <svg viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </div>
-              </div>
+                <span class="box-item-name">
+                  <span class="item-reps">${item.reps}x</span>
+                  <span class="item-sport">${item.name}</span>
+                  ${item.hasKg ? `<span class="item-kg">/${item.kg}kg</span>` : ''}
+                </span>
             `).join('')}
           </div>
         `;

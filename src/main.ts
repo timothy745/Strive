@@ -181,9 +181,9 @@ ipcMain.handle('saveSchedule', async (_event, { day, items }: { day: string; ite
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       await client.query(
-        `INSERT INTO jadwal (user_id, day, exercise_name, reps, done, has_kg, kg, sort_order)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-        [loggedInUserId, day, item.name, item.reps, item.done, item.hasKg, item.kg || 0, i]
+        `INSERT INTO jadwal (user_id, day, exercise_name, reps, done, has_kg, kg, sort_order, completed)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+        [loggedInUserId, day, item.name, item.reps, item.done, item.hasKg, item.kg || 0, i, item.completed || false]
       );
     }
 
@@ -202,7 +202,7 @@ ipcMain.handle('getSchedule', async (_event, { day }: { day: string }) => {
   if (!loggedInUserId) return [];
   try {
     const result = await pool.query(
-      'SELECT exercise_name, reps, done, has_kg, kg FROM jadwal WHERE user_id = $1 AND day = $2 ORDER BY sort_order',
+      'SELECT exercise_name, reps, done, has_kg, kg, completed FROM jadwal WHERE user_id = $1 AND day = $2 ORDER BY sort_order',
       [loggedInUserId, day]
     );
     return result.rows.map((row: any) => ({
@@ -211,6 +211,7 @@ ipcMain.handle('getSchedule', async (_event, { day }: { day: string }) => {
       done: row.done,
       hasKg: row.has_kg,
       kg: row.kg,
+      completed: row.completed,
     }));
   } catch (err) {
     console.error('Get schedule error:', err);

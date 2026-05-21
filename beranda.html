@@ -710,42 +710,40 @@
       const activeItems = currentScheduleItems.filter(it => it.done);
       const isDayDone = localStorage.getItem(lastDoneDateKey) === todayStr;
 
+      btnDone.disabled = false;
+
       if (isDayDone) {
-        btnDone.disabled = true;
         btnDone.textContent = 'COMPLETED';
         btnDone.style.background = '#84FF57';
         btnDone.style.color = '#000000';
         btnDone.style.border = 'none';
-        btnDone.style.cursor = 'not-allowed';
+        btnDone.style.cursor = 'pointer';
         return;
       }
 
       if (activeItems.length === 0) {
-        btnDone.disabled = true;
         btnDone.textContent = 'Complete';
         btnDone.style.background = '#CCCCCC';
         btnDone.style.color = '#666666';
         btnDone.style.border = 'none';
-        btnDone.style.cursor = 'not-allowed';
+        btnDone.style.cursor = 'pointer';
         return;
       }
 
       const allChecked = activeItems.every(it => it.completed);
 
       if (allChecked) {
-        btnDone.disabled = false;
         btnDone.textContent = 'Complete';
         btnDone.style.background = '#2C30E2';
         btnDone.style.color = '#FFFFFF';
         btnDone.style.border = 'none';
         btnDone.style.cursor = 'pointer';
       } else {
-        btnDone.disabled = true;
         btnDone.textContent = 'Complete';
         btnDone.style.background = '#CCCCCC';
         btnDone.style.color = '#666666';
         btnDone.style.border = 'none';
-        btnDone.style.cursor = 'not-allowed';
+        btnDone.style.cursor = 'pointer';
       }
     }
 
