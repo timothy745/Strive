@@ -51,11 +51,38 @@
       height: 100vh;
     }
 
-    #background img {
-      position: absolute;
+    #background {
+      overflow: hidden;
       width: 100%;
       height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    #background .bg-track {
+      display: flex;
+      width: 200%;
+      height: 100%;
+      gap: 30px;
+      animation: bgScroll 180s linear infinite;
+    }
+
+    #background .bg-track img {
+      width: calc(50% - 15px);
+      height: 100%;
       object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    @keyframes bgScroll {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
     }
 
     body::before {
@@ -268,6 +295,13 @@
       color: #2C30E2;
     }
 
+    .jadwal-right-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      order: 2;
+    }
+
     /* Kanan: daftar latihan */
     .jadwal-right {
       flex: 1;
@@ -275,9 +309,29 @@
       flex-direction: column;
       gap: 0;
       overflow-y: auto;
-      order: 2;
       border-radius: 14px;
       padding: 6px 0;
+      background: #EEEEEE;
+    }
+
+    .btn-done {
+      position: relative;
+      margin-top: 12px;
+      background: #2C30E2;
+      color: #FFFFFF;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 20px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+      letter-spacing: 2px;
+    }
+
+    .btn-done:hover {
+      background: #1a1db5;
     }
 
     .jadwal-right::-webkit-scrollbar {
@@ -300,7 +354,8 @@
       padding: 10px 18px;
       border-bottom: 1px solid rgba(160, 165, 210, 0.3);
       gap: 8px;
-      background: #EEEEEE
+      flex: 1;
+      min-height: 55px;
     }
 
     .latihan-item:last-child {
@@ -330,8 +385,8 @@
     }
 
     .latihan-check.checked {
-      background: rgba(44, 48, 226, 0.15);
-      border-color: #2C30E2;
+      background: rgba(0, 200, 80, 0.2);
+      border-color: #00c850;
     }
 
     .latihan-check svg {
@@ -342,7 +397,106 @@
     }
 
     .latihan-check.checked svg {
+      stroke: #00c850;
+    }
+
+    .latihan-check.checked svg {
       display: block;
+    }
+
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .toast-item {
+      position: relative;
+      background: #FFFFFF;
+      box-shadow: inset 0px 0px 15px 3px rgba(0, 0, 0, 0.25);
+      border: 2px solid;
+      min-width: 280px;
+      padding: 16px 24px;
+      border-radius: 8px;
+      font-family: 'Khand', sans-serif;
+      font-size: 18px;
+      overflow: hidden;
+      transform: translateX(120%);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+    }
+
+    .toast-item.show {
+      transform: translateX(0);
+    }
+
+    .toast-item.hide {
+      transform: translateX(120%);
+      opacity: 0;
+    }
+
+    .toast-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 4px;
+      width: 100%;
+      background: #cc0000;
+      transform-origin: left;
+      animation: toastProgress 3s linear forwards;
+    }
+
+    @keyframes toastProgress {
+      0% {
+        width: 100%;
+      }
+
+      100% {
+        width: 0%;
+      }
+    }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .loading-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #e0e0e0;
+      border-top: 6px solid #2C30E2;
+      border-radius: 50%;
+      animation: loadingSpin 0.8s linear infinite;
+    }
+
+    @keyframes loadingSpin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
     }
   </style>
 </head>
@@ -373,38 +527,56 @@
     }, 100);
   }
   document.addEventListener('DOMContentLoaded', async () => {
+    showLoading();
     try {
       const user = await window.striveAPI.getCurrentUser();
+      hideLoading();
       if (user && user.profile_pic) {
         document.getElementById('header-profile-pic').src = user.profile_pic;
       }
-    } catch (e) { console.error(e); }
+    } catch (e) { console.error(e); hideLoading(); }
 
     // Set tanggal hari ini
     const now = new Date();
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const daysofweek = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
     const day = now.getDate();
     const month = months[now.getMonth()];
     const year = now.getFullYear();
+    const dayofweek = daysofweek[now.getDay()];
 
     // Hitung week of month
     const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).getDay();
     const weekNum = Math.ceil((day + firstDay) / 7);
-
-    document.getElementById('jadwal-week').textContent = 'Week ' + weekNum;
+    document.getElementById('jadwal-week').textContent = 'Minggu ke-' + weekNum;
     document.getElementById('jadwal-date').innerHTML = '<span class="date-day">' + day + '</span> <span class="date-month">' + ',' + month + '</span> <span class="date-year">' + year + '</span>';
+    document.getElementById('jadwal-today-label').textContent = dayofweek;
 
     // ── Chart.js (same as statistik.html) ──
     const ctx = document.getElementById('berandaChart').getContext('2d');
-    new Chart(ctx, {
+
+    // Ambil data chart dari localStorage atau gunakan default
+    let chartData = JSON.parse(localStorage.getItem('strive_chart_data')) || [0, 0, 0, 0];
+    while (chartData.length < 4) chartData.push(0);
+
+    const berandaChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+        labels: ['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4'],
         datasets: [
           {
             label: 'Latihan Dilakukan',
-            data: [1, 1, 1, 0],
-            backgroundColor: ['#FF5757', '#FFE957', '#84FF57', '#cccccc'],
+            data: chartData,
+            backgroundColor: function (context) {
+              const chart = context.chart;
+              const { ctx, chartArea } = chart;
+              if (!chartArea) return '#cccccc';
+              const colors = ['#FF5757', '#FFE957', '#84FF57', '#cccccc'];
+              const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+              gradient.addColorStop(0, colors[context.dataIndex]);
+              gradient.addColorStop(1, '#ffffff');
+              return gradient;
+            },
             borderRadius: 4,
             barThickness: 40,
           }
@@ -439,6 +611,12 @@
       }
     });
 
+    document.getElementById('berandaChart').style.cursor = 'pointer';
+    document.getElementById('berandaChart').addEventListener('click', () => {
+      document.body.classList.add('fade-out');
+      setTimeout(() => { window.location.href = 'statistik.html'; }, 100);
+    });
+
     // Toggle checklist logic moved inside dynamic rendering
 
     // --- Load Today's Schedule ---
@@ -447,41 +625,50 @@
     const scheduleContainer = document.querySelector('.jadwal-right');
 
     const defaultItems = [
-      { name: 'Push Up', reps: 2, done: false, hasKg: false },
-      { name: 'Sit Up', reps: 2, done: false, hasKg: false },
-      { name: 'Pull Up', reps: 3, done: false, hasKg: false },
-      { name: 'Squat', reps: 3, done: false, hasKg: false },
-      { name: 'Jumping Jack', reps: 6, done: false, hasKg: false },
-      { name: 'Mountain Climber', reps: 7, done: false, hasKg: false },
-      { name: 'Mengangkat Barbel', reps: 4, done: false, hasKg: true, kg: 40 },
-      { name: 'Lompat Tali', reps: 15, done: false, hasKg: false },
-      { name: 'Back Up', reps: 16, done: false, hasKg: false },
-      { name: 'Sikap Kapal Terbang', reps: 10, done: false, hasKg: false },
+      { name: 'Push Up', reps: 0, done: false, hasKg: false },
+      { name: 'Sit Up', reps: 0, done: false, hasKg: false },
+      { name: 'Pull Up', reps: 0, done: false, hasKg: false },
+      { name: 'Squat', reps: 0, done: false, hasKg: false },
+      { name: 'Jumping Jack', reps: 0, done: false, hasKg: false },
+      { name: 'Mountain Climber', reps: 0, done: false, hasKg: false },
+      { name: 'Mengangkat Barbel', reps: 0, done: false, hasKg: true, kg: 0 },
+      { name: 'Lompat Tali', reps: 0, done: false, hasKg: false },
+      { name: 'Back Up', reps: 0, done: false, hasKg: false },
+      { name: 'Sikap Kapal Terbang', reps: 0, done: false, hasKg: false },
     ];
 
+    let currentScheduleItems = [];
+
     async function loadTodaySchedule() {
+      showLoading();
       try {
         let items = await window.striveAPI.getSchedule(todayName);
+        hideLoading();
         if (!items || items.length === 0) {
           items = defaultItems.map(it => ({ ...it }));
         }
+        currentScheduleItems = items;
         renderSchedule(items);
       } catch (e) {
         console.error('Error loading schedule:', e);
-        renderSchedule(defaultItems.map(it => ({ ...it })));
+        hideLoading();
+        currentScheduleItems = defaultItems.map(it => ({ ...it }));
+        renderSchedule(currentScheduleItems);
       }
     }
 
     function renderSchedule(items) {
       scheduleContainer.innerHTML = '';
       items.forEach((item, index) => {
+        if (!item.done) return; // Hanya tampilkan olahraga yang dipilih (dijadwalkan)
+
         const div = document.createElement('div');
         div.className = 'latihan-item';
 
         const kgText = item.hasKg ? ` (${item.kg} KG)` : '';
         div.innerHTML = `
           <span class="latihan-text">· ${item.reps} x ${item.name}${kgText}</span>
-          <div class="latihan-check ${item.done ? 'checked' : ''}" data-index="${index}">
+          <div class="latihan-check ${item.completed ? 'checked' : ''}" data-index="${index}">
             <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
               <polyline points="2,6 5,9 10,3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
@@ -490,7 +677,7 @@
 
         const checkBtn = div.querySelector('.latihan-check');
         checkBtn.addEventListener('click', async () => {
-          item.done = !item.done;
+          item.completed = !item.completed; // Gunakan 'completed' untuk ceklis harian agar tidak menghapus jadwal
           checkBtn.classList.toggle('checked');
 
           // Save update back to DB
@@ -498,6 +685,7 @@
             await window.striveAPI.saveSchedule(todayName, items);
           } catch (err) {
             console.error('Failed to save schedule update:', err);
+          } finally {
           }
         });
 
@@ -506,6 +694,108 @@
     }
 
     loadTodaySchedule();
+
+    // --- Logika Tombol DONE ---
+    const btnDone = document.getElementById('btn-done-harian');
+    const todayStr = now.toDateString();
+
+    if (localStorage.getItem('strive_last_done_date') === todayStr) {
+      btnDone.textContent = 'Completed';
+      btnDone.style.background = '#FFFFFF';
+      btnDone.style.border = '2px solid #2C30E2';
+      btnDone.style.color = '#2C30E2';
+    }
+
+    function showLoading() {
+      let overlay = document.getElementById('loading-overlay');
+      if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'loading-overlay';
+        overlay.className = 'loading-overlay';
+        overlay.innerHTML = '<div class="loading-spinner"></div>';
+        document.body.appendChild(overlay);
+      }
+      overlay.classList.add('active');
+    }
+    function hideLoading() {
+      const overlay = document.getElementById('loading-overlay');
+      if (overlay) overlay.classList.remove('active');
+    }
+    function showToast(message, type = 'error') {
+      let container = document.getElementById('toast-container');
+      if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+      }
+
+      const toast = document.createElement('div');
+      toast.className = 'toast-item';
+
+      const origColor = type === 'success' ? '#00f024' : '#cc0000';
+
+      toast.innerHTML = `
+        <div style="position: relative; z-index: 1; color: ${origColor};">${message}</div>
+        <div class="toast-progress" style="background: ${origColor};"></div>
+      `;
+      toast.style.borderColor = origColor;
+
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          toast.classList.add('show');
+        });
+      });
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+        toast.classList.add('hide');
+        setTimeout(() => {
+          if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+          }
+        }, 400);
+      }, 3000);
+    }
+
+    btnDone.addEventListener('click', async () => {
+      if (localStorage.getItem('strive_last_done_date') === todayStr) {
+        showToast('Aktivitas hari ini sudah selesai!', 'error');
+        return;
+      }
+
+      const activeItems = currentScheduleItems.filter(it => it.done);
+      if (activeItems.length === 0) {
+        showToast('Tidak ada aktivitas yang dijadwalkan hari ini.', 'error');
+        return;
+      }
+
+      activeItems.forEach(it => it.completed = true);
+      showLoading();
+      try {
+        await window.striveAPI.saveSchedule(todayName, currentScheduleItems);
+      } catch (err) {
+        console.error('Failed to save:', err);
+      } finally {
+        hideLoading();
+      }
+      renderSchedule(currentScheduleItems);
+
+      const targetIndex = Math.min(Math.max(weekNum - 1, 0), 3);
+      chartData[targetIndex] += 1;
+      localStorage.setItem('strive_chart_data', JSON.stringify(chartData));
+
+      showToast('Latihan hari ini selesai!', 'success');
+      berandaChart.data.datasets[0].data = chartData;
+      berandaChart.update();
+
+      localStorage.setItem('strive_last_done_date', todayStr);
+      btnDone.textContent = 'COMPLETED TODAY';
+      btnDone.style.background = '#84FF57';
+      btnDone.style.color = '#000000';
+    });
   });
 </script>
 
@@ -528,20 +818,22 @@
   </div>
 
   <div id="background">
-    <img src="BackgroundStrive.png" alt="Background Image"
-      style="width: 100%; height: 100%;position: absolute;right: 0px;bottom: 0px;object-fit: cover;">
+    <div class="bg-track">
+      <img src="BackgroundStrive.png" alt="Background Image">
+      <img src="BackgroundStrive.png" alt="Background Image">
+    </div>
   </div>
 
   <!-- ===== JADWAL WIDGET ===== -->
   <div class="jadwal-widget">
-    <button class="jadwal-edit" onclick="pindah4()">EDIT --></button>
+    <button class="jadwal-edit" onclick="pindah4()">EDIT →</button>
 
     <div class="jadwal-container">
 
       <!-- Kiri: info tanggal + chart dengan grid -->
       <div class="jadwal-left">
-        <div class="jadwal-week" id="jadwal-week">Week 3</div>
-        <div class="jadwal-today-label">Today</div>
+        <div class="jadwal-week" id="jadwal-week">Minggu 3</div>
+        <div class="jadwal-today-label" id="jadwal-today-label">Today</div>
         <div class="jadwal-date" id="jadwal-date">
           <div class="jadwal-date" id="jadwal-date"><span class="date-day">21</span> <span
               class="date-month">April</span> <span class="date-year">2026</span></div>
@@ -552,15 +844,18 @@
         </div>
       </div>
 
-      <!-- Kanan: daftar latihan -->
-      <div class="jadwal-right">
-        <!-- Data will be loaded dynamically from jadwal.html logic -->
+      <div class="jadwal-right-wrap">
+        <div class="jadwal-right">
+          <!-- Data will be loaded dynamically from jadwal.html logic -->
+        </div>
+        <button class="btn-done" id="btn-done-harian">Complete</button>
       </div>
 
     </div>
   </div>
-  <!-- ===== END JADWAL WIDGET ===== -->
 
 </body>
 
 </html>
+
+

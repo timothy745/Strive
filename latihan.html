@@ -50,11 +50,38 @@
       height: 100vh;
     }
 
-    #background img {
-      position: absolute;
+    #background {
+      overflow: hidden;
       width: 100%;
       height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    #background .bg-track {
+      display: flex;
+      width: 200%;
+      height: 100%;
+      gap: 30px;
+      animation: bgScroll 180s linear infinite;
+    }
+
+    #background .bg-track img {
+      width: calc(50% - 15px);
+      height: 100%;
       object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    @keyframes bgScroll {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
     }
 
     body::before {
@@ -254,6 +281,193 @@
       padding: 1px 5px;
       border-radius: 4px;
     }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .loading-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #e0e0e0;
+      border-top: 6px solid #2C30E2;
+      border-radius: 50%;
+      animation: loadingSpin 0.8s linear infinite;
+    }
+
+    @keyframes loadingSpin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ── TAMBAHAN: Styles untuk Video Modal & Hover Overlay ── */
+    .video-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 2, 66, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background-color 0.3s ease;
+      z-index: 2;
+    }
+
+    .video-thumb:hover .video-overlay {
+      background: rgba(0, 2, 66, 0.65);
+    }
+
+    .video-overlay .video-label {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 15px;
+      text-transform: uppercase;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .video-thumb:hover .video-label {
+      color: #ffffff;
+      transform: scale(1.05);
+    }
+
+    .video-overlay .video-play-icon {
+      background: rgba(255, 255, 255, 0.25);
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .video-overlay .video-play-icon::after {
+      border-left-color: #ffffff;
+    }
+
+    .video-thumb:hover .video-play-icon {
+      background: #ffffff;
+      transform: scale(1.1);
+    }
+
+    .video-thumb:hover .video-play-icon::after {
+      border-left-color: #000499;
+    }
+
+    .video-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .video-modal.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .video-modal-content {
+      background: linear-gradient(135deg, #000242 0%, #000499 100%);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 24px;
+      width: 90%;
+      max-width: 850px;
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .video-modal.active .video-modal-content {
+      transform: scale(1);
+    }
+
+    .video-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 10px;
+    }
+
+    .video-modal-title {
+      font-size: 28px;
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .video-modal-close {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .video-modal-close:hover {
+      background: #ffffff;
+      color: #000499;
+      transform: scale(1.1);
+    }
+
+    .video-modal-body {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 16/9;
+      background: #000;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .video-modal-body video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+    }
   </style>
 </head>
 
@@ -275,13 +489,62 @@
     setTimeout(() => { window.location.href = "jadwal.html"; }, 500);
   }
   document.addEventListener('DOMContentLoaded', async () => {
+    showLoading();
     try {
       const user = await window.striveAPI.getCurrentUser();
+      hideLoading();
       if (user && user.profile_pic) {
         document.getElementById('header-profile-pic').src = user.profile_pic;
       }
-    } catch (e) { console.error(e); }
+    } catch (e) { console.error(e); hideLoading(); }
+
+    // Close modal on background click
+    const modal = document.getElementById('video-modal');
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeVideoModal();
+        }
+      });
+    }
   });
+
+  function showLoading() {
+    let overlay = document.getElementById('loading-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'loading-overlay';
+      overlay.className = 'loading-overlay';
+      overlay.innerHTML = '<div class="loading-spinner"></div>';
+      document.body.appendChild(overlay);
+    }
+    overlay.classList.add('active');
+  }
+  function hideLoading() {
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay) overlay.classList.remove('active');
+  }
+
+  function openVideoModal(videoSrc, videoTitle) {
+    const modal = document.getElementById('video-modal');
+    const modalTitle = document.getElementById('video-modal-title');
+    const modalVideo = document.getElementById('video-modal-player');
+    const modalSource = document.getElementById('video-modal-source');
+
+    modalTitle.textContent = videoTitle;
+    modalSource.src = videoSrc;
+    modalVideo.load();
+    modal.classList.add('active');
+    modalVideo.play().catch(err => console.log('Autoplay blocked:', err));
+  }
+
+  function closeVideoModal() {
+    const modal = document.getElementById('video-modal');
+    const modalVideo = document.getElementById('video-modal-player');
+    
+    modal.classList.remove('active');
+    modalVideo.pause();
+  }
 </script>
 
 <body>
@@ -305,60 +568,150 @@
   <!-- ── TAMBAHAN: card utama dengan 12 video ── -->
   <div class="main-card">
     <div class="video-grid">
-      <div class="video-thumb"><video width="100%" height="100%" controls poster="PushUp.png"
-          style="border-radius: 10px; object-fit: cover;">
+      <div class="video-thumb" onclick="openVideoModal('PushUp.mp4', 'Push Up')">
+        <video width="100%" height="100%" poster="PushUp.png"
+          style="border-radius: 10px; object-fit: cover; pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
           <source src="PushUp.mp4" type="video/mp4">
-        </video></div>
-      <div class="video-thumb"><video width="100%" height="100%" controls
-          style="border-radius: 10px; object-fit: cover;">
-          <source src="video2.mp4" type="video/mp4">
-        </video></div>
-      <div class="video-thumb"><video width="100%" height="100%" controls
-          style="border-radius: 10px; object-fit: cover;">
-          <source src="video3.mp4" type="video/mp4">
-        </video></div>
-      <div class="video-thumb"><video width="100%" height="100%" controls
-          style="border-radius: 10px; object-fit: cover;">
-          <source src="video4.mp4" type="video/mp4">
-        </video></div>
-      <div class="video-thumb"><video width="100%" height="100%" controls
-          style="border-radius: 10px; object-fit: cover;">
+        </video>
+        <div class="video-overlay">
+          <div class="video-play-icon"></div>
+          <div class="video-label">Push Up</div>
+        </div>
+      </div>
+      <div class="video-thumb" onclick="openVideoModal('PullUp.mp4', 'Pull Up')">
+        <video width="100%" height="100%" poster="PullUp.jpeg"
+          style="border-radius: 10px; object-fit: cover; pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+          <source src="PullUp.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay">
+          <div class="video-play-icon"></div>
+          <div class="video-label">Pull Up</div>
+        </div>
+      </div>
+      <div class="video-thumb" onclick="openVideoModal('AngkatBarbel.mp4', 'Angkat Barbel')">
+        <video width="100%" height="100%" poster="AngkatBarbel.jpeg"
+          style="border-radius: 10px; object-fit: cover; pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+          <source src="AngkatBarbel.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay">
+          <div class="video-play-icon"></div>
+          <div class="video-label">Angkat Barbel</div>
+        </div>
+      </div>
+      <div class="video-thumb" onclick="openVideoModal('LompatTali.mp4', 'Lompat Tali')">
+        <video width="100%" height="100%" poster="LompatTali.jpeg"
+          style="border-radius: 10px; object-fit: cover; pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+          <source src="LompatTali.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay">
+          <div class="video-play-icon"></div>
+          <div class="video-label">Lompat Tali</div>
+        </div>
+      </div>
+      <div class="video-thumb" onclick="openVideoModal('video5.mp4', 'Latihan 5')">
+        <video width="100%" height="100%"
+          style="border-radius: 10px; object-fit: cover; pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
           <source src="video5.mp4" type="video/mp4">
-        </video></div>
-      <div class="video-thumb"><video width="100%" height="100%" controls
-          style="border-radius: 10px; object-fit: cover;">
+        </video>
+        <div class="video-overlay">
+          <div class="video-play-icon"></div>
+          <div class="video-label">Latihan 5</div>
+        </div>
+      </div>
+      <div class="video-thumb" onclick="openVideoModal('video6.mp4', 'Latihan 6')">
+        <video width="100%" height="100%"
+          style="border-radius: 10px; object-fit: cover; pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
           <source src="video6.mp4" type="video/mp4">
-        </video></div>
-      <div class="video-thumb"><video width="100%" height="100%" controls
-          style="border-radius: 10px; object-fit: cover;">
+        </video>
+        <div class="video-overlay">
+          <div class="video-play-icon"></div>
+          <div class="video-label">Latihan 6</div>
+        </div>
+      </div>
+      <div class="video-thumb" onclick="openVideoModal('video7.mp4', 'Latihan 7')">
+        <video width="100%" height="100%"
+          style="border-radius: 10px; object-fit: cover; pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
           <source src="video7.mp4" type="video/mp4">
-        </video></div>
-      <div class="video-thumb"><video width="100%" height="100%" controls
-          style="border-radius: 10px; object-fit: cover;">
+        </video>
+        <div class="video-overlay">
+          <div class="video-play-icon"></div>
+          <div class="video-label">Latihan 7</div>
+        </div>
+      </div>
+      <div class="video-thumb" onclick="openVideoModal('video8.mp4', 'Latihan 8')">
+        <video width="100%" height="100%"
+          style="border-radius: 10px; object-fit: cover; pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
           <source src="video8.mp4" type="video/mp4">
-        </video></div>
-      <div class="video-thumb"><video width="100%" height="100%" controls
-          style="border-radius: 10px; object-fit: cover;">
+        </video>
+        <div class="video-overlay">
+          <div class="video-play-icon"></div>
+          <div class="video-label">Latihan 8</div>
+        </div>
+      </div>
+      <div class="video-thumb" onclick="openVideoModal('video9.mp4', 'Latihan 9')">
+        <video width="100%" height="100%"
+          style="border-radius: 10px; object-fit: cover; pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
           <source src="video9.mp4" type="video/mp4">
-        </video></div>
-      <div class="video-thumb"><video width="100%" height="100%" controls
-          style="border-radius: 10px; object-fit: cover;">
+        </video>
+        <div class="video-overlay">
+          <div class="video-play-icon"></div>
+          <div class="video-label">Latihan 9</div>
+        </div>
+      </div>
+      <div class="video-thumb" onclick="openVideoModal('video10.mp4', 'Latihan 10')">
+        <video width="100%" height="100%"
+          style="border-radius: 10px; object-fit: cover; pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
           <source src="video10.mp4" type="video/mp4">
-        </video></div>
-      <div class="video-thumb"><video width="100%" height="100%" controls
-          style="border-radius: 10px; object-fit: cover;">
+        </video>
+        <div class="video-overlay">
+          <div class="video-play-icon"></div>
+          <div class="video-label">Latihan 10</div>
+        </div>
+      </div>
+      <div class="video-thumb" onclick="openVideoModal('video11.mp4', 'Latihan 11')">
+        <video width="100%" height="100%"
+          style="border-radius: 10px; object-fit: cover; pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
           <source src="video11.mp4" type="video/mp4">
-        </video></div>
-      <div class="video-thumb"><video width="100%" height="100%" controls
-          style="border-radius: 10px; object-fit: cover;">
+        </video>
+        <div class="video-overlay">
+          <div class="video-play-icon"></div>
+          <div class="video-label">Latihan 11</div>
+        </div>
+      </div>
+      <div class="video-thumb" onclick="openVideoModal('video12.mp4', 'Latihan 12')">
+        <video width="100%" height="100%"
+          style="border-radius: 10px; object-fit: cover; pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
           <source src="video12.mp4" type="video/mp4">
-        </video></div>
+        </video>
+        <div class="video-overlay">
+          <div class="video-play-icon"></div>
+          <div class="video-label">Latihan 12</div>
+        </div>
+      </div>
     </div>
   </div>
 
   <div id="background">
-    <img src="BackgroundStrive.png" alt="Background Image"
-      style="width: 100%; height: 100%;position: absolute;right: 0px;bottom: 0px;object-fit: cover;">
+    <div class="bg-track">
+      <img src="BackgroundStrive.png" alt="Background Image">
+      <img src="BackgroundStrive.png" alt="Background Image">
+    </div>
+  </div>
+
+  <!-- Video Modal Pop-up -->
+  <div id="video-modal" class="video-modal">
+    <div class="video-modal-content">
+      <div class="video-modal-header">
+        <h2 id="video-modal-title" class="video-modal-title">LATIHAN</h2>
+        <button class="video-modal-close" onclick="closeVideoModal()">&times;</button>
+      </div>
+      <div class="video-modal-body">
+        <video id="video-modal-player" controls>
+          <source id="video-modal-source" src="" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
   </div>
 </body>
 

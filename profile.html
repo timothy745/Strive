@@ -62,12 +62,38 @@
       height: 100vh;
     }
 
-    /* background */
-    #background img {
-      position: absolute;
+    #background {
+      overflow: hidden;
       width: 100%;
       height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    #background .bg-track {
+      display: flex;
+      width: 200%;
+      height: 100%;
+      gap: 30px;
+      animation: bgScroll 180s linear infinite;
+    }
+
+    #background .bg-track img {
+      width: calc(50% - 15px);
+      height: 100%;
       object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    @keyframes bgScroll {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
     }
 
     /* overlay biar agak soft */
@@ -199,6 +225,7 @@
       padding: 50px 80px;
       z-index: 2;
       box-sizing: border-box;
+      overflow: hidden;
     }
 
     .profile-left {
@@ -206,12 +233,14 @@
       flex-direction: column;
       gap: 30px;
       width: 60%;
+      min-width: 0;
     }
 
     .section {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 20px;
+      min-width: 0;
     }
 
     .section-title {
@@ -228,16 +257,25 @@
       font-size: 26px;
       color: #000;
       padding-right: 40px;
+      width: 100%;
+      min-width: 0;
+      overflow: hidden;
+      box-sizing: border-box;
     }
 
     .info-label {
       font-weight: 400;
       width: 220px;
+      flex-shrink: 0;
     }
 
     .info-value {
       font-weight: 300;
-      flex-grow: 1;
+      flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       color: #666;
     }
 
@@ -245,6 +283,7 @@
       color: #ccc;
       font-size: 28px;
       cursor: pointer;
+      flex-shrink: 0;
     }
 
     .edit-icon:hover {
@@ -260,6 +299,8 @@
       border-radius: 4px;
       padding: 0 8px;
       flex-grow: 1;
+      min-width: 0;
+      width: 100%;
       background: #f0f4ff;
       outline: none;
       box-sizing: border-box;
@@ -294,17 +335,213 @@
       line-height: 1.2;
     }
 
-    .logout-link {
-      color: #C0C0C0;
-      font-size: 22px;
-      text-decoration: underline;
-      cursor: pointer;
+    .logout-btn {
+      width: 93%;
+      padding: 16px 5px;
+      background: #cc0000;
+      color: #fff;
+      font-size: 24px;
       font-weight: 500;
+      letter-spacing: 2px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      margin-top: 12px;
+      font-family: 'Khand', sans-serif;
+    }
+
+    .logout-btn:hover {
+      background: #a00000;
+      transform: scale(1.02);
+    }
+
+    .logout-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Confirm Modal */
+    .confirm-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 99998;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .confirm-overlay.active {
+      display: flex;
+    }
+
+    .confirm-box {
+      background: #2a2a2a;
+      border-radius: 20px;
+      padding: 32px 28px 24px;
+      width: 340px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .confirm-icon {
+      font-size: 64px;
+      color: #cc0000;
+    }
+
+    .confirm-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
       letter-spacing: 1px;
     }
 
-    .logout-link:hover {
-      color: #888;
+    .confirm-desc {
+      font-size: 18px;
+      color: #aaa;
+      text-align: center;
+      font-weight: 400;
+      margin-top: -12px;
+    }
+
+    .confirm-actions {
+      display: flex;
+      gap: 14px;
+      width: 100%;
+    }
+
+    .confirm-actions button {
+      flex: 1;
+      padding: 12px 0;
+      font-size: 20px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: 'Khand', sans-serif;
+      letter-spacing: 1px;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .confirm-cancel {
+      background: #555;
+      color: #fff;
+    }
+
+    .confirm-cancel:hover {
+      background: #777;
+      transform: scale(1.02);
+    }
+
+    .confirm-yes {
+      background: #cc0000;
+      color: #fff;
+    }
+
+    .confirm-yes:hover {
+      background: #a00000;
+      transform: scale(1.02);
+    }
+
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .toast-item {
+      position: relative;
+      background: #FFFFFF;
+      box-shadow: inset 0px 0px 15px 3px rgba(0, 0, 0, 0.25);
+      border: 2px solid;
+      min-width: 280px;
+      padding: 16px 24px;
+      border-radius: 8px;
+      font-family: 'Khand', sans-serif;
+      font-size: 18px;
+      overflow: hidden;
+      transform: translateX(120%);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+    }
+
+    .toast-item.show {
+      transform: translateX(0);
+    }
+
+    .toast-item.hide {
+      transform: translateX(120%);
+      opacity: 0;
+    }
+
+    .toast-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 4px;
+      width: 100%;
+      background: #cc0000;
+      transform-origin: left;
+      animation: toastProgress 3s linear forwards;
+    }
+
+    @keyframes toastProgress {
+      0% {
+        width: 100%;
+      }
+
+      100% {
+        width: 0%;
+      }
+    }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .loading-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #e0e0e0;
+      border-top: 6px solid #2C30E2;
+      border-radius: 50%;
+      animation: loadingSpin 0.8s linear infinite;
+    }
+
+    @keyframes loadingSpin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
     }
   </style>
 </head>
@@ -335,8 +572,10 @@
     }, 100);
   }
   document.addEventListener('DOMContentLoaded', async () => {
+    showLoading();
     try {
       const userProfile = await window.striveAPI.getCurrentUser();
+      hideLoading();
 
       if (userProfile) {
         document.getElementById('profile-email').textContent = userProfile.email;
@@ -355,29 +594,37 @@
       }
     } catch (error) {
       console.error("Failed to load profile data:", error);
+      hideLoading();
     }
 
     // Upload profile picture on click
     document.getElementById('upload-image-box').addEventListener('click', async () => {
+      showLoading();
       try {
         const result = await window.striveAPI.uploadProfilePic();
+        hideLoading();
         if (result.success) {
           document.getElementById('upload-preview').src = result.dataUrl;
           document.getElementById('upload-preview').style.display = 'block';
           document.getElementById('upload-text').style.display = 'none';
           document.getElementById('header-profile-pic').src = result.dataUrl;
+          showToast('Foto profil berhasil diunggah!', 'success');
+        } else {
+          showToast('Gagal mengunggah foto profil.', 'error');
         }
       } catch (err) {
         console.error('Upload failed:', err);
+        showToast('Gagal mengunggah foto profil.', 'error');
+        hideLoading();
       }
     });
 
     // --- Inline Editing for Personal Info ---
     const editFields = [
-      { id: 'profile-nama', key: 'nama' },
-      { id: 'profile-dob', key: 'dob' },
-      { id: 'profile-weight', key: 'weight' },
-      { id: 'profile-height', key: 'height' }
+      { id: 'profile-nama', key: 'nama', label: 'Nama' },
+      { id: 'profile-dob', key: 'dob', label: 'Tanggal lahir' },
+      { id: 'profile-weight', key: 'weight', label: 'Berat badan' },
+      { id: 'profile-height', key: 'height', label: 'Tinggi badan' }
     ];
 
     editFields.forEach(field => {
@@ -413,11 +660,15 @@
 
             element.textContent = displayValue;
             try {
+              showLoading();
               const updateData = {};
               updateData[field.key] = newValue;
               await window.striveAPI.updateProfile(updateData);
-              console.log(`${field.key} updated to ${newValue}`);
+              hideLoading();
+              showToast(`${field.label} berhasil diperbarui!`, 'success');
             } catch (err) {
+              hideLoading();
+              showToast(`Gagal memperbarui ${field.label}.`, 'error');
               console.error(`Failed to update ${field.key}:`, err);
               // Revert to old value with units
               let oldDisplay = currentValue;
@@ -445,6 +696,81 @@
       });
     });
   });
+
+  function showLoading() {
+    let overlay = document.getElementById('loading-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'loading-overlay';
+      overlay.className = 'loading-overlay';
+      overlay.innerHTML = '<div class="loading-spinner"></div>';
+      document.body.appendChild(overlay);
+    }
+    overlay.classList.add('active');
+  }
+  function hideLoading() {
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay) overlay.classList.remove('active');
+  }
+  function showToast(message, type = 'error') {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'toast-container';
+      container.className = 'toast-container';
+      document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = 'toast-item';
+
+    const origColor = type === 'success' ? '#00f024' : '#cc0000';
+
+    toast.innerHTML = `
+      <div style="position: relative; z-index: 1; color: ${origColor};">${message}</div>
+      <div class="toast-progress" style="background: ${origColor};"></div>
+    `;
+    toast.style.borderColor = origColor;
+
+    container.appendChild(toast);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        toast.classList.add('show');
+      });
+    });
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+      toast.classList.add('hide');
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.parentNode.removeChild(toast);
+        }
+      }, 400);
+    }, 3000);
+  }
+
+  function handleLogout() {
+    document.getElementById('confirm-overlay').classList.add('active');
+  }
+
+  function closeLogoutModal() {
+    document.getElementById('confirm-overlay').classList.remove('active');
+  }
+
+  async function confirmLogout() {
+    closeLogoutModal();
+    showLoading();
+    try {
+      await window.striveAPI.logout();
+      localStorage.removeItem('strive_user_id');
+      window.location.href = "index.html";
+    } catch (err) {
+      console.error('Logout failed:', err);
+      hideLoading();
+    }
+  }
 </script>
 
 <body>
@@ -466,10 +792,12 @@
     <img src="Strive.png">
   </div>
   <div id="background">
-    <img src="BackgroundStrive.png" alt="Background Image"
-      style="width: 100%; height: 100%;position: absolute;right: 0px;bottom: 0px;object-fit: cover;">
+    <div class="bg-track">
+      <img src="BackgroundStrive.png" alt="Background Image">
+      <img src="BackgroundStrive.png" alt="Background Image">
+    </div>
   </div>
-  <div class="profile-box">
+  <div class="profile-box" id="profile-box">
     <div class="profile-left">
       <div class="section">
         <h1 class="section-title">Account Info :</h1>
@@ -514,7 +842,19 @@
           style="display:none; width:100%; height:100%; object-fit:cover; border-radius:12px;">
         <p id="upload-text">UPLOAD<br>IMAGE</p>
       </div>
-      <a class="logout-link" href="index.html">LOGOUT</a>
+      <button class="logout-btn" onclick="handleLogout()">LOGOUT</button>
+    </div>
+  </div>
+  <!-- Confirm Logout Modal -->
+  <div class="confirm-overlay" id="confirm-overlay" onclick="if(event.target===this) closeLogoutModal()">
+    <div class="confirm-box">
+      <span class="material-symbols-outlined confirm-icon">logout</span>
+      <div class="confirm-title">Yakin ingin logout?</div>
+      <div class="confirm-desc">Kamu harus login kembali untuk mengakses akun ini.</div>
+      <div class="confirm-actions">
+        <button class="confirm-cancel" onclick="closeLogoutModal()">BATAL</button>
+        <button class="confirm-yes" onclick="confirmLogout()">LOGOUT</button>
+      </div>
     </div>
   </div>
 </body>
