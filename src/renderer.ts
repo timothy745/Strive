@@ -1,35 +1,23 @@
-/**
- * This file will automatically be loaded by vite and run in the "renderer" context.
- * To learn more about the differences between the "main" and the "renderer" context in
- * Electron, visit:
- *
- * https://electronjs.org/docs/tutorial/process-model
- *
- * By default, Node.js integration in this file is disabled. When enabling Node.js integration
- * in a renderer process, please be aware of potential security implications. You can read
- * more about security risks here:
- *
- * https://electronjs.org/docs/tutorial/security
- *
- * To enable Node.js integration in this file, open up `main.ts` and enable the `nodeIntegration`
- * flag:
- *
- * ```
- *  // Create the browser window.
- *  mainWindow = new BrowserWindow({
- *    width: 800,
- *    height: 600,
- *    webPreferences: {
- *      nodeIntegration: true
- *    }
- *  });
- * ```
- */
+export {};
 
-
-declare module '*.css' {
-  const content: any;
-  export default content;
+declare global {
+  interface Window {
+    striveAPI: {
+      login: (email: string, password: string) => Promise<{ success: boolean; id?: number; message?: string }>;
+      register: (email: string, password: string) => Promise<{ success: boolean; id?: number; message?: string }>;
+      resetPassword: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
+      updateProfile: (data: any) => Promise<{ success: boolean; message?: string }>;
+      getCurrentUser: () => Promise<any>;
+      uploadProfilePic: () => Promise<{ success: boolean; dataUrl?: string; message?: string }>;
+      saveSchedule: (day: string, items: any[]) => Promise<{ success: boolean; message?: string }>;
+      getSchedule: (day: string) => Promise<any[]>;
+      autoLogin: (userId: number) => Promise<{ success: boolean }>;
+      googleLogin: (idToken: string) => Promise<{ success: boolean; id?: number; message?: string; isNewUser?: boolean }>;
+      startGoogleAuth: () => Promise<{ success: boolean; id?: number; message?: string; isNewUser?: boolean }>;
+      logout: () => Promise<{ success: boolean }>;
+    };
+    showToast: (message: string, type?: string) => void;
+  }
 }
 
 console.log(

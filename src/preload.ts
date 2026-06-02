@@ -28,6 +28,12 @@ contextBridge.exposeInMainWorld('striveAPI', {
   autoLogin: (userId: number) =>
     ipcRenderer.invoke('autoLogin', userId),
 
+  googleLogin: (idToken: string) =>
+    ipcRenderer.invoke('googleLogin', idToken),
+
+  startGoogleAuth: () =>
+    ipcRenderer.invoke('startGoogleAuth'),
+
   logout: () =>
     ipcRenderer.invoke('logout'),
 });
