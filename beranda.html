@@ -362,6 +362,19 @@
       border-bottom: none;
     }
 
+    .empty-placeholder {
+      font-family: 'Khand', sans-serif;
+      font-style: italic;
+      font-size: 25px;
+      color: #999;
+      text-align: center;
+      padding: 40px 18px;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .latihan-text {
       font-family: 'Khand', sans-serif;
       font-size: 25px;
@@ -698,6 +711,13 @@
 
         scheduleContainer.appendChild(div);
       });
+
+      if (scheduleContainer.children.length === 0) {
+        const placeholder = document.createElement('div');
+        placeholder.className = 'empty-placeholder';
+        placeholder.textContent = 'Tambahkan Aktivitas Hari Ini~';
+        scheduleContainer.appendChild(placeholder);
+      }
     }
 
     loadTodaySchedule();
@@ -891,7 +911,7 @@
 
       <div class="jadwal-right-wrap">
         <div class="jadwal-right">
-          <!-- Data will be loaded dynamically from jadwal.html logic -->
+          <h1>Tambahkan Aktivitas Hari Ini</h1>
         </div>
         <button class="btn-done" id="btn-done-harian">Complete</button>
       </div>
