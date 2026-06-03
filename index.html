@@ -95,8 +95,13 @@
     }
 
     @keyframes bgScroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
     }
 
     /* CARD */
@@ -314,10 +319,13 @@
     .material-symbols-outlined:hover {
       color: #848488;
     }
+
     .loading-overlay {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background: rgba(0, 0, 0, 0.5);
       display: flex;
       align-items: center;
@@ -327,20 +335,29 @@
       pointer-events: none;
       transition: opacity 0.3s ease;
     }
+
     .loading-overlay.active {
       opacity: 1;
       pointer-events: all;
     }
+
     .loading-spinner {
-      width: 60px; height: 60px;
+      width: 60px;
+      height: 60px;
       border: 6px solid #e0e0e0;
       border-top: 6px solid #2C30E2;
       border-radius: 50%;
       animation: loadingSpin 0.8s linear infinite;
     }
+
     @keyframes loadingSpin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
     }
   </style>
 </head>
@@ -545,5 +562,3 @@
 </body>
 
 </html>
-
-
