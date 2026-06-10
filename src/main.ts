@@ -13,6 +13,13 @@ if (started) {
 }
 
 let loggedInUserId: number | null = null;
+let cachedUser: any = null;
+let cachedUserId: number | null = null;
+
+function invalidateUserCache() {
+  cachedUser = null;
+  cachedUserId = null;
+}
 
 // ── IPC: REGISTER ───────────────────────────────────────────────
 ipcMain.handle('register', async (_event, { email, password }: { email: string; password: string }) => {
@@ -28,6 +35,7 @@ ipcMain.handle('register', async (_event, { email, password }: { email: string; 
       [email, hashedPassword]
     );
     loggedInUserId = insertResult.rows[0].id;
+    invalidateUserCache();
 
     return { success: true, message: 'Registrasi berhasil!', id: loggedInUserId };
   } catch (err) {
@@ -51,6 +59,7 @@ ipcMain.handle('login', async (_event, { email, password }: { email: string; pas
     }
 
     loggedInUserId = user.id;
+    invalidateUserCache();
     return { success: true, message: 'Login berhasil!', id: loggedInUserId };
   } catch (err) {
     console.error('Login error:', err);
@@ -119,6 +128,7 @@ async function exchangeGoogleCode(code: string, codeVerifier: string): Promise<{
     const existing = await pool.query('SELECT id FROM users WHERE google_id = $1', [googleId]);
     if (existing.rows.length > 0) {
       loggedInUserId = existing.rows[0].id;
+      invalidateUserCache();
       return { success: true, id: loggedInUserId!, isNewUser: false };
     }
 
@@ -127,6 +137,7 @@ async function exchangeGoogleCode(code: string, codeVerifier: string): Promise<{
       const userId = existingByEmail.rows[0].id;
       await pool.query('UPDATE users SET google_id = $1 WHERE id = $2', [googleId, userId]);
       loggedInUserId = userId;
+      invalidateUserCache();
       return { success: true, id: loggedInUserId!, isNewUser: false };
     }
 
@@ -135,6 +146,7 @@ async function exchangeGoogleCode(code: string, codeVerifier: string): Promise<{
       [email, googleId]
     );
     loggedInUserId = insertRes.rows[0].id;
+    invalidateUserCache();
     return { success: true, id: loggedInUserId!, isNewUser: true };
   } catch (err) {
     console.error('Google auth processing error:', err);
@@ -233,6 +245,7 @@ ipcMain.handle('googleLogin', async (_event, idToken: string) => {
     const existing = await pool.query('SELECT id FROM users WHERE google_id = $1', [googleId]);
     if (existing.rows.length > 0) {
       loggedInUserId = existing.rows[0].id;
+      invalidateUserCache();
       console.log('Existing user found. ID:', loggedInUserId);
       return { success: true, id: loggedInUserId, isNewUser: false };
     }
@@ -244,6 +257,7 @@ ipcMain.handle('googleLogin', async (_event, idToken: string) => {
       [email, googleId]
     );
     loggedInUserId = insertRes.rows[0].id;
+    invalidateUserCache();
     console.log('Successfully registered new user. ID:', loggedInUserId);
     return { success: true, id: loggedInUserId, isNewUser: true };
   } catch (err) {
@@ -273,11 +287,13 @@ ipcMain.handle('resetPassword', async (_event, { email, password }: { email: str
 // ── IPC: SESSION ────────────────────────────────────────────────
 ipcMain.handle('autoLogin', (_event, userId: number) => {
   loggedInUserId = userId;
+  invalidateUserCache();
   return { success: true };
 });
 
 ipcMain.handle('logout', () => {
   loggedInUserId = null;
+  invalidateUserCache();
   return { success: true };
 });
 
@@ -314,6 +330,7 @@ ipcMain.handle('updateProfile', async (_event, data) => {
       'UPDATE users SET nama = $1, dob = $2, weight = $3, height = $4 WHERE id = $5',
       [nama, dob, weight, height, loggedInUserId]
     );
+    invalidateUserCache();
     return { success: true };
   } catch (err) {
     console.error('Update profile error:', err);
@@ -323,9 +340,12 @@ ipcMain.handle('updateProfile', async (_event, data) => {
 
 ipcMain.handle('getCurrentUser', async () => {
   if (!loggedInUserId) return null;
+  if (cachedUserId === loggedInUserId && cachedUser) return cachedUser;
   try {
     const result = await pool.query('SELECT email, nama, to_char(dob, \'Mon DD, YYYY\') as dob, weight, height, profile_pic FROM users WHERE id = $1', [loggedInUserId]);
-    return result.rows[0];
+    cachedUser = result.rows[0];
+    cachedUserId = loggedInUserId;
+    return cachedUser;
   } catch (err) {
     console.error('Get profile error:', err);
     return null;
@@ -353,6 +373,7 @@ ipcMain.handle('uploadProfilePic', async () => {
     const dataUrl = `data:image/${ext === 'jpg' ? 'jpeg' : ext};base64,${base64}`;
 
     await pool.query('UPDATE users SET profile_pic = $1 WHERE id = $2', [dataUrl, loggedInUserId]);
+    invalidateUserCache();
     return { success: true, dataUrl };
   } catch (err) {
     console.error('Upload profile pic error:', err);
@@ -450,7 +471,9 @@ function createAppWindow() {
     mainWindow?.show();
   });
 
-  mainWindow.webContents.openDevTools();
+  if (!app.isPackaged) {
+    mainWindow.webContents.openDevTools();
+  }
 }
 
 app.on('ready', async () => {
