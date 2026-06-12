@@ -448,7 +448,7 @@ function createAppWindow() {
     frame: false,
     alwaysOnTop: true,
   });
-  splashWindow.loadFile('splash.html');
+  splashWindow.loadFile('frontend/splash.html');
 
   mainWindow = new BrowserWindow({
     width: 1535,
