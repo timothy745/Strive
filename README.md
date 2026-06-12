@@ -6,10 +6,11 @@ To use this application please:
    ```
    npm install
    ```
+4. After installing, you can open the app using:
    ```
    npm start
    ```
-
+through the terminal.
 
 ## -IND-
 Untuk menggunakan aplikasi ini tolong:
@@ -19,7 +20,8 @@ Untuk menggunakan aplikasi ini tolong:
    ```
    npm install
    ```
+4. Setelah selesai install, anda bisa membuka app menggunakan:
    ```
    npm start
    ```
-
+melalui terminal.
