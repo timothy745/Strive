@@ -2,7 +2,7 @@
 To use this application please:
 1. Download Node.js from [https://nodejs.org/](https://nodejs.org/)
 2. Clone to an empty folder
-3. Open a terminal from the folder, then:
+3. Open a terminal of the folder, then:
    ```
    npm install
    ```
@@ -10,7 +10,6 @@ To use this application please:
    ```
    npm start
    ```
-through the terminal.
 
 ## -IND-
 Untuk menggunakan aplikasi ini tolong:
@@ -24,4 +23,3 @@ Untuk menggunakan aplikasi ini tolong:
    ```
    npm start
    ```
-melalui terminal.
