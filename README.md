@@ -2,7 +2,7 @@
 To use this application please:
 1. Download Node.js from [https://nodejs.org/](https://nodejs.org/)
 2. Clone to an empty folder
-3. Open a terminal for the folder, then:
+3. Open a terminal from the folder, then:
    - -npm install
    - -npm start
 
