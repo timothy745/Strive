@@ -6,12 +6,10 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "noImplicitAny": true,
-    "sourceMap": true,
     "baseUrl": ".",
     "ignoreDeprecations": "6.0",
     "outDir": "dist",
     "moduleResolution": "bundler",
-    "jsx": "react-jsx",
     "resolveJsonModule": true
   }
 }
