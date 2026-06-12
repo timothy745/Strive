@@ -1,5 +1,7 @@
+![Strive Logo](https://github.com/timothy745/Strive/blob/main/frontend/assets/Strive.png)
 ## -ENG-
-To use this application please:
+> [!IMPORTANT]
+> To use this application please:
 1. Download Node.js through [https://nodejs.org/](https://nodejs.org/)
 2. Clone to an empty folder
 3. Create a Neon DB through [https://neon.com/](https://neon.com/)
@@ -21,7 +23,8 @@ To use this application please:
    ```
 
 ## -IND-
-Untuk menggunakan aplikasi ini tolong:
+> [!IMPORTANT]
+> Untuk menggunakan aplikasi ini tolong:
 1. Download Node.js melalui [https://nodejs.org/](https://nodejs.org/)
 2. Clone ke folder kosong
 3. Buatlah Neon DB melalui [https://neon.com/](https://neon.com/)
