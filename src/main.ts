@@ -477,8 +477,8 @@ function createAppWindow() {
 }
 
 app.on('ready', async () => {
-  await initDB();
   createAppWindow();
+  initDB().catch(err => console.error('DB init failed:', err));
 });
 
 app.on('window-all-closed', () => {
