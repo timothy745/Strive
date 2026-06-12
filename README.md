@@ -1,4 +1,4 @@
--ENG-
+## -ENG-
 To use this application please:
 1. Download Node.js from [https://nodejs.org/](https://nodejs.org/)
 2. Clone to an empty folder
@@ -6,7 +6,7 @@ To use this application please:
    -npm install
    -npm start
 
--IND-
+## -IND-
 Untuk menggunakan aplikasi ini tolong:
 1. Download Node.js dari [https://nodejs.org/](https://nodejs.org/)
 2. Clone ke folder kosong
