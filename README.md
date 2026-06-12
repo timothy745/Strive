@@ -6,6 +6,7 @@
 2. Clone to an empty folder
 3. Create a Neon DB through [https://neon.com/](https://neon.com/)
 4. Sign up, choose the free tier, then create a new project
+> If you already have an account, skip this step, log in and create a new project
 5. From there click the "Connect" button on the top right corner of your screen, right below your profile
 6. Then, copy the connection string snippet
 7. In the cloned folder create a new .env file, containing:
@@ -28,7 +29,8 @@
 1. Download Node.js melalui [https://nodejs.org/](https://nodejs.org/)
 2. Clone ke folder kosong
 3. Buatlah Neon DB melalui [https://neon.com/](https://neon.com/)
-4. Sign up, pilih tier gratis, lalu buat project baru
+4. Sign up, pilih tier gratis, lalu buat projek baru
+> Jika suda punya akun, langsung log in dan buat projek baru
 5. Click tombol "Connect" pada bagian atas kanan layar, tepat di bawah gambar profil
 6. Lalu, copy connection string
 7. Buatlah file .env baru pada folder anda, yang berisi:
