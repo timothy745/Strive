@@ -16,34 +16,10 @@ let loggedInUserId: number | null = null;
 let cachedUser: any = null;
 let cachedUserId: number | null = null;
 
-const NETLIFY_BASE_URL = process.env.NODE_ENV === 'development'
-  ? 'http://localhost:8888/.netlify/functions'
-  : 'https://your-site-name.netlify.app/.netlify/functions';
-
 function invalidateUserCache() {
   cachedUser = null;
   cachedUserId = null;
 }
-
-// ── IPC: GET USERS ─────────────────────────────────────────────
-ipcMain.handle('get-users', async () => {
-  try {
-    const response = await fetch(`${NETLIFY_BASE_URL}/getUsers`);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return { success: true, data };
-  } catch (error) {
-    console.error('Failed to fetch users:', error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : String(error),
-    };
-  }
-});
 
 // ── IPC: REGISTER ───────────────────────────────────────────────
 ipcMain.handle('register', async (_event, { email, password }: { email: string; password: string }) => {
@@ -479,7 +455,7 @@ function createAppWindow() {
     height: 864,
     show: false,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.cjs'),
+      preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
     },
