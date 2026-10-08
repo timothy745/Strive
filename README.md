@@ -23,6 +23,23 @@
    npm start
    ```
 
+<details>
+  <summary>Having Troubles?</summary>
+ 1. If the following issue happens:
+   
+   > Downloading electron-v44.7.0-win32-x64.zip: [----------------------------------------------------] 0% ETA: 0.0 seconds
+
+Please refer to using:
+  ```
+   set ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/
+   ```
+
+Then:
+   ```
+   npm start
+   ```
+</details>
+
 ## -IND-
 > [!IMPORTANT]
 > Untuk menggunakan aplikasi ini tolong:
@@ -46,3 +63,19 @@
    ```
    npm start
    ```
+<details>
+  <summary>Mengalami Masalah?</summary>
+ 1. Jika mengalami masalah yang ada di bawah:
+   
+   > Downloading electron-v44.7.0-win32-x64.zip: [----------------------------------------------------] 0% ETA: 0.0 seconds
+
+Tolong gunakan:
+  ```
+   set ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/
+   ```
+
+Lalu:
+   ```
+   npm start
+   ```
+</details>
