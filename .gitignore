@@ -90,3 +90,6 @@ typings/
 
 # Electron-Forge
 out/
+
+# Local Netlify folder
+.netlify
