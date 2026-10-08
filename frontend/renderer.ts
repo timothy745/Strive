@@ -23,24 +23,3 @@ declare global {
 console.log(
   '👋 This message is being logged by "renderer.ts", included via Vite',
 );
-
-// frontend/renderer.ts
-
-document.addEventListener('DOMContentLoaded', async () => {
-  console.log('Renderer process loaded');
-
-  // Call the bridge function defined in preload.ts
-  const response = await window.electronAPI.getUsers();
-
-  if (response.success) {
-    console.log('Data fetched from Neon DB via Netlify:', response.data);
-    
-    // Example: Display output in an HTML element
-    const appElement = document.getElementById('app');
-    if (appElement) {
-      appElement.innerText = JSON.stringify(response.data, null, 2);
-    }
-  } else {
-    console.error('Failed to load data:', response.error);
-  }
-});

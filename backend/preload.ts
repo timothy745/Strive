@@ -1,8 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld('striveAPI', {
-  getUsers: () => ipcRenderer.invoke('get-users'),
-  
   login: (email: string, password: string) =>
     ipcRenderer.invoke('login', { email, password }),
 
