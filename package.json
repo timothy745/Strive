@@ -3,7 +3,8 @@
   "productName": "strive-app",
   "version": "1.0.0",
   "description": "My Electron application description",
-  "main": ".vite/build/main.js",
+  "type": "module",
+  "main": ".vite/build/main.cjs",
   "private": true,
   "scripts": {
     "start": "electron-forge start",
