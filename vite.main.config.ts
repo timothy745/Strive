@@ -12,6 +12,9 @@ export default defineConfig({
         'dotenv',
         'electron-squirrel-startup',
       ],
+      output: {
+        entryFileNames: '[name].cjs',
+      },
     },
   },
 });
