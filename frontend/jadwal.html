@@ -38,25 +38,28 @@
     html {
       margin: 0;
       padding: 0;
-      overflow: hidden;
       display: block;
     }
 
     body {
       margin: 0;
       padding: 0;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
       position: relative;
-      height: 100vh;
+      min-height: 100vh;
+      isolation: isolate;
     }
 
     #background {
       overflow: hidden;
       width: 100%;
-      height: 100%;
-      position: absolute;
+      height: 100vh;
+      position: fixed;
       top: 0;
       left: 0;
+      z-index: 0;
+      pointer-events: none;
     }
 
     #background .bg-track {
@@ -86,36 +89,54 @@
 
     body::before {
       content: "";
-      position: absolute;
+      position: fixed;
       width: 100%;
-      height: 100%;
+      height: 100vh;
       background: rgba(255, 255, 255, 0.4);
+      z-index: 1;
+      pointer-events: none;
     }
 
     .card {
       position: relative;
-      width: 1536px;
+      width: 100%;
+      max-width: 1536px;
       height: 100px;
-      top: 0;
-      left: 0;
-      right: 0;
+      margin: 0 auto;
+      padding: 0 16px;
+      box-sizing: border-box;
       background: linear-gradient(90deg, #000242 0%, #000499 51%, #0005D6 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 1;
+      z-index: 2;
+    }
+
+    .card .logo {
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      bottom: 255px;
+      left: 20px;
+      top: 1%;
+      transform: translateY(-50%);
+      z-index: 5;
     }
 
     .profile-pic img {
-      position: relative;
-      display: flex;
-      align-items: right;
-      justify-content: right;
-      width: 85px;
-      height: 80px;
+      display: block;
+      width: 72px;
+      height: 72px;
+      object-fit: cover;
       cursor: pointer;
       border-radius: 50%;
-      z-index: 1;
+    }
+
+    .profile-pic {
+      position: absolute;
+      top: 14px;
+      right: 20px;
+      z-index: 3;
     }
 
     .profile-pic img:hover {
@@ -124,46 +145,42 @@
     }
 
     .profile-pic button {
-      position: relative;
       display: flex;
-      align-items: right;
-      justify-content: right;
-      width: 80px;
-      height: 80px;
-      left: 1400px;
-      bottom: 90px;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
-      z-index: 3;
       border: none;
       background: none;
+      cursor: pointer;
     }
 
     .logo img {
-      position: relative;
-      display: flex;
-      align-items: left;
-      justify-content: left;
       width: 160px;
       height: 160px;
-      bottom: 255px;
-      left: 20px;
-      z-index: 1;
+      display: block;
     }
 
     .btn {
       display: flex;
-      justify-content: flex-end;
-      gap: 20px;
+      justify-content: center;
+      gap: clamp(4px, 1.3vw, 20px);
+      width: calc(100% - 300px);
+      max-width: 1000px;
+      margin: 0 80px 0 160px;
     }
 
     .btn button {
-      width: 264px;
+      flex: 1;
+      min-width: 0;
+      max-width: 264px;
       height: 100px;
-      border-radius: 0px;
+      border-radius: 0;
       border: none;
       background: linear-gradient(90deg, #01036E 0%, #0106D4 100%);
       color: white;
-      font-size: 30px;
+      font-size: clamp(18px, 2vw, 30px);
       cursor: pointer;
       transform: skewX(-25deg);
       z-index: 2;
@@ -186,10 +203,10 @@
 
     .profile-box {
       position: relative;
-      width: 1278px;
-      height: 610px;
-      left: 135px;
-      margin-top: -170px;
+      width: min(1278px, calc(100% - 48px));
+      height: min(610px, calc(100vh - 190px));
+      min-height: 360px;
+      margin: 72px auto 24px;
       border-radius: 30px;
       background: #FFFFFF;
       box-shadow: inset 0px 0px 50px 3px rgba(0, 0, 0, 0.25);
@@ -248,6 +265,67 @@
       gap: 8px;
       width: 275px;
       height: 100%;
+    }
+
+    @media (max-width: 900px) {
+      .card {
+        height: auto;
+        min-height: 160px;
+        padding: 0 12px 12px;
+        align-items: flex-end;
+      }
+
+      .logo {
+        left: 12px;
+      }
+
+      .profile-pic {
+        position: absolute;
+        top: 10px;
+        right: 12px;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: none;
+        margin: 100px 0 0;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .btn button {
+        flex: 1 1 calc(50% - 8px);
+        height: 48px;
+        max-width: none;
+      }
+
+      .profile-box {
+        width: calc(100% - 24px);
+        height: min(610px, calc(100vh - 184px));
+        margin: 24px auto;
+        padding: 24px;
+      }
+
+      .week-title {
+        font-size: clamp(44px, 9vw, 68px);
+      }
+
+      .days-scroll {
+        margin: 0 -23px;
+        padding: 0 24px;
+      }
+
+      .day-col {
+        width: clamp(220px, 72vw, 275px);
+      }
+    }
+
+    @media (max-height: 560px) and (min-width: 901px) {
+      .profile-box {
+        height: auto;
+        min-height: 360px;
+        margin-top: 24px;
+      }
     }
 
     .day-label {
@@ -369,6 +447,10 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .edit-box.has-data:not(.is-today) .box-item-name {
+      color: #ffffff;
     }
 
     .item-reps {
@@ -1077,21 +1159,20 @@
 
 <body>
   <div class="card">
-    <div class="header"></div>
+    <div class="logo">
+      <img src="assets/Strive.png" alt="Strive">
+    </div>
     <div class="btn">
       <button onclick="pindah1()"><span>BERANDA</span></button>
       <button onclick="pindah2()"><span>LATIHAN</span></button>
       <button onclick="pindah3()"><span>STATISTIK</span></button>
       <button onclick="pindah4()"><span>JADWAL</span></button>
     </div>
-  </div>
-  <div class="profile-pic">
-    <button onclick="window.location.href='profile.html'">
-      <img id="header-profile-pic" src="assets/Profile.png" alt="Profile Picture">
-    </button>
-  </div>
-  <div class="logo">
-    <img src="assets/Strive.png">
+    <div class="profile-pic">
+      <button onclick="window.location.href='profile.html'">
+        <img id="header-profile-pic" src="assets/Profile.png" alt="Profile Picture">
+      </button>
+    </div>
   </div>
 
   <div class="profile-box">
